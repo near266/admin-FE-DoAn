@@ -1,0 +1,69 @@
+@import '@globalStyles/common/mixins';
+
+.custom_tick_label {
+  font-size: 14px;
+  text-transform: uppercase;
+  @include mobile {
+    display: none;
+    font-size: 12px !important;
+  }
+  @include supermini {
+    display: none;
+  }
+}
+
+.responsive_wraper {
+  overflow: visible;
+  @include mobile {
+    // width: 200px !important;
+  }
+}
+
+.custom_label {
+  display: none;
+  background-color: red;
+  font-size: 14px;
+  font-weight: 500;
+  @include mobile {
+    font-size: 13px;
+    display: inline-block !important;
+  }
+  @include supermini {
+    font-size: 12px;
+    display: inline-block !important;
+  }
+}
+
+.custom_tooltip {
+  background: white;
+  border: 1px solid #ccc;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  font-style: normal;
+  border-radius: 8px;
+  box-shadow: 5px 5px 15px rgb(68 68 79 / 8%);
+  color: #696974;
+  padding: 5px 10px;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 400;
+  @include mobile {
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 14px;
+    text-align: center;
+  }
+}
+
+.addZoom {
+  zoom: 1.15;
+  overflow: visible;
+  @include mobile {
+    zoom: 0.9;
+  }
+  @include supermini {
+    zoom: 0.8;
+  }
+}

@@ -1,0 +1,9 @@
+.career_title {
+  @apply font-[500] text-[17px] leading-[20px] text-[#171725];
+}
+
+.career_description {
+  @apply cursor-auto text-[#696974]  font-[400] leading-[20px] text-[15px] overflow-hidden;
+
+  color: #696974 !important;
+}

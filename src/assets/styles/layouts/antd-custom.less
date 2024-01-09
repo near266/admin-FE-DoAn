@@ -1,0 +1,72 @@
+@import '~antd/dist/antd.less';
+@primary-color: #403ecc; // primary color for all components
+@link-color: #1890ff; // link color
+@success-color: #52c41a; // success state color
+@warning-color: #faad14; // warning state color
+@error-color: #f5222d; // error state color
+@font-size-base: 14px; // major text font size
+@heading-color: rgba(0, 0, 0, 0.85); // heading text color
+@text-color: rgba(0, 0, 0, 0.65); // major text color
+@text-color-secondary: rgba(0, 0, 0, 0.45); // secondary text color
+@disabled-color: rgba(0, 0, 0, 0.25); // disable state color
+@border-radius-base: 2px; // major border radius
+@border-color-base: #d9d9d9; // major border color
+@box-shadow-base: 0 3px 6px -4px rgba(0, 0, 0, 0.12), 0 6px 16px 0 rgba(0, 0, 0, 0.08),
+  0 9px 28px 8px rgba(0, 0, 0, 0.05); // major shadow for layers
+
+:root {
+  --antd-wave-shadow-color: #403ecc !important;
+}
+
+.ant-input-affix-wrapper:not(.ant-input-affix-wrapper-disabled):hover {
+  border-color: none !important;
+  box-shadow: none !important;
+}
+
+.ant-tabs-content-holder {
+  width: 100%;
+  // height: 100%;
+  // min-height: 100vh;
+  // padding-top: calc(var(--main-content-padding-top));
+}
+
+.editjob {
+  .ant-tabs-content {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+  }
+}
+
+.companyTextarea {
+  .ant-input[disabled] {
+    background-color: #fff;
+  }
+  textarea.ant-input {
+    min-height: 200px;
+  }
+}
+
+.customNewsDetail {
+  .ant-upload.ant-upload-drag {
+    background: #f1f1f5;
+    border-radius: 10px;
+    border: 3px dashed #d5d5dc;
+  }
+}
+
+.rejectReasonForm {
+  textarea.ant-input {
+    min-height: 200px;
+  }
+}
+
+.css-1fu2e3p-MuiPaper-root-MuiDialog-paper {
+  max-width: 2000px;
+}
+
+.custom_table {
+  .nextui-table-sort-icon {
+    display: none !important;
+  }
+}

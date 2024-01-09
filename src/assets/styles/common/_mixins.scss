@@ -1,0 +1,18 @@
+// mixin responsive
+@mixin mobile {
+  @media only screen and (max-width: 576px) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media (max-width: 768px) {
+    @content;
+  }
+}
+
+@mixin supermini {
+  @media (max-width: 376px) {
+    @content;
+  }
+}

@@ -1,0 +1,10 @@
+.recharts-responsive-container {
+  zoom: 1.17;
+  overflow: visible;
+  @include mobile {
+    zoom: 0.9;
+  }
+  @include supermini {
+    zoom: 0.8;
+  }
+}
