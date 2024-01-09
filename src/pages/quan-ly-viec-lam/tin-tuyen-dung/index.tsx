@@ -1,8 +1,15 @@
 import { RecruitNews } from '@/modules/ManageJobs/pages/RecruitNews';
+<<<<<<< HEAD
 import { TNews } from '@/pages/quan-ly-thanh-vien/doanh-nghiep/chinh-sua/[id]';
 import { Common } from '@/shared/utils';
 import axios from 'axios';
 import { GetServerSidePropsContext, NextPage } from 'next';
+=======
+import { Common } from '@/shared/utils';
+import axios from 'axios';
+import { GetServerSidePropsContext, NextPage } from 'next';
+import { TNews } from '../danh-sach-doanh-nghiep/chinh-sua/[id]';
+>>>>>>> 6ebb136 (first commit)
 interface IProps {
   data: {
     data: TNews[];

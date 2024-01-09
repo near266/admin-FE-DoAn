@@ -19,6 +19,7 @@ export type TJobs = {
   status: JOBS_STATUS;
 };
 
+<<<<<<< HEAD
 // const EnterpriseDashboardPage: NextPage = ({ jobs, total_page }: IProps) => {
 //   return <ManageJobsDashBoard jobs={jobs} total_page={total_page} />;
 // };
@@ -53,3 +54,39 @@ export type TJobs = {
 //     };
 //   }
 // };
+=======
+const EnterpriseDashboardPage: NextPage = ({ jobs, total_page }: IProps) => {
+  return <ManageJobsDashBoard jobs={jobs} total_page={total_page} />;
+};
+
+export default EnterpriseDashboardPage;
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  try {
+    const accessToken = Common.getAccessTokenFromServerSide(ctx.req.headers.cookie);
+    const {
+      data: { data: jobs, meta },
+    } = await axios.get(
+      `${process.env.NEXT_PUBLIC_ENTERPRISE_API_URL}/enterprises?page=1&size=7&sort=-created_at`,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
+
+    const { total_page } = meta;
+    return {
+      props: {
+        jobs,
+        total_page,
+      },
+    };
+  } catch (error) {
+    console.log(error);
+    return {
+      notFound: true,
+    };
+  }
+};
+>>>>>>> 6ebb136 (first commit)

@@ -2,6 +2,10 @@ import SrcIcons from '@/assets/icons';
 import { CustomSelector } from '@/components/CustomSelector';
 import { IconButton } from '@/components/IconButton';
 import AlertDialogSlide from '@/components/Modal';
+<<<<<<< HEAD
+=======
+import { TNews } from '@/pages/quan-ly-viec-lam/danh-sach-doanh-nghiep/chinh-sua/[id]';
+>>>>>>> 6ebb136 (first commit)
 import { SV_RES_STATUS_CODE } from '@/shared/enums/enums';
 import { Common } from '@/shared/utils';
 import { appLibrary } from '@/shared/utils/loading';
@@ -21,7 +25,10 @@ import {
   SORT_DIRECTION,
 } from '../../shared/enum';
 import { DeleteConfirm } from '../Edit/Tabs/News';
+<<<<<<< HEAD
 import { TNews } from '@/pages/quan-ly-thanh-vien/doanh-nghiep/chinh-sua/[id]';
+=======
+>>>>>>> 6ebb136 (first commit)
 
 export interface IProps {
   posts: TNews[];

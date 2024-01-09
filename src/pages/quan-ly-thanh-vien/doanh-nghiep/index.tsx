@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { ManageJobsDashBoard } from '@/modules/ManageJobs/pages/Dashboard';
 import { JOBS_STATUS } from '@/modules/ManageJobs/shared/enum';
 import { Common } from '@/shared/utils';
@@ -53,3 +54,17 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     };
   }
 };
+=======
+import { GetServerSidePropsContext, NextPage } from 'next';
+
+const MemberEnterpise: NextPage = (props) => {
+  return <div>MemberEnterpise</div>;
+};
+
+export async function getServerSideProps(ctx: GetServerSidePropsContext) {
+  return {
+    props: {},
+  };
+}
+export default MemberEnterpise;
+>>>>>>> 6ebb136 (first commit)

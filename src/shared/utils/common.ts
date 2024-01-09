@@ -75,6 +75,7 @@ export function showResponseError(error) {
   const { data } = error.response;
   message.error(`${Object.values(data?.errors ?? []).join(' - ')}` ?? 'Có lỗi xảy ra');
 }
+<<<<<<< HEAD
 
 export function showResponseError2(error) {
   message.error(error ?? 'Có lỗi xảy ra');
@@ -84,3 +85,5 @@ export function showSuccessMessage(message) {
   message.success(message ?? 'Thao tác thành công');
 }
 
+=======
+>>>>>>> 6ebb136 (first commit)

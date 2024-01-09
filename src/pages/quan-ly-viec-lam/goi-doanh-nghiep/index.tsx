@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import IAssessment from '@/interfaces/models/IAssessment';
 import { BusinessPackageDashboard } from '@/modules/ManagerService/pages/BusinessPackageDashboard';
 import { IGetListLicenseRes } from '@/modules/ManagerService/shared/interface';
@@ -48,3 +49,17 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     };
   }
 };
+=======
+import { GetServerSidePropsContext, NextPage } from 'next';
+
+const EnterprisePlanPage: NextPage = (props) => {
+  return <div>EnterprisePlanPage</div>;
+};
+
+export async function getServerSideProps(ctx: GetServerSidePropsContext) {
+  return {
+    props: {},
+  };
+}
+export default EnterprisePlanPage;
+>>>>>>> 6ebb136 (first commit)

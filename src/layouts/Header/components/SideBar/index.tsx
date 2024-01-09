@@ -120,6 +120,7 @@ const sideBarItems = [
     ],
   },
   {
+<<<<<<< HEAD
     label: 'Quản lý dịch vụ',
     icon: itemsIcon.Job,
     pathName: '/quan-ly-viec-lam',
@@ -128,6 +129,16 @@ const sideBarItems = [
       //   label: 'Danh sách doanh nghiệp',
       //   pathName: '/quan-ly-viec-lam/danh-sach-doanh-nghiep',
       // },
+=======
+    label: 'Quản lý việc làm',
+    icon: itemsIcon.Job,
+    pathName: '/quan-ly-viec-lam',
+    children: [
+      {
+        label: 'Danh sách doanh nghiệp',
+        pathName: '/quan-ly-viec-lam/danh-sach-doanh-nghiep',
+      },
+>>>>>>> 6ebb136 (first commit)
       {
         label: 'Tin tuyển dụng',
         pathName: '/quan-ly-viec-lam/tin-tuyen-dung',
