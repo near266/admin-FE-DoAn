@@ -332,9 +332,11 @@ export function BusinessPackageDashboard(props: IProps) {
           <p className="text-[var(--primary-color)] font-bold text-xl mb-3">
             Danh sách gói doanh nghiệp
           </p>
-          <div className="w-fit cursor-pointer rounded-[10px] bg-[var(--primary-color)] text-white py-3 px-4">
-            Thêm mới
-          </div>
+          <Link href={'/quan-ly-viec-lam/goi-doanh-nghiep/them-moi'}>
+            <div className="w-fit cursor-pointer rounded-[10px] bg-[var(--primary-color)] text-white py-3 px-4">
+              Thêm mới
+            </div>
+          </Link>
         </div>
         <Table
           selectionMode="none"

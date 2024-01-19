@@ -1,8 +1,8 @@
 import { RecruitNews } from '@/modules/ManageJobs/pages/RecruitNews';
+import { TNews } from '@/pages/quan-ly-thanh-vien/doanh-nghiep/chinh-sua/[id]';
 import { Common } from '@/shared/utils';
 import axios from 'axios';
 import { GetServerSidePropsContext, NextPage } from 'next';
-import { TNews } from '../danh-sach-doanh-nghiep/chinh-sua/[id]';
 interface IProps {
   data: {
     data: TNews[];

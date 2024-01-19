@@ -120,14 +120,14 @@ const sideBarItems = [
     ],
   },
   {
-    label: 'Quản lý việc làm',
+    label: 'Quản lý dịch vụ',
     icon: itemsIcon.Job,
     pathName: '/quan-ly-viec-lam',
     children: [
-      {
-        label: 'Danh sách doanh nghiệp',
-        pathName: '/quan-ly-viec-lam/danh-sach-doanh-nghiep',
-      },
+      // {
+      //   label: 'Danh sách doanh nghiệp',
+      //   pathName: '/quan-ly-viec-lam/danh-sach-doanh-nghiep',
+      // },
       {
         label: 'Tin tuyển dụng',
         pathName: '/quan-ly-viec-lam/tin-tuyen-dung',

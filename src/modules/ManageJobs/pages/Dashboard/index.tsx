@@ -11,7 +11,7 @@ import {
   useCollator,
   User,
 } from '@nextui-org/react';
-import { Input, message } from 'antd';
+import { DatePicker, Input, message } from 'antd';
 import Image from 'next/legacy/image';
 import Link from 'next/link';
 import { useCallback, useEffect, useMemo, useState } from 'react';
@@ -23,11 +23,11 @@ import {
   SORT_DIRECTION,
 } from '../../shared/enum';
 import { debounce } from '@mui/material';
-import { TJobs } from '@/pages/quan-ly-viec-lam/danh-sach-doanh-nghiep';
 import { Common } from '@/shared/utils';
 import { jobService } from '../../shared/api';
 import { SV_RES_STATUS_CODE } from '@/shared/enums/enums';
 import { useRouter } from 'next/router';
+import { TJobs } from '@/pages/quan-ly-thanh-vien/doanh-nghiep';
 
 interface IProps {
   jobs: TJobs[];
@@ -45,9 +45,9 @@ const columns = [
   { name: 'DOANH NGHIỆP', uid: 'name' },
   { name: 'ĐẠI DIỆN', uid: 'represent' },
   { name: 'EMAIL', uid: 'email' },
-  { name: 'LOẠI', uid: 'plan' },
+  { name: 'GÓI', uid: 'plan' },
   { name: 'NGÀY TẠO', uid: 'created_at' },
-  { name: 'TRẠNG THÁI', uid: 'status' },
+  // { name: 'TRẠNG THÁI', uid: 'status' },
   { name: 'THAO TÁC', uid: 'actions' },
 ];
 
@@ -132,7 +132,11 @@ export function ManageJobsDashBoard({ jobs, total_page }: IProps) {
   }
   const list = useAsyncList({ load, sort });
 
-  const handleChangeState = async (id: string | number, email: string, value: JOBS_STATUS_NUMERIC) => {
+  const handleChangeState = async (
+    id: string | number,
+    email: string,
+    value: JOBS_STATUS_NUMERIC
+  ) => {
     appLibrary.showloading();
     try {
       if (value === JOBS_STATUS_NUMERIC.REJECTED) {
@@ -220,7 +224,7 @@ export function ManageJobsDashBoard({ jobs, total_page }: IProps) {
             <Row className="ml-[30px]">
               <Tooltip content="Sửa">
                 <Link
-                  href={`/quan-ly-viec-lam/danh-sach-doanh-nghiep/chinh-sua/${item.id}`}
+                  href={`/quan-ly-thanh-vien/doanh-nghiep/chinh-sua/${item.id}`}
                   legacyBehavior
                 >
                   <IconButton>
@@ -293,12 +297,41 @@ export function ManageJobsDashBoard({ jobs, total_page }: IProps) {
       <div className="flex mb-[1rem] gap-3">
         <Input
           size="large"
-          placeholder="Tìm kiếm nghề "
+          placeholder="Doanh nghiệp"
           className="rounded-[10px] bg-white"
           allowClear
           onChange={onSearch}
-          prefix={<Image src={SrcIcons.searchIcon} width={18} height={18} />}
         />
+        <Input
+          size="large"
+          placeholder="Đại diện"
+          className="rounded-[10px] bg-white"
+          allowClear
+          onChange={onSearch}
+        />
+        <Input
+          size="large"
+          placeholder="Email"
+          className="rounded-[10px] bg-white"
+          allowClear
+          onChange={onSearch}
+        />
+        <DatePicker placeholder="Ngày tạo" className="!w-[1650px]" />
+        <Input
+          size="large"
+          placeholder="Gói"
+          className="rounded-[10px] bg-white"
+          allowClear
+          onChange={onSearch}
+        />
+        <div className="min-w-[150px] px-3 cursor-pointer rounded-[10px] bg-[var(--primary-color)] flex items-center justify-center text-[var(--primary-color)] ">
+          <span className="text-sm text-white font-[600] tracking-[0.1px] leading-[21px] mr-1">
+            Tìm kiếm
+          </span>
+          <div className="relative h-4 w-4">
+            <Image src={SrcIcons.searchIcon} layout="fill" />
+          </div>
+        </div>
       </div>
       <DeniedPopUpJob
         onChange={toggle}

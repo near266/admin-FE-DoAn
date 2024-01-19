@@ -1,5 +1,5 @@
 import SrcIcons from '@/assets/icons';
-import { TAccount } from '@/pages/quan-ly-viec-lam/danh-sach-doanh-nghiep/chinh-sua/[id]';
+import { TAccount } from '@/pages/quan-ly-thanh-vien/doanh-nghiep/chinh-sua/[id]';
 import { User } from '@nextui-org/react';
 import React from 'react';
 

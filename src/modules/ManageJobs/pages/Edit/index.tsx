@@ -2,7 +2,7 @@ import {
   TAccount,
   TCompany,
   TNews,
-} from '@/pages/quan-ly-viec-lam/danh-sach-doanh-nghiep/chinh-sua/[id]';
+} from '@/pages/quan-ly-thanh-vien/doanh-nghiep/chinh-sua/[id]';
 import { Tabs } from 'antd';
 import React, { useState } from 'react';
 import { AccountInfoForm } from './Tabs/AccountInfo';
