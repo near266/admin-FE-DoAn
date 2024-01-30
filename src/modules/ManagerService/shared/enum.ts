@@ -12,6 +12,7 @@ export enum LICENSE_DATA_FIELD {
   title_video = 'title_video',
   link_video = 'link_video',
   images = 'images',
+  created_date = 'created_date'
 }
 
 export const listCareer = [

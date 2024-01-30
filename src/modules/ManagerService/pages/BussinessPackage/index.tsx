@@ -15,20 +15,61 @@ import {
 } from '../../shared/enum';
 import { appLibrary } from '@/shared/utils/loading';
 import { managerServiceService } from '../../shared/api';
-import { showResponseError } from '@/shared/utils/common';
+import {
+  showResponseError,
+  showResponseError2,
+  showSuccessMessage,
+} from '@/shared/utils/common';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import { useRouter } from 'next/router';
+import { IGetListLicenseRes } from '../../shared/interface';
+import Link from 'next/link';
 
 const BussinessPackage = (props: any) => {
-  const { recruitment } = props;
+  const { type } = props;
+  const router = useRouter();
+  const id = router.query.id;
   const [form] = Form.useForm();
   const avatarFile = Form.useWatch<UploadChangeParam<UploadFile<any>>>(
     LICENSE_DATA_FIELD.images,
     form
   );
+  const [descriptionEdit, setDescriptionEdit] = useState<string>('');
+  const [listImgEdit, setListImgEdit] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (type === 'edit') {
+      getLicense();
+    }
+  }, []);
+
+  const getLicense = async () => {
+    try {
+      appLibrary.showloading();
+      const res: IGetListLicenseRes = await managerServiceService.getLicenseDetail(
+        id as string
+      );
+      console.log('bbb', res);
+      form.setFieldsValue(res);
+      setDescriptionEdit(res?.description);
+      // setListImgEdit(res?.images)
+      appLibrary.hideloading();
+    } catch (error) {
+      appLibrary.hideloading();
+      showResponseError(error);
+      console.log(error);
+    }
+  };
 
   const handleFormSubmit = () => {
     console.log('aaa', form.getFieldsValue());
-    form.setFieldValue([LICENSE_DATA_FIELD.images], ["aaa"])
-    addLicense(form.getFieldsValue())
+    form.setFieldValue([LICENSE_DATA_FIELD.images], ['aaa']);
+    if (type === 'edit') {
+      updateLicense(form.getFieldsValue());
+    } else {
+      addLicense(form.getFieldsValue());
+    }
   };
 
   const addLicense = async (data) => {
@@ -46,6 +87,21 @@ const BussinessPackage = (props: any) => {
     }
   };
 
+  const updateLicense = async (data) => {
+    try {
+      appLibrary.showloading();
+      const res = await managerServiceService.updateLicense(data);
+      if (res) {
+        showSuccessMessage('Cập nhật thành công');
+      }
+      appLibrary.hideloading();
+    } catch (error) {
+      appLibrary.hideloading();
+      showResponseError2(error?.response?.data);
+      console.log(error);
+    }
+  };
+
   return (
     <div className="min-width-[900px] customNewsDetail card !px-9 ! className='w-full'py-7">
       <Form
@@ -57,7 +113,7 @@ const BussinessPackage = (props: any) => {
         className="flex flex-col gap-[8px]"
       >
         <p className="text-[var(--primary-color)] font-bold text-xl mb-3">
-          Thêm mới gói doanh nghiệp
+          {type === 'edit' ? 'Chỉnh sửa gói doanh nghiệp' : 'Thêm mới gói doanh nghiệp'}
         </p>
         <div className="flex gap-8 mb-2">
           <div className="w-full">
@@ -246,6 +302,7 @@ const BussinessPackage = (props: any) => {
           <Form.Item name={LICENSE_DATA_FIELD.description}>
             <EditorBlock
               onChange={(data) => {}}
+              defaultValue={descriptionEdit}
               title="Mô tả"
               required
             />
@@ -264,13 +321,9 @@ const BussinessPackage = (props: any) => {
               // showUploadList={false}
               fileList={avatarFile?.fileList}
             >
-              {recruitment?.image_url ? (
+              {listImgEdit.length > 0 ? (
                 <div className="relative w-full min-h-[52px]">
-                  <Image
-                    src={recruitment?.image_url}
-                    alt="Youth+ Doanh nghiệp"
-                    layout="fill"
-                  />
+                  <Image src={listImgEdit[0]} alt="Youth+ Doanh nghiệp" layout="fill" />
                 </div>
               ) : (
                 <div className="ant-upload-drag-icon flex justify-center">
@@ -329,8 +382,10 @@ const BussinessPackage = (props: any) => {
         </div>
         <div className="flex justify-end mt-2">
           <div className="flex items-center">
-            <button className="custom-button !bg-[#EB4C4C] mr-2">Hủy bỏ</button>
-            <button className="custom-button">Lưu thay đổi</button>
+            <Link href={'/quan-ly-viec-lam/goi-doanh-nghiep'}>
+              <div className="custom-button !bg-[#EB4C4C] mr-2">Hủy bỏ</div>
+            </Link>
+            <button className="custom-button">{type === 'edit' ? 'Lưu thay đổi' : 'Thêm mới'}</button>
           </div>
         </div>
       </Form>

@@ -1,18 +1,19 @@
 import IAssessment from '@/interfaces/models/IAssessment';
 import { BusinessPackageDashboard } from '@/modules/ManagerService/pages/BusinessPackageDashboard';
+import { IGetListLicenseRes } from '@/modules/ManagerService/shared/interface';
 import { Common } from '@/shared/utils';
 import axios from 'axios';
 import { GetServerSideProps, NextPage } from 'next';
 
 export interface IProps {
-  assessments: IAssessment[];
+  license: IGetListLicenseRes[];
 }
 
 const BusinessPackage: NextPage = (props: IProps) => {
-  const { assessments } = props;
+  const { license } = props;
   return (
     <div>
-      <BusinessPackageDashboard assessments={assessments} />
+      <BusinessPackageDashboard license={license} />
     </div>
   );
 };
@@ -22,23 +23,27 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   try {
     const accessToken = Common.getAccessTokenFromServerSide(ctx.req.headers.cookie);
     const {
-      data: { data: assessments },
-    } = await axios.get(`${process.env.NEXT_PUBLIC_API_URL_V2}/assessments`, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
+      data: { data: license },
+    } = await axios.post(
+      `${process.env.NEXT_PUBLIC_API_URL_V4}/licenses?Page=1&PageSize=9999`,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
       },
-    });
-    console.log(assessments);
+      {}
+    );
+    console.log(license);
     return {
       props: {
-        assessments,
+        license,
       },
     };
   } catch (error) {
     console.log(error);
     return {
       props: {
-        assessments: [],
+        license: [],
       },
     };
   }

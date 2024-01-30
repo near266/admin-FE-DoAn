@@ -23,27 +23,21 @@ import {
   useCollator,
   User,
 } from '@nextui-org/react';
-import { Button, DatePicker, Input, message, Popconfirm, Select } from 'antd';
+import { Button, DatePicker, Form, Input, message, Popconfirm, Select } from 'antd';
 import Image from 'next/legacy/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { IGetListLicenseRes } from '../../shared/interface';
+import { formatServerDateToDurationString } from '@/shared/helpers';
+import { LICENSE_DATA_FIELD, listCareer, listStatus } from '../../shared/enum';
+import FormItem from 'antd/lib/form/FormItem';
+import moment from 'moment';
 
 export interface IProps {
-  assessments: IAssessment[];
+  license: IGetListLicenseRes[];
 }
 
-type AssessmentTable = {
-  id: string | number;
-  name?: string;
-  descriptions?: string;
-  slug: string;
-  avatar?: string;
-  sale_price: number;
-  time?: string;
-  assessmentType?: AssessmentTypeNumeric;
-  status: AssessmentStatusCode;
-};
 const columns = [
   { name: 'MÃ GÓI', uid: 'id' },
   { name: 'TÊN GÓI', uid: 'name' },
@@ -55,39 +49,27 @@ const columns = [
   { name: 'THAO TÁC', uid: 'action' },
 ];
 
-const listFields = [
-  { label: 'Sale & Marketing', value: 'Sale & Marketing' },
-  { label: 'Công nghệ thông tin', value: 'Công nghệ thông tin' },
-  { label: 'Tài chính - kế toán', value: 'Tài chính - kế toán' },
-  { label: 'Vận hành', value: 'Vận hành' },
-];
-
-const listStatus = [
-  { label: 'Hiển thị', value: '0' },
-  { label: 'Ẩn', value: '1' },
-  { label: 'Hết hàng', value: '2' },
-];
-
-const mapToTableData = (assessments: IAssessment[]) =>
-  assessments &&
-  assessments.map((item) => ({
+const mapToTableData = (license: IGetListLicenseRes[]) =>
+  license &&
+  license.map((item) => ({
     id: item.id,
-    name: item.name,
-    slug: item.slug,
-    avatar: item.avatar,
-    descriptions: item.description,
-    sale_price: item.sale_price,
-    assessmentType: AssessmentTypeToAssessmentTypeNumeric(item.assessment_type),
+    license_code: item.license_code,
+    license_name: item.license_name,
+    career_field_id: item.career_field_id,
+    selling_price: item.selling_price,
+    listed_price: item.listed_price,
+    created_date: item.created_date,
+    last_modified_date: item.last_modified_date,
     status: item.status,
-    time: new Date(item.updated_at).toLocaleString(),
   }));
 
 export function BusinessPackageDashboard(props: IProps) {
-  const { assessments } = props;
+  const { license } = props;
   const router = useRouter();
-  const rootData = useMemo(() => mapToTableData(assessments), [assessments]);
-  const [filtedData, setFiltedData] = useState<AssessmentTable[]>(rootData);
-  const [dataTable, setDataTable] = useState<AssessmentTable[]>(rootData);
+  const [form] = Form.useForm();
+  const rootData = useMemo(() => mapToTableData(license), [license]);
+  const [filtedData, setFiltedData] = useState<IGetListLicenseRes[]>(rootData);
+  const [dataTable, setDataTable] = useState<IGetListLicenseRes[]>(rootData);
   const collator = useCollator({ numeric: true });
   const load = async ({ signal }) => {
     return {
@@ -118,7 +100,7 @@ export function BusinessPackageDashboard(props: IProps) {
 
       try {
         const newData = filtedData.filter((item) =>
-          Common.removeVietnameseTones(item.name)
+          Common.removeVietnameseTones(item.license_name)
             .toLowerCase()
             .includes(Common.removeVietnameseTones(value).toLowerCase())
         );
@@ -159,52 +141,19 @@ export function BusinessPackageDashboard(props: IProps) {
     const { value } = event.target;
     handleSearch(value);
   };
-  const onSelect = (value, assessment_id) => {
-    handlePublise(value, assessment_id);
-  };
-  useEffect(() => {
-    const routerQuery = router.query;
-    const queryKey = Object.keys(routerQuery)[0];
-    const queryValue = routerQuery[queryKey];
-    if (queryKey === 'type' && queryValue) {
-      setDataTable(
-        filtedData.filter((item) => item.assessmentType === Number(queryValue))
-      );
-    }
-  }, [router.query]);
-
-  const onDeleteAssessment = async (id) => {
-    if (!id) return;
-    try {
-      appLibrary.showloading();
-      const { code, payload } = await assessmentService.deleteAssessment(id);
-      if (code === SV_RES_STATUS_CODE.success) {
-        appLibrary.hideloading();
-        message.success('Xóa bài test thành công');
-        if (payload.id) {
-          setDataTable((pre) => pre.filter((item) => item.id !== parseInt(payload.id)));
-          setFiltedData((pre) => pre.filter((item) => item.id !== parseInt(payload.id)));
-        }
-      }
-    } catch (error) {
-      appLibrary.hideloading();
-      console.log(error);
-      message.error('Xóa bài test thất bại!');
-    }
-  };
 
   const filterOption = (input: string, option?: { label: string; value: string }) =>
     (option?.label ?? '').toLowerCase().includes(input.toLowerCase());
 
   const list = useAsyncList({ load, sort });
-  const renderCell = (item: AssessmentTable, columnKey: React.Key) => {
+  const renderCell = (item: IGetListLicenseRes, columnKey: React.Key) => {
     const cellValue = item[columnKey];
     switch (columnKey) {
       case 'id':
         return (
           <Col>
             <Row>
-              <span className="text-[14px]">SPM1</span>
+              <span className="text-[14px]">{item.license_code}</span>
             </Row>
           </Col>
         );
@@ -212,7 +161,7 @@ export function BusinessPackageDashboard(props: IProps) {
         return (
           <Col>
             <Row align="center">
-              <span className="text-[14px]">SALE & MARKETING</span>
+              <span className="text-[14px]">{item.license_name}</span>
             </Row>
           </Col>
         );
@@ -220,7 +169,9 @@ export function BusinessPackageDashboard(props: IProps) {
         return (
           <Col>
             <Row align="center">
-              <span className="text-[14px]">Sale & Marketing</span>
+              <span className="text-[14px]">
+                {viewValueItem(item.career_field_id, listCareer)}
+              </span>
             </Row>
           </Col>
         );
@@ -229,8 +180,10 @@ export function BusinessPackageDashboard(props: IProps) {
           <Col>
             <Row align="center">
               <div>
-                <p className="text-[var(--primary-color)]">39.000.000</p>
-                <p className="text-[#92929D]">42.000.000</p>
+                <p className="text-[var(--primary-color)]">
+                  {item.selling_price.toLocaleString()}
+                </p>
+                <p className="text-[#92929D]">{item.listed_price.toLocaleString()}</p>
               </div>
             </Row>
           </Col>
@@ -239,7 +192,7 @@ export function BusinessPackageDashboard(props: IProps) {
         return (
           <Col>
             <Row align="center">
-              <span className="text-[14px]">1/1/2022</span>
+              <span className="text-[14px]">{item.created_date}</span>
             </Row>
           </Col>
         );
@@ -247,7 +200,7 @@ export function BusinessPackageDashboard(props: IProps) {
         return (
           <Col>
             <Row align="center">
-              <span className="text-[14px]">30/1/2022</span>
+              <span className="text-[14px]">{item.last_modified_date}</span>
             </Row>
           </Col>
         );
@@ -255,76 +208,117 @@ export function BusinessPackageDashboard(props: IProps) {
         return (
           <Col>
             <Row align="center">
-              <span className="text-[14px]">Hiển thị</span>
+              <span className="text-[14px]">
+                {viewValueItem(item.status, listStatus)}
+              </span>
             </Row>
           </Col>
         );
       case 'action':
         return (
-          <Row align="flex-start">
-            <Tooltip content="Xem chi tiết" css={{ marginRight: 20 }}>
-              <IconButton
-                onClick={() => {
-                  router.push(``, undefined, {
-                    shallow: true,
-                  });
-                }}
-              >
-                <Image src={SrcIcons.editActionIcon} height={24} width={24} />
-              </IconButton>
-            </Tooltip>
-          </Row>
+          <Link legacyBehavior href={`/quan-ly-viec-lam/goi-doanh-nghiep/chinh-sua/${item.id}`}>
+            <Row align="flex-start">
+              <Tooltip content="Xem chi tiết" css={{ marginRight: 20 }}>
+                <IconButton>
+                  <Image src={SrcIcons.editActionIcon} height={24} width={24} />
+                </IconButton>
+              </Tooltip>
+            </Row>
+          </Link>
         );
       default:
         return cellValue;
     }
   };
+
+  useEffect(() => {
+    console.log('mmm', dataTable);
+  }, []);
+
+  const viewValueItem = (value: number, list: any[]): string => {
+    return list.find((item: any) => item.value === value)?.label;
+  };
+
+  const handleFormSubmit = () => {
+    const dateString = JSON.stringify(form.getFieldValue('created_date'));
+    // form.setFieldValue('created_date', dateString);
+    console.log('bbb', form.getFieldValue('created_date')?.format('YYYY-MM-DD'));
+    // console.log('aaa', form.getFieldsValue());
+  };
+
   return (
     <>
       <div className="relative">
-        <div className="flex mb-[1rem] gap-3">
-          <Input
-            size="large"
-            placeholder="Mã gói"
-            className="rounded-[10px] bg-white"
-            allowClear
-            onChange={onSearch}
-          />
-          <Input
-            size="large"
-            placeholder="Tên gói"
-            className="rounded-[10px] bg-white"
-            allowClear
-            onChange={onSearch}
-          />
-          <Select
-            size="large"
-            className="!min-w-[250px]"
-            showSearch
-            placeholder="Lĩnh vực"
-            optionFilterProp="children"
-            filterOption={filterOption}
-            options={listFields}
-          />
-          <DatePicker placeholder="Ngày tạo" className="!w-[1650px]" />
-          <Select
-            size="large"
-            className="!min-w-[250px]"
-            showSearch
-            placeholder="Trạng thái"
-            optionFilterProp="children"
-            filterOption={filterOption}
-            options={listStatus}
-          />
-          <div className="min-w-[150px] px-3 cursor-pointer rounded-[10px] bg-[var(--primary-color)] flex items-center justify-center text-[var(--primary-color)] ">
+        <Form
+          form={form}
+          onFinish={handleFormSubmit}
+          className="flex mb-[1rem] gap-3 justify-between"
+        >
+          <FormItem name={LICENSE_DATA_FIELD.license_code} className="w-1/6">
+            <Input
+              size="large"
+              placeholder="Mã gói"
+              className="rounded-[10px] bg-white w-full"
+              allowClear
+            />
+          </FormItem>
+          <FormItem name={LICENSE_DATA_FIELD.license_name} className="w-1/6">
+            <Input
+              size="large"
+              placeholder="Tên gói"
+              className="rounded-[10px] bg-white w-full"
+              allowClear
+            />
+          </FormItem>
+          <FormItem name={LICENSE_DATA_FIELD.career_field_id} className="w-1/6">
+            <Select
+              size="large"
+              className="!w-full"
+              showSearch
+              placeholder="Lĩnh vực"
+              allowClear
+            >
+              {listCareer.map((item: any) => {
+                return (
+                  <Select.Option key={item.value} value={item.value}>
+                    {item.label}
+                  </Select.Option>
+                );
+              })}
+            </Select>
+          </FormItem>
+          <FormItem name={LICENSE_DATA_FIELD.created_date} className="w-1/6">
+            <DatePicker placeholder="Ngày tạo" className="!w-full !h-[39px]" />
+          </FormItem>
+          <FormItem name={LICENSE_DATA_FIELD.status} className="w-1/6">
+            <Select
+              size="large"
+              className="!w-full"
+              showSearch
+              placeholder="Trạng thái"
+              allowClear
+            >
+              {listStatus.map((item: any) => {
+                return (
+                  <Select.Option key={item.value} value={item.value}>
+                    {item.label}
+                  </Select.Option>
+                );
+              })}
+            </Select>
+          </FormItem>
+          <button
+            type="submit"
+            className="min-w-[150px] px-3 cursor-pointer rounded-[10px] bg-[var(--primary-color)] flex items-center justify-center text-[var(--primary-color)] "
+          >
             <span className="text-sm text-white font-[600] tracking-[0.1px] leading-[21px] mr-1">
               Tìm kiếm
             </span>
             <div className="relative h-4 w-4">
               <Image src={SrcIcons.searchIcon} layout="fill" />
             </div>
-          </div>
-        </div>
+          </button>
+        </Form>
         <div className="counter pointer-events-none absolute z-10 bottom-[1rem] translate-x-[100px]">
           Tổng số gói: {dataTable.length} gói
         </div>
@@ -365,7 +359,7 @@ export function BusinessPackageDashboard(props: IProps) {
             )}
           </Table.Header>
           <Table.Body items={dataTable} loadingState={list.loadingState}>
-            {(item: AssessmentTable) => (
+            {(item: IGetListLicenseRes) => (
               <Table.Row css={{ background: 'red' }}>
                 {(columnKey) => (
                   <Table.Cell css={{ background: 'red' }}>
