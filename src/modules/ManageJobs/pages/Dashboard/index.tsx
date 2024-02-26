@@ -11,11 +11,7 @@ import {
   useCollator,
   User,
 } from '@nextui-org/react';
-<<<<<<< HEAD
 import { DatePicker, Input, message } from 'antd';
-=======
-import { Input, message } from 'antd';
->>>>>>> 6ebb136 (first commit)
 import Image from 'next/legacy/image';
 import Link from 'next/link';
 import { useCallback, useEffect, useMemo, useState } from 'react';
@@ -27,18 +23,11 @@ import {
   SORT_DIRECTION,
 } from '../../shared/enum';
 import { debounce } from '@mui/material';
-<<<<<<< HEAD
-=======
-import { TJobs } from '@/pages/quan-ly-viec-lam/danh-sach-doanh-nghiep';
->>>>>>> 6ebb136 (first commit)
 import { Common } from '@/shared/utils';
 import { jobService } from '../../shared/api';
 import { SV_RES_STATUS_CODE } from '@/shared/enums/enums';
 import { useRouter } from 'next/router';
-<<<<<<< HEAD
 import { TJobs } from '@/pages/quan-ly-thanh-vien/doanh-nghiep';
-=======
->>>>>>> 6ebb136 (first commit)
 
 interface IProps {
   jobs: TJobs[];
@@ -56,15 +45,9 @@ const columns = [
   { name: 'DOANH NGHIỆP', uid: 'name' },
   { name: 'ĐẠI DIỆN', uid: 'represent' },
   { name: 'EMAIL', uid: 'email' },
-<<<<<<< HEAD
   { name: 'GÓI', uid: 'plan' },
   { name: 'NGÀY TẠO', uid: 'created_at' },
   // { name: 'TRẠNG THÁI', uid: 'status' },
-=======
-  { name: 'LOẠI', uid: 'plan' },
-  { name: 'NGÀY TẠO', uid: 'created_at' },
-  { name: 'TRẠNG THÁI', uid: 'status' },
->>>>>>> 6ebb136 (first commit)
   { name: 'THAO TÁC', uid: 'actions' },
 ];
 
@@ -149,15 +132,11 @@ export function ManageJobsDashBoard({ jobs, total_page }: IProps) {
   }
   const list = useAsyncList({ load, sort });
 
-<<<<<<< HEAD
   const handleChangeState = async (
     id: string | number,
     email: string,
     value: JOBS_STATUS_NUMERIC
   ) => {
-=======
-  const handleChangeState = async (id: string | number, email: string, value: JOBS_STATUS_NUMERIC) => {
->>>>>>> 6ebb136 (first commit)
     appLibrary.showloading();
     try {
       if (value === JOBS_STATUS_NUMERIC.REJECTED) {
@@ -245,11 +224,7 @@ export function ManageJobsDashBoard({ jobs, total_page }: IProps) {
             <Row className="ml-[30px]">
               <Tooltip content="Sửa">
                 <Link
-<<<<<<< HEAD
                   href={`/quan-ly-thanh-vien/doanh-nghiep/chinh-sua/${item.id}`}
-=======
-                  href={`/quan-ly-viec-lam/danh-sach-doanh-nghiep/chinh-sua/${item.id}`}
->>>>>>> 6ebb136 (first commit)
                   legacyBehavior
                 >
                   <IconButton>
@@ -322,7 +297,6 @@ export function ManageJobsDashBoard({ jobs, total_page }: IProps) {
       <div className="flex mb-[1rem] gap-3">
         <Input
           size="large"
-<<<<<<< HEAD
           placeholder="Doanh nghiệp"
           className="rounded-[10px] bg-white"
           allowClear
@@ -358,14 +332,6 @@ export function ManageJobsDashBoard({ jobs, total_page }: IProps) {
             <Image src={SrcIcons.searchIcon} layout="fill" />
           </div>
         </div>
-=======
-          placeholder="Tìm kiếm nghề "
-          className="rounded-[10px] bg-white"
-          allowClear
-          onChange={onSearch}
-          prefix={<Image src={SrcIcons.searchIcon} width={18} height={18} />}
-        />
->>>>>>> 6ebb136 (first commit)
       </div>
       <DeniedPopUpJob
         onChange={toggle}
