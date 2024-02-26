@@ -119,3 +119,9 @@
 //     };
 //   }
 // };
+
+const EditJobPageTest: any = () => {
+  return <></>;
+};
+
+export default EditJobPageTest;

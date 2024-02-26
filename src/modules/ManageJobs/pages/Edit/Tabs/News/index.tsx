@@ -4,7 +4,6 @@ import { IconButton } from '@/components/IconButton';
 import AlertDialogSlide from '@/components/Modal';
 import DeniedPopUp from '@/modules/ManageJobs/components/DeniedPopUp';
 import { jobService } from '@/modules/ManageJobs/shared/api';
-import { TNews } from '@/pages/quan-ly-viec-lam/danh-sach-doanh-nghiep/chinh-sua/[id]';
 import { SV_RES_STATUS_CODE } from '@/shared/enums/enums';
 import { appLibrary } from '@/shared/utils/loading';
 import { Row, Table, Tooltip, useAsyncList, User } from '@nextui-org/react';
@@ -20,6 +19,7 @@ import {
   JOBS_STATUS_NUMERIC,
   SORT_DIRECTION,
 } from '../../../../shared/enum';
+import { TNews } from '@/pages/quan-ly-thanh-vien/doanh-nghiep/chinh-sua/[id]';
 
 export interface IProps {
   posts: TNews[];

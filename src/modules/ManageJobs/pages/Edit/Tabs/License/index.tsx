@@ -3,7 +3,6 @@ import { CustomSelector } from '@/components/CustomSelector';
 import { IconButton } from '@mui/material';
 import { Button, Form, message } from 'antd';
 import React, { useEffect, useState } from 'react';
-import { TAccount } from '@/pages/quan-ly-viec-lam/danh-sach-doanh-nghiep/chinh-sua/[id]';
 import { DENIED_POP_UP, JOBS_STATUS, JOBS_STATUS_NUMERIC } from '../../../../shared/enum';
 import Image from 'next/legacy/image';
 import { LicenseView } from '../../../../components/LicenseView';
@@ -13,6 +12,7 @@ import { appLibrary } from '@/shared/utils/loading';
 import DeniedPopUp from '@/modules/ManageJobs/components/DeniedPopUp';
 import clsx from 'clsx';
 import { SV_RES_STATUS_CODE } from '@/shared/enums/enums';
+import { TAccount } from '@/pages/quan-ly-thanh-vien/doanh-nghiep/chinh-sua/[id]';
 
 export interface IProps {
   account: TAccount;

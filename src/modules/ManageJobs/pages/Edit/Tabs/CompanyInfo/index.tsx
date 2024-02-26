@@ -3,11 +3,11 @@ import 'moment/locale/vi';
 
 import { CustomSelector } from '@/components/CustomSelector';
 import FormItem from 'antd/lib/form/FormItem';
-import { TCompany } from '@/pages/quan-ly-viec-lam/danh-sach-doanh-nghiep/chinh-sua/[id]';
 import { JOBS_STATUS, GENDER, convertOption, SCALE } from '../../../../shared/enum';
 import { useCallback, useEffect, useState } from 'react';
 import { jobService } from '@/modules/ManageJobs/shared/api';
 import useSWR from 'swr';
+import { TCompany } from '@/pages/quan-ly-thanh-vien/doanh-nghiep/chinh-sua/[id]';
 interface IProps {
   company: TCompany;
 }

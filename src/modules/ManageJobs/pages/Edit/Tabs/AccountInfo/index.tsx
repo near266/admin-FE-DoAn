@@ -1,8 +1,8 @@
 import { Form, Input } from 'antd';
 import 'moment/locale/vi';
 import { CustomSelector } from '@/components/CustomSelector';
-import { TAccount } from '@/pages/quan-ly-viec-lam/danh-sach-doanh-nghiep/chinh-sua/[id]';
 import { GENDER } from '../../../../shared/enum';
+import { TAccount } from '@/pages/quan-ly-thanh-vien/doanh-nghiep/chinh-sua/[id]';
 interface IProps {
   accountInfo: TAccount;
 }

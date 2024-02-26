@@ -53,3 +53,9 @@ export type TJobs = {
 //     };
 //   }
 // };
+
+const EnterpriseDashboardPageTest: NextPage = ({ jobs, total_page }: IProps) => {
+  return <ManageJobsDashBoard jobs={jobs} total_page={total_page} />;
+};
+
+export default EnterpriseDashboardPageTest;
