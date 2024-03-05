@@ -14,6 +14,7 @@ import { News } from './Tabs/News';
 import { useRouter } from 'next/router';
 import { Classify } from './Tabs/Classify';
 import Efficiency from './Tabs/Efficiency';
+import { BusinessPackageDashboard } from '@/modules/ManagerService/pages/BusinessPackageDashboard';
 interface IProps {
   account: TAccount;
   company: TCompany;
@@ -57,6 +58,7 @@ export function EditJobsModule({ account, company, posts, total_page }: IProps) 
     { key: 5, tab: <CVPage />, name: 'CV' },
     { key: 6, tab: <Efficiency />, name: 'Hiệu suất' },
     { key: 7, tab: <Classify />, name: 'Phân loại' },
+    { key: 8, tab:<BusinessPackageDashboard license={[]}/>,name: 'Gói doanh nghiệp'},
   ];
 
   const [currentTabs, setCurrentTabs] = useState(tabs[0].key);
