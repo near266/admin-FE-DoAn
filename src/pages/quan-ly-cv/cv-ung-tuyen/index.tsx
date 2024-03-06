@@ -26,11 +26,15 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     // const accessToken = Common.getAccessTokenFromServerSide(ctx.req.headers.cookie);
     const {
       data: { data: assessments },
-    } = await axios.get(`${process.env.NEXT_PUBLIC_API_JOB_CV_URL}/list-cv`, {
-      // headers: {
-      //   Authorization: `Bearer ${'accessToken'}`,
-      // },
-    });
+    } = await axios.post(
+      `${process.env.NEXT_PUBLIC_API_URL_V4}/candidate/searchAdminCandidate`,
+      {
+        rq: {
+          page: 1,
+          pageSize: 9999,
+        },
+      }
+    );
     return {
       props: {
         assessments,

@@ -56,9 +56,9 @@ const columns = [
   { name: 'DOWNLOAD CV', uid: 'download' },
 ];
 
-const mapToTableData = (assessments: data) =>
+const mapToTableData = (assessments: any) =>
   assessments &&
-  assessments.data.map((item) => ({
+  assessments?.map((item) => ({
     id: item.id,
     job_post_id: item.job_post_id,
     user_id: item.user_id,
@@ -71,6 +71,12 @@ const mapToTableData = (assessments: data) =>
     jobEnterprise: item.jobEnterprise,
     created_at: item.created_at,
     updated_at: item.updated_at,
+    postName: item.postName,
+    image_url: item.image_url,
+    post_slug: item.post_slug,
+    jobEnterprise_name: item.jobEnterprise_name,
+    jobEnterprise_slug: item.jobEnterprise_slug,
+    jobEnterprise_id: item.jobEnterprise_id
   }));
 
 export function AssessmentDashboard(props: IProps) {
@@ -176,21 +182,21 @@ export function AssessmentDashboard(props: IProps) {
   }
 
   const list = useAsyncList({ load, sort });
-  const renderCell = (item: AssessmentTable, columnKey: React.Key) => {
+  const renderCell = (item: any, columnKey: React.Key) => {
     console.log('🚀 ~ file: index.tsx:188 ~ renderCell ~ item:', item);
     const cellValue = item[columnKey];
     switch (columnKey) {
       case 'name':
         return (
           <Link
-            href={`https://job.youth.com.vn/job/job-detail/${item?.jobPost?.slug}/${item?.jobPost?.id}`}
+            href={`https://job.youth.com.vn/job/job-detail/${item?.slug}/${item?.id}`}
             target="_blank"
           >
             <User
               squared
-              src={item?.jobPost?.image_url ?? SrcImages.placeholder}
+              src={item?.image_url ?? SrcImages.placeholder}
               size="xl"
-              name={item?.jobPost?.title}
+              name={item?.postName}
             ></User>
           </Link>
         );
@@ -199,13 +205,15 @@ export function AssessmentDashboard(props: IProps) {
           <Row align="flex-start">
             <Tooltip content="Tải CV" css={{ marginRight: 20 }}>
               <div className="flex w-fit items-center justify-center bg-grey-lighter">
-                <label className="w-fit flex flex-col items-center px-2 py-3 text-white bg-green-300 text-blue rounded-lg shadow-lg tracking-wide uppercase border border-blue cursor-pointer hover:bg-blue">
-                  <span className="text-sm leading-normal m-0">Download CV</span>
-                  <button
-                    className="hidden"
-                    onClick={() => downloadFile(item?.cv_path, item?.name)}
-                  />
-                </label>
+                <Link target="_blank" href={`https://youthplus.s3.ap-northeast-1.amazonaws.com/${item?.cv_path}`}>
+                  <label className="w-fit flex flex-col items-center px-2 py-3 text-white bg-green-300 text-blue rounded-lg shadow-lg tracking-wide uppercase border border-blue cursor-pointer hover:bg-blue">
+                    <span className="text-sm leading-normal m-0">Download CV</span>
+                    {/* <button
+                      className="hidden"
+                      onClick={() => downloadFile(item?.cv_path, item?.name)}
+                    /> */}
+                  </label>
+                </Link>
               </div>
             </Tooltip>
           </Row>
@@ -213,16 +221,16 @@ export function AssessmentDashboard(props: IProps) {
       case 'enterpriseName':
         return (
           <Link
-            href={`https://job.youth.com.vn/job/company-detail/${item?.jobEnterprise?.slug}/${item?.jobEnterprise?.id}`}
+            href={`https://job.youth.com.vn/job/company-detail/${item?.jobEnterprise_slug}/${item?.jobEnterprise_id}`}
             target="_blank"
           >
-            <p>{item?.jobEnterprise?.name}</p>
+            <p>{item?.jobEnterprise_name}</p>
           </Link>
         );
       case 'userName':
         return item?.name;
       case 'date':
-        return moment.unix(parseInt(item?.created_at)).format('DD/MM/YYYY');
+        return item?.created_at;
       default:
         return cellValue;
     }
@@ -241,7 +249,7 @@ export function AssessmentDashboard(props: IProps) {
           />
         </div>
         <div className="counter pointer-events-none absolute z-10 bottom-[1rem] translate-x-[100px]">
-          Tổng số CV: {dataTable.length}
+          Tổng số CV: {dataTable?.length}
         </div>
         <Table
           selectionMode="none"
@@ -285,7 +293,7 @@ export function AssessmentDashboard(props: IProps) {
             align="center"
             rowsPerPage={7}
             initialPage={1}
-            total={Math.ceil(dataTable.length / 7)}
+            total={Math.ceil(dataTable?.length / 7)}
             onPageChange={(page) => console.log({ page })}
           ></Table.Pagination>
         </Table>
