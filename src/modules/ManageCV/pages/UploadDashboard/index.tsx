@@ -189,7 +189,7 @@ export function AssessmentDashboard(props: IProps) {
       case 'name':
         return (
           <Link
-            href={`https://job.youth.com.vn/job/job-detail/${item?.slug}/${item?.id}`}
+            href={`https://job.youth.com.vn/job/job-detail/${item?.post_slug}/${item?.id}`}
             target="_blank"
           >
             <User
