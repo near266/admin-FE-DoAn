@@ -50,6 +50,7 @@ const BussinessPackage = (props: any) => {
       const res: IGetListLicenseRes = await managerServiceService.getLicenseDetail(
         id as string
       );
+      console.log('ID', id);
       console.log('bbb', res);
       form.setFieldsValue(res);
       setDescriptionEdit(res?.description);
@@ -90,9 +91,10 @@ const BussinessPackage = (props: any) => {
   const updateLicense = async (data) => {
     try {
       appLibrary.showloading();
+      data.id = id;
       const res = await managerServiceService.updateLicense(data);
       if (res) {
-        showSuccessMessage('Cập nhật thành công');
+        message.success('Cập nhật thành công');
       }
       appLibrary.hideloading();
     } catch (error) {

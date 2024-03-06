@@ -36,7 +36,7 @@ export function EditorBlock(props: IEditorBlockProps) {
     <>
       <div className="">
         <p className="block_title">
-          {require && '*'}&nbsp;{title}
+          {require && ''}&nbsp;{title}
         </p>
         <div className="">
           <Editor onChange={onEditorChange} defaultValue={defaultValue} />
