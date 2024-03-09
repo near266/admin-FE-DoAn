@@ -14,12 +14,15 @@ import { News } from './Tabs/News';
 import { useRouter } from 'next/router';
 import { Classify } from './Tabs/Classify';
 import Efficiency from './Tabs/Efficiency';
-import { BusinessPackageDashboard } from '@/modules/ManagerService/pages/BusinessPackageDashboard';
+import { BussinessPackageChild } from './Tabs/BussinessPackage';
+import { IGetListLicenseRes } from '@/modules/ManagerService/shared/interface';
+import { NextPage } from 'next';
 interface IProps {
   account: TAccount;
   company: TCompany;
   posts: TNews[];
   total_page: number;
+  license: IGetListLicenseRes[];
 }
 interface IAccountProps {
   account: TAccount;
@@ -33,6 +36,10 @@ interface IPostProps {
   total_page: number;
 }
 
+interface IPropBussiness {
+  license: IGetListLicenseRes[];
+}
+
 const AccountInfoPage: React.FC<IAccountProps> = ({ account }: IProps) => (
   <AccountInfoForm accountInfo={account} />
 );
@@ -44,8 +51,19 @@ const NewsPage: React.FC<IPostProps> = ({ posts, total_page }: IProps) => (
   <News posts={posts} total_page={total_page} />
 );
 const CVPage: React.FC = () => <Resume />;
+const BusinessPackagePage: React.FC = () => <BussinessPackageChild license={[]}/>;
 
-export function EditJobsModule({ account, company, posts, total_page }: IProps) {
+// const BusinessPackagePage: NextPage = (props: IProps) => {
+//   const { license } = props;
+//   return (
+//     <div>
+//       <BussinessPackageChild license={license} />
+//     </div>
+//   );
+// };
+
+
+export function EditJobsModule({ account, company, posts, total_page, license }: IProps) {
   const tabs = [
     { key: 1, tab: <AccountInfoPage account={account} />, name: 'Thông tin tài khoản' },
     { key: 2, tab: <CompanyInfoPage company={company} />, name: 'Thông tin công ty' },
@@ -58,7 +76,7 @@ export function EditJobsModule({ account, company, posts, total_page }: IProps) 
     { key: 5, tab: <CVPage />, name: 'CV' },
     { key: 6, tab: <Efficiency />, name: 'Hiệu suất' },
     { key: 7, tab: <Classify />, name: 'Phân loại' },
-    { key: 8, tab:<BusinessPackageDashboard license={[]}/>,name: 'Gói doanh nghiệp'},
+    { key: 8, tab: <BusinessPackagePage/>, name: 'Gói doanh nghiệp' },
   ];
 
   const [currentTabs, setCurrentTabs] = useState(tabs[0].key);
