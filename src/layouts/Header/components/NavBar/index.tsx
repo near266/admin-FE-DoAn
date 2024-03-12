@@ -38,17 +38,30 @@ const navItem = [
     path: 'quan-ly-mentors',
     tabs: [],
   },
+
   {
-    name: 'Quản lý thành viên',
-    path: 'quan-ly-thanh-vien',
-    tabs: [],
+    name: 'Quản lý thành viên', path: 'quan-ly-thanh-vien', 
+    tabs: [
+    {
+      name: 'Doanh nghiệp',
+      queryString: '/quan-ly-thanh-vien/doanh-nghiep',
+      active: false,
+    },
+    {
+      name: 'Người dùng',
+      queryString: '/quan-ly-thanh-vien/nguoi-dung',
+      active: false,
+    }],
   },
+
   {
     name: 'Quản lý khóa học',
     path: 'quan-ly-khoa-hoc',
     tabs: [],
   },
+
   { name: 'Quản lý sự kiện', path: 'quan-ly-su-kien', tabs: [] },
+
   {
     name: 'Quản lý việc làm',
     path: 'quan-ly-viec-lam',
