@@ -22,7 +22,7 @@ interface IProps {
   company: TCompany;
   posts: TNews[];
   total_page: number;
-  license: IGetListLicenseRes[];
+  license?: IGetListLicenseRes[];
 }
 interface IAccountProps {
   account: TAccount;
