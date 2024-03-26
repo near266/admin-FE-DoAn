@@ -14,7 +14,7 @@ import { News } from './Tabs/News';
 import { useRouter } from 'next/router';
 import { Classify } from './Tabs/Classify';
 import Efficiency from './Tabs/Efficiency';
-import { BussinessPackageChild } from './Tabs/BussinessPackage';
+import { BussinessPackageChild } from './Tabs/PackageInfo/pages/BusinessPackageDashboard';
 import { IGetListLicenseRes } from '@/modules/ManagerService/shared/interface';
 import { NextPage } from 'next';
 interface IProps {
@@ -53,17 +53,7 @@ const NewsPage: React.FC<IPostProps> = ({ posts, total_page }: IProps) => (
 const CVPage: React.FC = () => <Resume />;
 const BusinessPackagePage: React.FC = () => <BussinessPackageChild license={[]}/>;
 
-// const BusinessPackagePage: NextPage = (props: IProps) => {
-//   const { license } = props;
-//   return (
-//     <div>
-//       <BussinessPackageChild license={license} />
-//     </div>
-//   );
-// };
-
-
-export function EditJobsModule({ account, company, posts, total_page, license }: IProps) {
+export function EditJobsModule({ account, company, posts, total_page }: IProps) {
   const tabs = [
     { key: 1, tab: <AccountInfoPage account={account} />, name: 'Thông tin tài khoản' },
     { key: 2, tab: <CompanyInfoPage company={company} />, name: 'Thông tin công ty' },

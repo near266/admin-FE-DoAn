@@ -53,14 +53,14 @@ export type TNews = {
   approve_status_id: JOBS_STATUS_NUMERIC;
 };
 
-const EditJobPage: NextPage = ({ account, company, posts, post_total_page }: IProps) => {
+const EditJobPage: NextPage = ({ account, company, posts, post_total_page}: IProps) => {
   return (
     <EditJobsModule
       account={account}
       company={company}
       posts={posts}
-      total_page={post_total_page}
-    />
+      total_page={post_total_page} 
+      license={[]}    />
   );
 };
 

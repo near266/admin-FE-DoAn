@@ -30,8 +30,10 @@ import { useRouter } from 'next/router';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { formatServerDateToDurationString } from '@/shared/helpers';
 import FormItem from 'antd/lib/form/FormItem';
-import { IGetListLicenseRes } from '@/modules/ManagerService/shared/interface';
-import { LICENSE_DATA_FIELD, listCareer, listStatus } from '@/modules/ManagerService/shared/enum';
+// import { TCompany } from '@/pages/quan-ly-thanh-vien/doanh-nghiep/chinh-sua/[id]';
+import { managerServiceService } from '../../shared/api';
+import { LICENSE_DATA_FIELD, listCareer, listStatus } from '../../shared/enum';
+import { IGetListLicenseRes } from '../../shared/interface';
 
 export interface IProps {
   license: IGetListLicenseRes[];
@@ -41,9 +43,9 @@ const columns = [
   { name: 'MÃ GÓI', uid: 'id' },
   { name: 'TÊN GÓI', uid: 'name' },
   { name: 'LĨNH VỰC', uid: 'field' },
-  { name: 'GIÁ (VND)', uid: 'price' },
-  { name: 'NGÀY TẠO', uid: 'createdDate' },
-  { name: 'NGÀY CẬP NHẬP', uid: 'modifiedDate' },
+  { name: 'THỜI GIAN SỬ DỤNG', uid: 'price' },
+  { name: 'NGÀY KÍCH HOẠT', uid: 'activation_date' },
+  { name: 'NGÀY HẾT HẠN', uid: 'expiration_date' },
   { name: 'TRẠNG THÁI', uid: 'status' },
   { name: 'THAO TÁC', uid: 'action' },
 ];
@@ -187,11 +189,19 @@ export function BussinessPackageChild(props: IProps) {
             </Row>
           </Col>
         );
-      case 'createdDate':
+      case 'expiration_date':
         return (
           <Col>
             <Row align="center">
-              <span className="text-[14px]">{item.created_date}</span>
+              <span className="text-[14px]">{item.expiration_date}</span>
+            </Row>
+          </Col>
+        );
+      case 'activation_date':
+        return (
+          <Col>
+            <Row align="center">
+              <span className="text-[14px]">{item.activation_date}</span>
             </Row>
           </Col>
         );
@@ -229,7 +239,38 @@ export function BussinessPackageChild(props: IProps) {
         return cellValue;
     }
   };
+  const [licenseData, setLicenseData] = useState<IGetListLicenseRes[]>([]);
+  useEffect(() => {
+    async function fetchLicenseData() {
+      try {
+        const dataObject = {    
+            career_field_id: 0,
+            license_id: 0,
+            enterpise_id: 0,
+            license_code: "347e089fbe1e4e0689918a3ff8d30540",
+            license_name: "Chi Mai",
+            activation_date: "2024-03-26T04:24:03.101Z",
+            selling_price: 0,
+            listed_price: 0,
+            period: 0,
+            quantity_record_view: 0,
+            quantity_record_take: 0,
+            expiration_date: "2024-03-26T04:24:03.101Z",
+            status: 0,
+            discount: 0,
+            total_amount: 0,
+            description: "string"
+        }
+        const response = await managerServiceService.getLicenseOrder(dataObject);
+        setLicenseData(response.data);
+        console.log("Data Thưởng call: ", licenseData)
+      } catch (error) {
+        console.error('Lỗi khi lấy dữ liệu giấy phép:', error);
+      }
+    }
 
+    fetchLicenseData();
+  }, []);
   useEffect(() => {
     console.log('mmm', dataTable);
   }, []);
@@ -286,17 +327,17 @@ export function BussinessPackageChild(props: IProps) {
               })}
             </Select>
           </FormItem>
-          <FormItem name={LICENSE_DATA_FIELD.created_date} className="w-1/6">
+          <FormItem name={LICENSE_DATA_FIELD.activation_date} className="w-1/6">
             <DatePicker 
                 placeholder="Ngày kích hoạt" 
-                className="!w-full !h-[39px]" 
+                className="!w-full !h-[39px] rounded-[10px]" 
                 format="DD/MM/YYYY"
             />
           </FormItem>
-          <FormItem name={LICENSE_DATA_FIELD.created_date} className="w-1/6">
+          <FormItem name={LICENSE_DATA_FIELD.expiration_date} className="w-1/6">
             <DatePicker 
                 placeholder="Ngày hết hạn" 
-                className="!w-full !h-[39px]" 
+                className="!w-full !h-[39px] rounded-[10px]" 
                 format="DD/MM/YYYY"
             />
           </FormItem>
@@ -336,7 +377,7 @@ export function BussinessPackageChild(props: IProps) {
           <p className="text-[var(--primary-color)] font-bold text-xl mb-3">
             Danh sách gói doanh nghiệp
           </p>
-          <Link href={'/quan-ly-viec-lam/goi-doanh-nghiep/them-moi'}>
+          <Link href={`/quan-ly-thanh-vien/doanh-nghiep/them-moi`}>
             <div className="w-fit cursor-pointer rounded-[10px] bg-[var(--primary-color)] text-white py-3 px-4">
               Thêm mới
             </div>

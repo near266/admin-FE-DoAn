@@ -1,5 +1,6 @@
 export enum LICENSE_DATA_FIELD {
   career_field_id = 'career_field_id',
+  enterpise_id = 'enterpise_id',
   license_code = 'license_code',
   license_name = 'license_name',
   selling_price = 'selling_price',
@@ -12,9 +13,9 @@ export enum LICENSE_DATA_FIELD {
   title_video = 'title_video',
   link_video = 'link_video',
   images = 'images',
-  created_date = 'created_date',
-  start_day = 'start_day',
-  end_day = 'end_day',
+  activation_date = 'activation_date',
+  expiration_date = 'expiration_date',
+  note = 'note',
 }
 
 export const listCareer = [
@@ -32,6 +33,25 @@ export const listCareer = [
   },
   {
     label: 'Vận hành',
+    value: 3,
+  },
+];
+
+export const listPackage = [
+  {
+    label: 'TN01',
+    value: 0,
+  },
+  {
+    label: 'TN02',
+    value: 1,
+  },
+  {
+    label: 'TN03',
+    value: 2,
+  },
+  {
+    label: 'TN04',
     value: 3,
   },
 ];
@@ -61,15 +81,15 @@ export const listPeriod = [
 
 export const listStatus = [
   {
-    label: 'Hiển thị',
+    label: 'Chưa kích hoạt',
     value: 0,
   },
   {
-    label: 'Ẩn',
+    label: 'Đã kích hoạt',
     value: 1,
   },
   {
-    label: 'Hết hàng',
+    label: 'Đã hết hạn',
     value: 2,
   },
 ];
