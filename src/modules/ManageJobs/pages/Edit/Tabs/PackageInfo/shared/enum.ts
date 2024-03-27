@@ -16,6 +16,8 @@ export enum LICENSE_DATA_FIELD {
   activation_date = 'activation_date',
   expiration_date = 'expiration_date',
   note = 'note',
+  discount_price = 'discount_price',
+  total_price = 'total_price',
 }
 
 export const listCareer = [
@@ -33,25 +35,6 @@ export const listCareer = [
   },
   {
     label: 'Vận hành',
-    value: 3,
-  },
-];
-
-export const listPackage = [
-  {
-    label: 'TN01',
-    value: 0,
-  },
-  {
-    label: 'TN02',
-    value: 1,
-  },
-  {
-    label: 'TN03',
-    value: 2,
-  },
-  {
-    label: 'TN04',
     value: 3,
   },
 ];

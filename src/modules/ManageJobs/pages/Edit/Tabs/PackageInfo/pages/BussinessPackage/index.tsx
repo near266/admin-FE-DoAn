@@ -10,7 +10,6 @@ import Image from 'next/image';
 import {
   LICENSE_DATA_FIELD,
   listCareer,
-  listPackage,
   listPeriod,
   listStatus,
 } from '../../shared/enum';
@@ -31,6 +30,7 @@ import TextArea from 'antd/lib/input/TextArea';
 
 const BussinessPackageOrder = (props: any) => {
   const { type } = props;
+  const isDisabled = type === 'edit';
   const router = useRouter();
   const id = router.query.id;
   const [form] = Form.useForm();
@@ -108,6 +108,56 @@ const BussinessPackageOrder = (props: any) => {
     }
   };
 
+  const [packageOptions, setPackageOptions] = useState([]);
+  const fetchPackageOptions = async (careerId: number) => {
+    try {
+      const response = await managerServiceService.getLicenseCode(careerId); 
+      setPackageOptions(response);
+    } catch (error) {
+      console.error('Lỗi fetchPackageOptions: ', error);
+    }
+  };
+
+  const handleCareerChange = (careerId: number) => {
+    fetchPackageOptions(careerId);
+    form.setFieldsValue({
+      [LICENSE_DATA_FIELD.license_code]: null, 
+      [LICENSE_DATA_FIELD.license_name]: null,
+      [LICENSE_DATA_FIELD.selling_price]: null,
+      [LICENSE_DATA_FIELD.listed_price]: null,
+      [LICENSE_DATA_FIELD.period]: null,
+      [LICENSE_DATA_FIELD.quantity_record_view]: null,
+      [LICENSE_DATA_FIELD.discount_price]: null,
+      [LICENSE_DATA_FIELD.total_price]: null,
+    });
+  };
+
+  const [totalPrice, setTotalPrice] = useState<number>(0);
+  const handleDiscountChange = (discount: number) => {
+    const sellingPrice = form.getFieldValue(LICENSE_DATA_FIELD.selling_price);
+    const newTotalPrice = sellingPrice - discount;
+    setTotalPrice(newTotalPrice);
+    form.setFieldsValue({ [LICENSE_DATA_FIELD.total_price]: newTotalPrice });
+  };
+
+  const handleCodePackageChange = async (code: string) => {
+    try {
+      const response = await managerServiceService.getLicenseCodeDetail(code);
+
+      form.setFieldsValue({
+        [LICENSE_DATA_FIELD.license_name]: response.license_name,
+        [LICENSE_DATA_FIELD.selling_price]: response.selling_price,
+        [LICENSE_DATA_FIELD.listed_price]: response.listed_price,
+        [LICENSE_DATA_FIELD.period]: response.period,
+        [LICENSE_DATA_FIELD.quantity_record_view]: response.quantity_record_view,
+        [LICENSE_DATA_FIELD.quantity_record_take]: response.quantity_record_take,
+      });
+    } catch (error) {
+      showResponseError(error);
+      console.error('Lỗi handleCodePackageChange: ', error);
+    }
+  };
+
   return (
     <div className="min-width-[900px] customNewsDetail card !px-9 ! className='w-full'py-7">
       <Form
@@ -136,6 +186,7 @@ const BussinessPackageOrder = (props: any) => {
                 placeholder="Chọn lĩnh vực"
                 className="!rounded-[10px] bg-white w-full"
                 allowClear
+                onChange={handleCareerChange}
               >
                 {listCareer.map((item: any) => {
                   return (
@@ -161,11 +212,12 @@ const BussinessPackageOrder = (props: any) => {
                 placeholder="Nhập mã gói"
                 className="!rounded-[10px] bg-white w-full"
                 allowClear
+                onChange={handleCodePackageChange}
               >
-                {listPackage.map((item: any) => {
+                {packageOptions.map((packageOption, index) => {
                   return (
-                    <Select.Option key={item.value} value={item.value}>
-                      {item.label}
+                    <Select.Option key={index} value={packageOption}>
+                      {packageOption.value}
                     </Select.Option>
                   );
                 })}
@@ -174,7 +226,7 @@ const BussinessPackageOrder = (props: any) => {
           </div>
           <div className="w-full">
             <p className="font-[400] text-[16px] leading-[24px] text-[#44444F] mb-1">
-              Ngày tháng năm sinh <span className="text-[#EB4C4C]">*</span>
+              Ngày kích hoạt <span className="text-[#EB4C4C]">*</span>
             </p>
             <FormItem
               // name={LICENSE_DATA_FIELD.birthday}
@@ -203,9 +255,9 @@ const BussinessPackageOrder = (props: any) => {
             >
               <Input
                 size="large"
-                placeholder="Nhập tên gói"
                 className="rounded-[10px] bg-white w-full"
                 allowClear
+                disabled
               ></Input>
             </FormItem>
           </div>
@@ -219,9 +271,9 @@ const BussinessPackageOrder = (props: any) => {
             >
               <Input
                 size="large"
-                placeholder="Nhập giá bán"
                 className="rounded-[10px] bg-white w-full"
                 allowClear
+                disabled
               ></Input>
             </FormItem>
           </div>
@@ -235,15 +287,15 @@ const BussinessPackageOrder = (props: any) => {
             >
               <Input
                 size="large"
-                placeholder="Nhập mã gói"
                 className="rounded-[10px] bg-white w-full"
                 allowClear
+                disabled
               ></Input>
             </FormItem>
           </div>
         </div>
         <div className="flex gap-8 mb-2">
-        <div className="w-full">
+          <div className="w-full">
             <p className="font-[400] text-[16px] leading-[24px] text-[#44444F] mb-1">
               Thời gian sử dụng
             </p>
@@ -253,9 +305,9 @@ const BussinessPackageOrder = (props: any) => {
             >
               <Select
                 size="large"
-                placeholder="Chọn thời gian bắt buộc"
                 className="!rounded-[10px] bg-white w-full"
                 allowClear
+                disabled
               >
                 {listPeriod.map((item: any) => {
                   return (
@@ -277,9 +329,9 @@ const BussinessPackageOrder = (props: any) => {
             >
               <Input
                 size="large"
-                placeholder="Nhập số hồ sơ có thể xem"
                 className="rounded-[10px] bg-white w-full"
                 allowClear
+                disabled={!isDisabled}
               ></Input>
             </FormItem>
           </div>
@@ -293,9 +345,9 @@ const BussinessPackageOrder = (props: any) => {
             >
               <Input
                 size="large"
-                placeholder="Nhập số hồ sơ có thể tiếp nhận"
                 className="rounded-[10px] bg-white w-full"
                 allowClear
+                disabled={!isDisabled}
               ></Input>
             </FormItem>
           </div>
@@ -364,7 +416,7 @@ const BussinessPackageOrder = (props: any) => {
                 Chiết khấu (VND)
               </p>
               <FormItem
-                name={LICENSE_DATA_FIELD.selling_price}
+                name={LICENSE_DATA_FIELD.discount_price}
                 className="w-full"
               >
                 <Input
@@ -372,6 +424,7 @@ const BussinessPackageOrder = (props: any) => {
                   placeholder="0"
                   className="rounded-[10px] bg-white w-full"
                   allowClear
+                  onChange={(e) => handleDiscountChange(parseFloat(e.target.value))}
                 ></Input>
               </FormItem>
             </div>
@@ -380,13 +433,15 @@ const BussinessPackageOrder = (props: any) => {
                 Tổng tiền (VND)
               </p>
               <FormItem
-                name={LICENSE_DATA_FIELD.selling_price}
+                name={LICENSE_DATA_FIELD.total_price}
                 className="w-full"
               >
                 <Input
                   size="large"
                   className="rounded-[10px] bg-white w-full"
+                  placeholder='0'
                   allowClear
+                  disabled
                 ></Input>
               </FormItem>
             </div>

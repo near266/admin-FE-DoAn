@@ -19,7 +19,17 @@ class ManagerServiceService {
     const { data } = await axiosInstanceV4.post('/license-order', params);
     return data;
   };
-  
+
+  getLicenseCode = async (id: any) => {
+    const { data } = await axiosInstanceV4.get(`/license-codes/${id}`)
+    return data;
+  }
+
+  getLicenseCodeDetail = async (code: string) => {
+    const { data } = await axiosInstanceV4.get(`/license/get/${code}`)
+    return data;
+  }
+
   getLicenseDetail = async (id: string) => {
     const { data } = await axiosInstanceV4.get(
       `${process.env.NEXT_PUBLIC_API_URL_V4}/license/${id}`
