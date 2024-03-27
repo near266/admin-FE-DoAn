@@ -30,8 +30,9 @@ import { useRouter } from 'next/router';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { formatServerDateToDurationString } from '@/shared/helpers';
 import FormItem from 'antd/lib/form/FormItem';
-import { IGetListLicenseRes } from '@/modules/ManagerService/shared/interface';
-import { LICENSE_DATA_FIELD, listCareer, listStatus } from '@/modules/ManagerService/shared/enum';
+import { managerServiceService } from '../../shared/api';
+import { LICENSE_DATA_FIELD, listCareer, listStatus } from '../../shared/enum';
+import { IGetListLicenseRes } from '../../shared/interface';
 
 export interface IProps {
   license: IGetListLicenseRes[];
@@ -41,9 +42,9 @@ const columns = [
   { name: 'MÃ GÓI', uid: 'id' },
   { name: 'TÊN GÓI', uid: 'name' },
   { name: 'LĨNH VỰC', uid: 'field' },
-  { name: 'GIÁ (VND)', uid: 'price' },
-  { name: 'NGÀY TẠO', uid: 'createdDate' },
-  { name: 'NGÀY CẬP NHẬP', uid: 'modifiedDate' },
+  { name: 'THỜI GIAN SỬ DỤNG', uid: 'price' },
+  { name: 'NGÀY KÍCH HOẠT', uid: 'activation_date' },
+  { name: 'NGÀY HẾT HẠN', uid: 'expiration_date' },
   { name: 'TRẠNG THÁI', uid: 'status' },
   { name: 'THAO TÁC', uid: 'action' },
 ];
@@ -75,6 +76,10 @@ export function BussinessPackageChild(props: IProps) {
       items: dataTable,
     };
   };
+  const handleAddNewDataFromOrder = useCallback((newData: IGetListLicenseRes) => {
+    // Thêm dữ liệu mới vào bảng
+    setDataTable(prevData => [...prevData, newData]);
+  }, []);
   const sort = useCallback(async ({ items, sortDescriptor }) => {
     const sortedItems = items.sort((a, b) => {
       const first = a[sortDescriptor.column];
@@ -89,6 +94,24 @@ export function BussinessPackageChild(props: IProps) {
     return {
       items: sortedItems,
     };
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const page = 0;
+        const pageSize = 10; 
+        const params = {}; 
+        const response = await managerServiceService.getAllLicenseOrder(page, pageSize, params);
+        if (response.data && response.data.length > 0) {
+          setDataTable(response.data);
+        }
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData(); 
   }, []);
 
   const handleSearch = useCallback(
@@ -187,11 +210,19 @@ export function BussinessPackageChild(props: IProps) {
             </Row>
           </Col>
         );
-      case 'createdDate':
+      case 'expiration_date':
         return (
           <Col>
             <Row align="center">
-              <span className="text-[14px]">{item.created_date}</span>
+              <span className="text-[14px]">{item.expiration_date}</span>
+            </Row>
+          </Col>
+        );
+      case 'activation_date':
+        return (
+          <Col>
+            <Row align="center">
+              <span className="text-[14px]">{item.activation_date}</span>
             </Row>
           </Col>
         );
@@ -286,17 +317,17 @@ export function BussinessPackageChild(props: IProps) {
               })}
             </Select>
           </FormItem>
-          <FormItem name={LICENSE_DATA_FIELD.created_date} className="w-1/6">
+          <FormItem name={LICENSE_DATA_FIELD.activation_date} className="w-1/6">
             <DatePicker 
                 placeholder="Ngày kích hoạt" 
-                className="!w-full !h-[39px]" 
+                className="!w-full !h-[39px] rounded-[10px]" 
                 format="DD/MM/YYYY"
             />
           </FormItem>
-          <FormItem name={LICENSE_DATA_FIELD.created_date} className="w-1/6">
+          <FormItem name={LICENSE_DATA_FIELD.expiration_date} className="w-1/6">
             <DatePicker 
                 placeholder="Ngày hết hạn" 
-                className="!w-full !h-[39px]" 
+                className="!w-full !h-[39px] rounded-[10px]" 
                 format="DD/MM/YYYY"
             />
           </FormItem>
@@ -330,13 +361,13 @@ export function BussinessPackageChild(props: IProps) {
           </button>
         </Form>
         <div className="counter pointer-events-none absolute z-10 bottom-[1rem] translate-x-[100px]">
-          Tổng số gói: {dataTable.length} gói
+          {/* Tổng số gói: {dataTable.length} gói */}
         </div>
         <div className="flex items-center justify-between mt-5 mb-3">
           <p className="text-[var(--primary-color)] font-bold text-xl mb-3">
             Danh sách gói doanh nghiệp
           </p>
-          <Link href={'/quan-ly-viec-lam/goi-doanh-nghiep/them-moi'}>
+          <Link href={`/quan-ly-thanh-vien/doanh-nghiep/them-moi`}>
             <div className="w-fit cursor-pointer rounded-[10px] bg-[var(--primary-color)] text-white py-3 px-4">
               Thêm mới
             </div>
@@ -384,7 +415,7 @@ export function BussinessPackageChild(props: IProps) {
             align="center"
             rowsPerPage={7}
             initialPage={1}
-            total={Math.ceil(dataTable.length / 7)}
+            // total={Math.ceil(dataTable.length / 7)}
             onPageChange={(page) => console.log({ page })}
           ></Table.Pagination>
         </Table>
