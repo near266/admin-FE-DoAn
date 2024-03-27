@@ -30,7 +30,6 @@ import { useRouter } from 'next/router';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { formatServerDateToDurationString } from '@/shared/helpers';
 import FormItem from 'antd/lib/form/FormItem';
-// import { TCompany } from '@/pages/quan-ly-thanh-vien/doanh-nghiep/chinh-sua/[id]';
 import { managerServiceService } from '../../shared/api';
 import { LICENSE_DATA_FIELD, listCareer, listStatus } from '../../shared/enum';
 import { IGetListLicenseRes } from '../../shared/interface';
@@ -77,6 +76,10 @@ export function BussinessPackageChild(props: IProps) {
       items: dataTable,
     };
   };
+  const handleAddNewDataFromOrder = useCallback((newData: IGetListLicenseRes) => {
+    // Thêm dữ liệu mới vào bảng
+    setDataTable(prevData => [...prevData, newData]);
+  }, []);
   const sort = useCallback(async ({ items, sortDescriptor }) => {
     const sortedItems = items.sort((a, b) => {
       const first = a[sortDescriptor.column];
@@ -91,6 +94,24 @@ export function BussinessPackageChild(props: IProps) {
     return {
       items: sortedItems,
     };
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const page = 0;
+        const pageSize = 10; 
+        const params = {}; 
+        const response = await managerServiceService.getAllLicenseOrder(page, pageSize, params);
+        if (response.data && response.data.length > 0) {
+          setDataTable(response.data);
+        }
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData(); 
   }, []);
 
   const handleSearch = useCallback(
@@ -239,38 +260,7 @@ export function BussinessPackageChild(props: IProps) {
         return cellValue;
     }
   };
-  const [licenseData, setLicenseData] = useState<IGetListLicenseRes[]>([]);
-  useEffect(() => {
-    async function fetchLicenseData() {
-      try {
-        const dataObject = {    
-            career_field_id: 0,
-            license_id: 0,
-            enterpise_id: 0,
-            license_code: "347e089fbe1e4e0689918a3ff8d30540",
-            license_name: "Chi Mai",
-            activation_date: "2024-03-26T04:24:03.101Z",
-            selling_price: 0,
-            listed_price: 0,
-            period: 0,
-            quantity_record_view: 0,
-            quantity_record_take: 0,
-            expiration_date: "2024-03-26T04:24:03.101Z",
-            status: 0,
-            discount: 0,
-            total_amount: 0,
-            description: "string"
-        }
-        const response = await managerServiceService.getLicenseOrder(dataObject);
-        setLicenseData(response.data);
-        console.log("Data Thưởng call: ", licenseData)
-      } catch (error) {
-        console.error('Lỗi khi lấy dữ liệu giấy phép:', error);
-      }
-    }
 
-    fetchLicenseData();
-  }, []);
   useEffect(() => {
     console.log('mmm', dataTable);
   }, []);
@@ -371,7 +361,7 @@ export function BussinessPackageChild(props: IProps) {
           </button>
         </Form>
         <div className="counter pointer-events-none absolute z-10 bottom-[1rem] translate-x-[100px]">
-          Tổng số gói: {dataTable.length} gói
+          {/* Tổng số gói: {dataTable.length} gói */}
         </div>
         <div className="flex items-center justify-between mt-5 mb-3">
           <p className="text-[var(--primary-color)] font-bold text-xl mb-3">
@@ -425,7 +415,7 @@ export function BussinessPackageChild(props: IProps) {
             align="center"
             rowsPerPage={7}
             initialPage={1}
-            total={Math.ceil(dataTable.length / 7)}
+            // total={Math.ceil(dataTable.length / 7)}
             onPageChange={(page) => console.log({ page })}
           ></Table.Pagination>
         </Table>

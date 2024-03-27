@@ -1,4 +1,5 @@
 import { EditJobsModule } from '@/modules/ManageJobs/pages/Edit';
+import { IGetListLicenseRes } from '@/modules/ManageJobs/pages/Edit/Tabs/PackageInfo/shared/interface';
 import { JOBS_STATUS, JOBS_STATUS_NUMERIC } from '@/modules/ManageJobs/shared/enum';
 import { Common } from '@/shared/utils';
 import axios from 'axios';
@@ -9,6 +10,7 @@ interface IProps {
   company: TCompany;
   posts: TNews[];
   post_total_page: number;
+  license: IGetListLicenseRes[];
 }
 
 export type TAccount = {
@@ -53,14 +55,42 @@ export type TNews = {
   approve_status_id: JOBS_STATUS_NUMERIC;
 };
 
-const EditJobPage: NextPage = ({ account, company, posts, post_total_page}: IProps) => {
+// export interface IGetListLicenseReq {
+//   license_code?: string;
+//   license_name?: string;
+//   career_field_id?: number;
+//   created_date?: string;
+//   status?: number;
+// }
+// export interface IGetListLicenseRes {
+//   career_field_id?: number;
+//   license_code?: string;
+//   license_name?: string;
+//   selling_price?: number;
+//   listed_price?: number;
+//   period?: number;
+//   quantity_record_view?: number;
+//   quantity_record_take?: number;
+//   description?: string;
+//   status?: number;
+//   id?: number;
+//   created_by?: string;
+//   expiration_date?: string;
+//   activation_date?: string;
+//   created_date?: string;
+//   last_modified_by?: string;
+//   last_modified_date?: string;
+// }
+
+const EditJobPage: NextPage = ({ account, company, posts, post_total_page, license}: IProps) => {
   return (
     <EditJobsModule
       account={account}
       company={company}
       posts={posts}
       total_page={post_total_page} 
-      license={[]}    />
+      license={[]}   
+    />
   );
 };
 

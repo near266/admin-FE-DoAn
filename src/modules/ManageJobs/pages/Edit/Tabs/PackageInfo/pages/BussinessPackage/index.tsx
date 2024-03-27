@@ -23,10 +23,11 @@ import {
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/router';
-import { IGetListLicenseRes } from '../../shared/interface';
 import Link from 'next/link';
 import locale from 'antd/lib/date-picker/locale/vi_VN';
 import TextArea from 'antd/lib/input/TextArea';
+import { IGetListLicenseRes } from '../../shared/interface';
+// import { IGetListLicenseRes } from '@/pages/quan-ly-thanh-vien/doanh-nghiep/chinh-sua/[id]';
 
 const BussinessPackageOrder = (props: any) => {
   const { type } = props;
@@ -57,7 +58,6 @@ const BussinessPackageOrder = (props: any) => {
       console.log('bbb', res);
       form.setFieldsValue(res);
       setDescriptionEdit(res?.description);
-      // setListImgEdit(res?.images)
       appLibrary.hideloading();
     } catch (error) {
       appLibrary.hideloading();
@@ -67,30 +67,39 @@ const BussinessPackageOrder = (props: any) => {
     getLicense()
   };
 
-  const handleFormSubmit = () => {
-    console.log('aaa', form.getFieldsValue());
-    form.setFieldValue([LICENSE_DATA_FIELD.images], ['aaa']);
-    if (type === 'edit') {
-      updateLicense(form.getFieldsValue());
-    } else {
-      addLicense(form.getFieldsValue());
-    }
-  };
-
-  const addLicense = async (data) => {
+  const handleFormSubmit = async () => {
     try {
-      appLibrary.showloading();
-      const res = await managerServiceService.addLicense(data);
-      if (res) {
+      const formData = form.getFieldsValue();
+      const params = {
+        career_field_id: formData[LICENSE_DATA_FIELD.career_field_id],
+        license_id: 0,
+        enterpise_id: '3b01f108847948f79d584dfd135aba00',
+        license_code: formData[LICENSE_DATA_FIELD.license_code],
+        license_name: formData[LICENSE_DATA_FIELD.license_name],
+        activation_date: "2024-03-26T04:24:03.101Z",
+        selling_price: 0,
+        listed_price: 0,
+        period: 0,
+        quantity_record_view: 0,
+        quantity_record_take: 0,
+        expiration_date: "2024-03-26T04:24:03.101Z",
+        status: 0,
+        discount: 0,
+        total_amount: 0,
+        description: "string"
+      };
+      await managerServiceService.getLicenseOrder(params);
+      if (type === 'edit') {
+        message.success('Cập nhật thành công');
+      } else {
         message.success('Thêm mới thành công');
       }
-      appLibrary.hideloading();
     } catch (error) {
-      appLibrary.hideloading();
       showResponseError(error);
       console.log(error);
     }
   };
+  
 
   const updateLicense = async (data) => {
     try {
