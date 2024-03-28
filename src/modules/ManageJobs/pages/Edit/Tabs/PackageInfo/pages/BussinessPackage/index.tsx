@@ -27,6 +27,7 @@ import Link from 'next/link';
 import locale from 'antd/lib/date-picker/locale/vi_VN';
 import TextArea from 'antd/lib/input/TextArea';
 import { IGetListLicenseRes } from '../../shared/interface';
+import moment from 'moment';
 // import { IGetListLicenseRes } from '@/pages/quan-ly-thanh-vien/doanh-nghiep/chinh-sua/[id]';
 
 const BussinessPackageOrder = (props: any) => {
@@ -41,6 +42,12 @@ const BussinessPackageOrder = (props: any) => {
   );
   const [descriptionEdit, setDescriptionEdit] = useState<string>('');
   const [listImgEdit, setListImgEdit] = useState<string[]>([]);
+  const [activationDate, setActivationDate] = useState<Date | null>(null);
+
+  const handleActivationDateChange = (date: moment.Moment | null) => {
+    setActivationDate(date ? date.toDate() : null);
+  };
+  
 
   useEffect(() => {
     if (type === 'edit') {
@@ -70,20 +77,22 @@ const BussinessPackageOrder = (props: any) => {
   const handleFormSubmit = async () => {
     try {
       const formData = form.getFieldsValue();
+      const periodMonths = formData[LICENSE_DATA_FIELD.period];
+      const expirationDate = moment(activationDate).add(periodMonths, 'months').toISOString();
       const params = {
         career_field_id: formData[LICENSE_DATA_FIELD.career_field_id],
         license_id: 0,
-        enterpise_id: '3b01f108847948f79d584dfd135aba00',
+        enterpise_id: localStorage.getItem('enterprise_id'),
         license_code: formData[LICENSE_DATA_FIELD.license_code],
         license_name: formData[LICENSE_DATA_FIELD.license_name],
-        activation_date: "2024-03-26T04:24:03.101Z",
-        selling_price: 0,
-        listed_price: 0,
-        period: 0,
+        activation_date: formData[LICENSE_DATA_FIELD.activation_date],
+        selling_price: formData[LICENSE_DATA_FIELD.selling_price],
+        listed_price: formData[LICENSE_DATA_FIELD.listed_price],
+        period: formData[LICENSE_DATA_FIELD.period],
         quantity_record_view: 0,
         quantity_record_take: 0,
-        expiration_date: "2024-03-26T04:24:03.101Z",
-        status: 0,
+        expiration_date: expirationDate,
+        status: formData[LICENSE_DATA_FIELD.status],
         discount: 0,
         total_amount: 0,
         description: "string"
@@ -238,7 +247,7 @@ const BussinessPackageOrder = (props: any) => {
               Ngày kích hoạt <span className="text-[#EB4C4C]">*</span>
             </p>
             <FormItem
-              // name={LICENSE_DATA_FIELD.birthday}
+              name={LICENSE_DATA_FIELD.activation_date}
               className="w-full"
               rules={[{ required: true, message: 'Trường này là bắt buộc' }]}
             >
@@ -246,9 +255,8 @@ const BussinessPackageOrder = (props: any) => {
                 locale={locale}
                 placeholder="12/03/2002"
                 className="rounded-[10px] p-2 w-full"
-                // onChange={onChange}
                 format="DD/MM/YYYY"
-                // defaultValue={birhdayDefault}
+                onChange={handleActivationDateChange}
               />
             </FormItem>
           </div>
@@ -368,23 +376,15 @@ const BussinessPackageOrder = (props: any) => {
                 Ngày hết hạn
               </p>
               <FormItem
-                name={LICENSE_DATA_FIELD.period}
+                name={LICENSE_DATA_FIELD.expiration_date}
                 className="w-full"
               >
-                <Select
-                  size="large"
-                  placeholder="Chọn thời gian bắt buộc"
-                  className="!rounded-[10px] bg-white w-full"
-                  allowClear
-                >
-                  {listPeriod.map((item: any) => {
-                    return (
-                      <Select.Option key={item.value} value={item.value}>
-                        {item.label}
-                      </Select.Option>
-                    );
-                  })}
-                </Select>
+                <DatePicker
+                  locale={locale}
+                  placeholder="12/03/2002"
+                  className="rounded-[10px] p-2 w-full"
+                  format="DD/MM/YYYY"
+                />
               </FormItem>
             </div>
             <div className="w-full">

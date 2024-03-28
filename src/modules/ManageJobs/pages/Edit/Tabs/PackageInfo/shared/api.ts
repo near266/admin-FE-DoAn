@@ -29,6 +29,23 @@ class ManagerServiceService {
     return data;
   };
 
+  updateLicenseOrder = async (params: any) => {
+    const { data } = await axiosInstanceV4.put('/license-order', params);
+    return data;
+  };
+
+  deleteLicenseOrder = async (id: any) => {
+    const { data } = await axiosInstanceV4.delete(`/license/DeleteOrder/${id}`);
+    return data;
+  }
+
+  // async deleteEnterprisePosts(id: number | string) {
+  //   const res = await axiosInstanceEnterprise.delete(
+  //     `${process.env.NEXT_PUBLIC_API_JOB_URL}/delete/${id}`
+  //   );
+  //   return res.data;
+  // }
+
   getLicenseCode = async (id: any) => {
     const { data } = await axiosInstanceV4.get(`/license-codes/${id}`)
     return data;
