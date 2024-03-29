@@ -28,7 +28,6 @@ import locale from 'antd/lib/date-picker/locale/vi_VN';
 import TextArea from 'antd/lib/input/TextArea';
 import { IGetListLicenseRes } from '../../shared/interface';
 import moment from 'moment';
-// import { IGetListLicenseRes } from '@/pages/quan-ly-thanh-vien/doanh-nghiep/chinh-sua/[id]';
 
 const BussinessPackageOrder = (props: any) => {
   const { type } = props;
@@ -84,6 +83,8 @@ const BussinessPackageOrder = (props: any) => {
     }
   };
 
+  console.log("ID Cập nhật: ", id)
+
   const handleFormSubmit = async () => {
     try {
       const formData = form.getFieldsValue();
@@ -106,10 +107,21 @@ const BussinessPackageOrder = (props: any) => {
         discount: formData[LICENSE_DATA_FIELD.discount],
         total_amount: formData[LICENSE_DATA_FIELD.total_amount],
         description: formData[LICENSE_DATA_FIELD.description],
+        id: type === 'edit' ? id : undefined,
       };
-      await managerServiceService.getLicenseOrder(params);
-      appLibrary.hideloading();
-      message.success('Thêm mới thành công');
+      if(type === 'edit'){
+        params.quantity_record_view = formData[LICENSE_DATA_FIELD.quantity_record_view],
+        params.quantity_record_take = formData[LICENSE_DATA_FIELD.quantity_record_take],
+        params.expiration_date = expirationDate,
+        params.status = formData[LICENSE_DATA_FIELD.status];
+        params.description = formData[LICENSE_DATA_FIELD.description],
+        await managerServiceService.updateLicenseOrder(params);
+        message.success('Cập nhật thành công');
+      } else {
+        await managerServiceService.getLicenseOrder(params);
+        appLibrary.hideloading();
+        message.success('Thêm mới thành công');
+      }
     } catch (error) {
       showResponseError(error);
       console.log(error);

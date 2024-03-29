@@ -22,7 +22,7 @@ export interface IGetListLicenseRes {
   status?: number;
   title_video?: string;
   link_video?: string;
-  id?: number;
+  id?: any;
   created_by?: string;
   expiration_date?: string;
   activation_date?: string;
