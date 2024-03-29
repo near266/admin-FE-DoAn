@@ -57,21 +57,31 @@ const BussinessPackageOrder = (props: any) => {
 
   const getLicense = async () => {
     try {
-      appLibrary.showloading();
-      const res: IGetListLicenseRes = await managerServiceService.getLicenseDetail(
+      const res: IGetListLicenseRes = await managerServiceService.getLicenseOrderDetail(
         id as string
       );
       console.log('ID', id);
       console.log('bbb', res);
-      form.setFieldsValue(res);
-      setDescriptionEdit(res?.description);
-      appLibrary.hideloading();
+      form.setFieldsValue({
+        [LICENSE_DATA_FIELD.career_field_id]: res.career_field_id,
+        [LICENSE_DATA_FIELD.license_code]: res.license_code,
+        [LICENSE_DATA_FIELD.license_name]: res.license_name,
+        [LICENSE_DATA_FIELD.activation_date]: moment(res.activation_date), 
+        [LICENSE_DATA_FIELD.selling_price]: res.selling_price,
+        [LICENSE_DATA_FIELD.listed_price]: res.listed_price,
+        [LICENSE_DATA_FIELD.period]: res.period,
+        [LICENSE_DATA_FIELD.quantity_record_view]: res.quantity_record_view,
+        [LICENSE_DATA_FIELD.quantity_record_take]: res.quantity_record_take,
+        [LICENSE_DATA_FIELD.expiration_date]: moment(res.expiration_date), 
+        [LICENSE_DATA_FIELD.status]: res.status,
+        [LICENSE_DATA_FIELD.description]: res.description,
+        [LICENSE_DATA_FIELD.discount]: res.discount,
+        [LICENSE_DATA_FIELD.total_amount]: res.total_amount,
+      });
     } catch (error) {
-      appLibrary.hideloading();
       showResponseError(error);
       console.log(error);
     }
-    getLicense()
   };
 
   const handleFormSubmit = async () => {
@@ -89,45 +99,23 @@ const BussinessPackageOrder = (props: any) => {
         selling_price: formData[LICENSE_DATA_FIELD.selling_price],
         listed_price: formData[LICENSE_DATA_FIELD.listed_price],
         period: formData[LICENSE_DATA_FIELD.period],
-        quantity_record_view: 0,
-        quantity_record_take: 0,
+        quantity_record_view: formData[LICENSE_DATA_FIELD.quantity_record_view],
+        quantity_record_take: formData[LICENSE_DATA_FIELD.quantity_record_take],
         expiration_date: expirationDate,
         status: formData[LICENSE_DATA_FIELD.status],
-        discount: 0,
-        total_amount: 0,
-        description: "string"
+        discount: formData[LICENSE_DATA_FIELD.discount],
+        total_amount: formData[LICENSE_DATA_FIELD.total_amount],
+        description: formData[LICENSE_DATA_FIELD.description],
       };
       await managerServiceService.getLicenseOrder(params);
-      if (type === 'edit') {
-        appLibrary.hideloading();
-        message.success('Cập nhật thành công');
-      } else {
-        appLibrary.hideloading();
-        message.success('Thêm mới thành công');
-      }
+      appLibrary.hideloading();
+      message.success('Thêm mới thành công');
     } catch (error) {
       showResponseError(error);
       console.log(error);
     }
   };
   
-
-  const updateLicense = async (data) => {
-    try {
-      appLibrary.showloading();
-      data.id = id;
-      const res = await managerServiceService.updateLicense(data);
-      if (res) {
-        message.success('Cập nhật thành công');
-      }
-      appLibrary.hideloading();
-    } catch (error) {
-      appLibrary.hideloading();
-      showResponseError2(error?.response?.data);
-      console.log(error);
-    }
-  };
-
   const [packageOptions, setPackageOptions] = useState([]);
   const fetchPackageOptions = async (careerId: number) => {
     try {
@@ -147,8 +135,9 @@ const BussinessPackageOrder = (props: any) => {
       [LICENSE_DATA_FIELD.listed_price]: null,
       [LICENSE_DATA_FIELD.period]: null,
       [LICENSE_DATA_FIELD.quantity_record_view]: null,
-      [LICENSE_DATA_FIELD.discount_price]: null,
-      [LICENSE_DATA_FIELD.total_price]: null,
+      [LICENSE_DATA_FIELD.discount]: null,
+      [LICENSE_DATA_FIELD.total_amount]: null,
+      [LICENSE_DATA_FIELD.description]: null,
     });
   };
 
@@ -157,7 +146,7 @@ const BussinessPackageOrder = (props: any) => {
     const sellingPrice = form.getFieldValue(LICENSE_DATA_FIELD.selling_price);
     const newTotalPrice = sellingPrice - discount;
     setTotalPrice(newTotalPrice);
-    form.setFieldsValue({ [LICENSE_DATA_FIELD.total_price]: newTotalPrice });
+    form.setFieldsValue({ [LICENSE_DATA_FIELD.total_amount]: newTotalPrice });
   };
 
   const handleCodePackageChange = async (code: string) => {
@@ -427,7 +416,7 @@ const BussinessPackageOrder = (props: any) => {
                 Chiết khấu (VND)
               </p>
               <FormItem
-                name={LICENSE_DATA_FIELD.discount_price}
+                name={LICENSE_DATA_FIELD.discount}
                 className="w-full"
               >
                 <Input
@@ -444,7 +433,7 @@ const BussinessPackageOrder = (props: any) => {
                 Tổng tiền (VND)
               </p>
               <FormItem
-                name={LICENSE_DATA_FIELD.total_price}
+                name={LICENSE_DATA_FIELD.total_amount}
                 className="w-full"
               >
                 <Input
@@ -462,7 +451,7 @@ const BussinessPackageOrder = (props: any) => {
             <p className="font-[400] text-[16px] leading-[24px] text-[#44444F] mb-1">
               Ghi chú
             </p>
-            <FormItem name={LICENSE_DATA_FIELD.note} className="w-full">
+            <FormItem name={LICENSE_DATA_FIELD.description} className="w-full">
               <TextArea
                 rows={6}
                 className="rounded-[10px]"

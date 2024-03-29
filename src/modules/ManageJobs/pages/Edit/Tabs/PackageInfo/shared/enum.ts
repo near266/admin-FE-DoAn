@@ -15,9 +15,8 @@ export enum LICENSE_DATA_FIELD {
   images = 'images',
   activation_date = 'activation_date',
   expiration_date = 'expiration_date',
-  note = 'note',
-  discount_price = 'discount_price',
-  total_price = 'total_price',
+  discount = 'discount',
+  total_amount = 'total_amount',
 }
 
 export const listCareer = [

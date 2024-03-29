@@ -7,6 +7,8 @@ export interface IGetListLicenseReq {
 }
 
 export interface IGetListLicenseRes {
+  discount?: number;
+  total_amount?: number;
   career_field_id?: number;
   license_code?: string;
   license_name?: string;

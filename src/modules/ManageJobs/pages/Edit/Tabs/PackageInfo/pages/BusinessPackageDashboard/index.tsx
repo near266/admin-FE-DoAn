@@ -262,7 +262,7 @@ export function BussinessPackageChild(props: IProps) {
             <Tooltip content="Sửa">
               <IconButton>
                 <Link
-                  href={`/quan-ly-thanh-vien/doanh-nghiep/them-moi`}
+                  href={`/quan-ly-thanh-vien/doanh-nghiep/them-moi/chinh-sua/${item.id}`}
                   legacyBehavior
                 >
                   <Image src={SrcIcons.editActionIcon} height={30} width={30} />

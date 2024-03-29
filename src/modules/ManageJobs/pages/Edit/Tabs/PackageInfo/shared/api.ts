@@ -51,12 +51,17 @@ class ManagerServiceService {
     return data;
   }
 
-  getLicenseDetail = async (id: string) => {
-    const { data } = await axiosInstanceV4.get(
-      `${process.env.NEXT_PUBLIC_API_URL_V4}/license/${id}`
-    );
+  // getLicenseDetail = async (id: string) => {
+  //   const { data } = await axiosInstanceV4.get(
+  //     `${process.env.NEXT_PUBLIC_API_URL_V4}/license/${id}`
+  //   );
+  //   return data;
+  // };
+
+  getLicenseOrderDetail = async (id: string) => {
+    const { data } = await axiosInstanceV4.get(`/license-order/${id}`)
     return data;
-  };
+  }
 
   updateLicense = async (params: any) => {
     const { data } = await axiosInstanceV4.put('/license', params);
