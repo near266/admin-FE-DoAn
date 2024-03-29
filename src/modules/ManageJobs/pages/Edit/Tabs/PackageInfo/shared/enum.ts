@@ -15,27 +15,26 @@ export enum LICENSE_DATA_FIELD {
   images = 'images',
   activation_date = 'activation_date',
   expiration_date = 'expiration_date',
-  note = 'note',
-  discount_price = 'discount_price',
-  total_price = 'total_price',
+  discount = 'discount',
+  total_amount = 'total_amount',
 }
 
 export const listCareer = [
   {
     label: 'Sale & Marketing',
-    value: 0,
+    value: 46,
   },
   {
     label: 'Công nghệ thông tin',
-    value: 1,
+    value: 47,
   },
   {
     label: 'Tài chính - Kế toán',
-    value: 2,
+    value: 48,
   },
   {
     label: 'Vận hành',
-    value: 3,
+    value: 50,
   },
 ];
 

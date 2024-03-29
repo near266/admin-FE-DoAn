@@ -29,6 +29,18 @@ class ManagerServiceService {
     return data;
   };
 
+  updateLicenseOrder = async (params: any) => {
+    const { data } = await axiosInstanceV4.put('/license-order', params);
+    return data;
+  };
+
+  deleteLicenseOrder = async (id: any) => {
+    const { data } = await axiosInstanceV4.delete(`/license/DeleteOrder`, {
+      data: { id: id },
+    });
+    return data;
+  }
+
   getLicenseCode = async (id: any) => {
     const { data } = await axiosInstanceV4.get(`/license-codes/${id}`)
     return data;
@@ -39,12 +51,10 @@ class ManagerServiceService {
     return data;
   }
 
-  getLicenseDetail = async (id: string) => {
-    const { data } = await axiosInstanceV4.get(
-      `${process.env.NEXT_PUBLIC_API_URL_V4}/license/${id}`
-    );
+  getLicenseOrderDetail = async (id: string) => {
+    const { data } = await axiosInstanceV4.get(`/license-order/${id}`)
     return data;
-  };
+  }
 
   updateLicense = async (params: any) => {
     const { data } = await axiosInstanceV4.put('/license', params);

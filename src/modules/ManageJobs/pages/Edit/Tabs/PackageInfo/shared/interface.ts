@@ -7,6 +7,8 @@ export interface IGetListLicenseReq {
 }
 
 export interface IGetListLicenseRes {
+  discount?: number;
+  total_amount?: number;
   career_field_id?: number;
   license_code?: string;
   license_name?: string;
@@ -20,7 +22,7 @@ export interface IGetListLicenseRes {
   status?: number;
   title_video?: string;
   link_video?: string;
-  id?: number;
+  id?: any;
   created_by?: string;
   expiration_date?: string;
   activation_date?: string;

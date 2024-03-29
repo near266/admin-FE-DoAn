@@ -27,7 +27,7 @@ import Link from 'next/link';
 import locale from 'antd/lib/date-picker/locale/vi_VN';
 import TextArea from 'antd/lib/input/TextArea';
 import { IGetListLicenseRes } from '../../shared/interface';
-// import { IGetListLicenseRes } from '@/pages/quan-ly-thanh-vien/doanh-nghiep/chinh-sua/[id]';
+import moment from 'moment';
 
 const BussinessPackageOrder = (props: any) => {
   const { type } = props;
@@ -41,6 +41,12 @@ const BussinessPackageOrder = (props: any) => {
   );
   const [descriptionEdit, setDescriptionEdit] = useState<string>('');
   const [listImgEdit, setListImgEdit] = useState<string[]>([]);
+  const [activationDate, setActivationDate] = useState<Date | null>(null);
+
+  const handleActivationDateChange = (date: moment.Moment | null) => {
+    setActivationDate(date ? date.toDate() : null);
+  };
+  
 
   useEffect(() => {
     if (type === 'edit') {
@@ -50,48 +56,70 @@ const BussinessPackageOrder = (props: any) => {
 
   const getLicense = async () => {
     try {
-      appLibrary.showloading();
-      const res: IGetListLicenseRes = await managerServiceService.getLicenseDetail(
+      const res: IGetListLicenseRes = await managerServiceService.getLicenseOrderDetail(
         id as string
       );
       console.log('ID', id);
       console.log('bbb', res);
-      form.setFieldsValue(res);
-      setDescriptionEdit(res?.description);
-      appLibrary.hideloading();
+      form.setFieldsValue({
+        [LICENSE_DATA_FIELD.career_field_id]: res.career_field_id,
+        [LICENSE_DATA_FIELD.license_code]: res.license_code,
+        [LICENSE_DATA_FIELD.license_name]: res.license_name,
+        [LICENSE_DATA_FIELD.activation_date]: moment(res.activation_date), 
+        [LICENSE_DATA_FIELD.selling_price]: res.selling_price,
+        [LICENSE_DATA_FIELD.listed_price]: res.listed_price,
+        [LICENSE_DATA_FIELD.period]: res.period,
+        [LICENSE_DATA_FIELD.quantity_record_view]: res.quantity_record_view,
+        [LICENSE_DATA_FIELD.quantity_record_take]: res.quantity_record_take,
+        [LICENSE_DATA_FIELD.expiration_date]: moment(res.expiration_date), 
+        [LICENSE_DATA_FIELD.status]: res.status,
+        [LICENSE_DATA_FIELD.description]: res.description,
+        [LICENSE_DATA_FIELD.discount]: res.discount,
+        [LICENSE_DATA_FIELD.total_amount]: res.total_amount,
+      });
     } catch (error) {
-      appLibrary.hideloading();
       showResponseError(error);
       console.log(error);
     }
-    getLicense()
   };
+
+  console.log("ID Cập nhật: ", id)
 
   const handleFormSubmit = async () => {
     try {
       const formData = form.getFieldsValue();
+      const periodMonths = formData[LICENSE_DATA_FIELD.period];
+      const expirationDate = moment(activationDate).add(periodMonths, 'months').toISOString();
       const params = {
         career_field_id: formData[LICENSE_DATA_FIELD.career_field_id],
         license_id: 0,
-        enterpise_id: '3b01f108847948f79d584dfd135aba00',
+        enterpise_id: localStorage.getItem('enterprise_id'),
         license_code: formData[LICENSE_DATA_FIELD.license_code],
         license_name: formData[LICENSE_DATA_FIELD.license_name],
-        activation_date: "2024-03-26T04:24:03.101Z",
-        selling_price: 0,
-        listed_price: 0,
-        period: 0,
-        quantity_record_view: 0,
-        quantity_record_take: 0,
-        expiration_date: "2024-03-26T04:24:03.101Z",
-        status: 0,
-        discount: 0,
-        total_amount: 0,
-        description: "string"
+        activation_date: formData[LICENSE_DATA_FIELD.activation_date],
+        selling_price: formData[LICENSE_DATA_FIELD.selling_price],
+        listed_price: formData[LICENSE_DATA_FIELD.listed_price],
+        period: formData[LICENSE_DATA_FIELD.period],
+        quantity_record_view: formData[LICENSE_DATA_FIELD.quantity_record_view],
+        quantity_record_take: formData[LICENSE_DATA_FIELD.quantity_record_take],
+        expiration_date: expirationDate,
+        status: formData[LICENSE_DATA_FIELD.status],
+        discount: formData[LICENSE_DATA_FIELD.discount],
+        total_amount: formData[LICENSE_DATA_FIELD.total_amount],
+        description: formData[LICENSE_DATA_FIELD.description],
+        id: type === 'edit' ? id : undefined,
       };
-      await managerServiceService.getLicenseOrder(params);
-      if (type === 'edit') {
+      if(type === 'edit'){
+        params.quantity_record_view = formData[LICENSE_DATA_FIELD.quantity_record_view],
+        params.quantity_record_take = formData[LICENSE_DATA_FIELD.quantity_record_take],
+        params.expiration_date = expirationDate,
+        params.status = formData[LICENSE_DATA_FIELD.status];
+        params.description = formData[LICENSE_DATA_FIELD.description],
+        await managerServiceService.updateLicenseOrder(params);
         message.success('Cập nhật thành công');
       } else {
+        await managerServiceService.getLicenseOrder(params);
+        appLibrary.hideloading();
         message.success('Thêm mới thành công');
       }
     } catch (error) {
@@ -100,23 +128,6 @@ const BussinessPackageOrder = (props: any) => {
     }
   };
   
-
-  const updateLicense = async (data) => {
-    try {
-      appLibrary.showloading();
-      data.id = id;
-      const res = await managerServiceService.updateLicense(data);
-      if (res) {
-        message.success('Cập nhật thành công');
-      }
-      appLibrary.hideloading();
-    } catch (error) {
-      appLibrary.hideloading();
-      showResponseError2(error?.response?.data);
-      console.log(error);
-    }
-  };
-
   const [packageOptions, setPackageOptions] = useState([]);
   const fetchPackageOptions = async (careerId: number) => {
     try {
@@ -136,8 +147,9 @@ const BussinessPackageOrder = (props: any) => {
       [LICENSE_DATA_FIELD.listed_price]: null,
       [LICENSE_DATA_FIELD.period]: null,
       [LICENSE_DATA_FIELD.quantity_record_view]: null,
-      [LICENSE_DATA_FIELD.discount_price]: null,
-      [LICENSE_DATA_FIELD.total_price]: null,
+      [LICENSE_DATA_FIELD.discount]: null,
+      [LICENSE_DATA_FIELD.total_amount]: null,
+      [LICENSE_DATA_FIELD.description]: null,
     });
   };
 
@@ -146,7 +158,7 @@ const BussinessPackageOrder = (props: any) => {
     const sellingPrice = form.getFieldValue(LICENSE_DATA_FIELD.selling_price);
     const newTotalPrice = sellingPrice - discount;
     setTotalPrice(newTotalPrice);
-    form.setFieldsValue({ [LICENSE_DATA_FIELD.total_price]: newTotalPrice });
+    form.setFieldsValue({ [LICENSE_DATA_FIELD.total_amount]: newTotalPrice });
   };
 
   const handleCodePackageChange = async (code: string) => {
@@ -238,7 +250,7 @@ const BussinessPackageOrder = (props: any) => {
               Ngày kích hoạt <span className="text-[#EB4C4C]">*</span>
             </p>
             <FormItem
-              // name={LICENSE_DATA_FIELD.birthday}
+              name={LICENSE_DATA_FIELD.activation_date}
               className="w-full"
               rules={[{ required: true, message: 'Trường này là bắt buộc' }]}
             >
@@ -246,9 +258,8 @@ const BussinessPackageOrder = (props: any) => {
                 locale={locale}
                 placeholder="12/03/2002"
                 className="rounded-[10px] p-2 w-full"
-                // onChange={onChange}
                 format="DD/MM/YYYY"
-                // defaultValue={birhdayDefault}
+                onChange={handleActivationDateChange}
               />
             </FormItem>
           </div>
@@ -368,23 +379,15 @@ const BussinessPackageOrder = (props: any) => {
                 Ngày hết hạn
               </p>
               <FormItem
-                name={LICENSE_DATA_FIELD.period}
+                name={LICENSE_DATA_FIELD.expiration_date}
                 className="w-full"
               >
-                <Select
-                  size="large"
-                  placeholder="Chọn thời gian bắt buộc"
-                  className="!rounded-[10px] bg-white w-full"
-                  allowClear
-                >
-                  {listPeriod.map((item: any) => {
-                    return (
-                      <Select.Option key={item.value} value={item.value}>
-                        {item.label}
-                      </Select.Option>
-                    );
-                  })}
-                </Select>
+                <DatePicker
+                  locale={locale}
+                  placeholder="12/03/2002"
+                  className="rounded-[10px] p-2 w-full"
+                  format="DD/MM/YYYY"
+                />
               </FormItem>
             </div>
             <div className="w-full">
@@ -425,7 +428,7 @@ const BussinessPackageOrder = (props: any) => {
                 Chiết khấu (VND)
               </p>
               <FormItem
-                name={LICENSE_DATA_FIELD.discount_price}
+                name={LICENSE_DATA_FIELD.discount}
                 className="w-full"
               >
                 <Input
@@ -442,7 +445,7 @@ const BussinessPackageOrder = (props: any) => {
                 Tổng tiền (VND)
               </p>
               <FormItem
-                name={LICENSE_DATA_FIELD.total_price}
+                name={LICENSE_DATA_FIELD.total_amount}
                 className="w-full"
               >
                 <Input
@@ -460,7 +463,7 @@ const BussinessPackageOrder = (props: any) => {
             <p className="font-[400] text-[16px] leading-[24px] text-[#44444F] mb-1">
               Ghi chú
             </p>
-            <FormItem name={LICENSE_DATA_FIELD.note} className="w-full">
+            <FormItem name={LICENSE_DATA_FIELD.description} className="w-full">
               <TextArea
                 rows={6}
                 className="rounded-[10px]"

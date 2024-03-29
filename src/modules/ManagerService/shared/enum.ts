@@ -20,19 +20,19 @@ export enum LICENSE_DATA_FIELD {
 export const listCareer = [
   {
     label: 'Sale & Marketing',
-    value: 0,
+    value: 46,
   },
   {
     label: 'Công nghệ thông tin',
-    value: 1,
+    value: 47,
   },
   {
     label: 'Tài chính - Kế toán',
-    value: 2,
+    value: 48,
   },
   {
     label: 'Vận hành',
-    value: 3,
+    value: 50,
   },
 ];
 

@@ -42,7 +42,7 @@ const columns = [
   { name: 'MÃ GÓI', uid: 'id' },
   { name: 'TÊN GÓI', uid: 'name' },
   { name: 'LĨNH VỰC', uid: 'field' },
-  { name: 'THỜI GIAN SỬ DỤNG', uid: 'price' },
+  { name: 'THỜI GIAN SỬ DỤNG', uid: 'period' },
   { name: 'NGÀY KÍCH HOẠT', uid: 'activation_date' },
   { name: 'NGÀY HẾT HẠN', uid: 'expiration_date' },
   { name: 'TRẠNG THÁI', uid: 'status' },
@@ -114,12 +114,29 @@ export function BussinessPackageChild(props: IProps) {
     fetchData(); 
   }, []);
 
+  const handleDelete = async (id) => {
+    try {
+      const response = await managerServiceService.deleteLicenseOrder(id);
+      if (response) {
+        const newData = dataTable.filter((item) => item.id !== id);
+        setDataTable(newData);
+        message.success('Xoá thành công!');
+      } else {
+        message.error('Xoá thất bại!');
+      }
+    } catch (error) {
+      console.error('Lỗiiiii:', error);
+      message.error('Xoá bị lỗi!');
+    } finally {
+      appLibrary.hideloading();
+    }
+  };
+
   const handleSearch = useCallback(
     debounce((value: string) => {
       if (value === '') {
         return setDataTable(filtedData);
       }
-
       try {
         const newData = filtedData.filter((item) =>
           Common.removeVietnameseTones(item.license_name)
@@ -197,16 +214,11 @@ export function BussinessPackageChild(props: IProps) {
             </Row>
           </Col>
         );
-      case 'price':
+      case 'period':
         return (
           <Col>
             <Row align="center">
-              <div>
-                <p className="text-[var(--primary-color)]">
-                  {item.selling_price.toLocaleString()}
-                </p>
-                <p className="text-[#92929D]">{item.listed_price.toLocaleString()}</p>
-              </div>
+              <span className="text-[14px]">{item.period} tháng</span>
             </Row>
           </Col>
         );
@@ -246,15 +258,34 @@ export function BussinessPackageChild(props: IProps) {
         );
       case 'action':
         return (
-          <Link legacyBehavior href={`/quan-ly-viec-lam/goi-doanh-nghiep/chinh-sua/${item.id}`}>
-            <Row align="flex-start">
-              <Tooltip content="Xem chi tiết" css={{ marginRight: 20 }}>
-                <IconButton>
-                  <Image src={SrcIcons.editActionIcon} height={24} width={24} />
-                </IconButton>
-              </Tooltip>
-            </Row>
-          </Link>
+          <Row className="ml-[30px] gap-2">
+            <Tooltip content="Sửa">
+              <IconButton>
+                <Link
+                  href={`/quan-ly-thanh-vien/doanh-nghiep/them-moi/chinh-sua/${item.id}`}
+                  legacyBehavior
+                >
+                  <Image src={SrcIcons.editActionIcon} height={30} width={30} />
+                </Link>
+              </IconButton>
+            </Tooltip>
+
+            <Tooltip content="Xóa">
+              <IconButton>
+                <Image
+                  src={SrcIcons.deleteActionIcon}
+                  height={30}
+                  width={30}
+                  onClick={() => 
+                    {
+                      handleDelete(item.id)
+                      console.log('ID: ', item.id)
+                    }
+                  }
+                />
+              </IconButton>
+            </Tooltip>
+          </Row>
         );
       default:
         return cellValue;
