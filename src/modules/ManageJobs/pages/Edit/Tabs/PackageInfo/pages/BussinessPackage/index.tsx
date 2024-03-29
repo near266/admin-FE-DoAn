@@ -99,8 +99,10 @@ const BussinessPackageOrder = (props: any) => {
       };
       await managerServiceService.getLicenseOrder(params);
       if (type === 'edit') {
+        appLibrary.hideloading();
         message.success('Cập nhật thành công');
       } else {
+        appLibrary.hideloading();
         message.success('Thêm mới thành công');
       }
     } catch (error) {

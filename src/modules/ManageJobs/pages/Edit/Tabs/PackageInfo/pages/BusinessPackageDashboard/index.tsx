@@ -126,6 +126,9 @@ export function BussinessPackageChild(props: IProps) {
       }
     } catch (error) {
       console.error('Lỗiiiii:', error);
+      message.error('Xoá bị lỗi!');
+    } finally {
+      appLibrary.hideloading();
     }
   };
 
