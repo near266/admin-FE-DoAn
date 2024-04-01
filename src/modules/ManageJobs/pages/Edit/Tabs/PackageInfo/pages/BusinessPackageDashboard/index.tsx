@@ -250,7 +250,10 @@ export function BussinessPackageChild(props: IProps) {
         return (
           <Col>
             <Row align="center">
-              <span className="text-[14px]">
+              <span className={`text-[14px] 
+                ${item.status === 0 ? 'text-color-error' :
+                item.status === 1 ? 'text-color-access' :
+                item.status === 2 ? 'text-color-default' : ''}`}>
                 {viewValueItem(item.status, listStatus)}
               </span>
             </Row>

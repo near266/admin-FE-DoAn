@@ -42,11 +42,20 @@ const BussinessPackageOrder = (props: any) => {
   const [descriptionEdit, setDescriptionEdit] = useState<string>('');
   const [listImgEdit, setListImgEdit] = useState<string[]>([]);
   const [activationDate, setActivationDate] = useState<Date | null>(null);
+  const [isAllFieldsFilled, setIsAllFieldsFilled] = useState<boolean>(false);
 
   const handleActivationDateChange = (date: moment.Moment | null) => {
     setActivationDate(date ? date.toDate() : null);
   };
   
+  useEffect(() => {
+    const careerFieldId = form.getFieldValue(LICENSE_DATA_FIELD.career_field_id);
+    const licenseCode = form.getFieldValue(LICENSE_DATA_FIELD.license_code);
+    const activationDate = form.getFieldValue(LICENSE_DATA_FIELD.activation_date);
+
+    const allFieldsFilled = careerFieldId && licenseCode && activationDate;
+    setIsAllFieldsFilled(allFieldsFilled);
+  }, [activationDate]);
 
   useEffect(() => {
     if (type === 'edit') {
@@ -116,11 +125,14 @@ const BussinessPackageOrder = (props: any) => {
         params.status = formData[LICENSE_DATA_FIELD.status];
         params.description = formData[LICENSE_DATA_FIELD.description],
         await managerServiceService.updateLicenseOrder(params);
+        appLibrary.hideloading();
         message.success('Cập nhật thành công');
+        router.push(`/quan-ly-thanh-vien/doanh-nghiep/chinh-sua/${localStorage.getItem('enterprise_id')}`);
       } else {
         await managerServiceService.getLicenseOrder(params);
         appLibrary.hideloading();
         message.success('Thêm mới thành công');
+        router.push(`/quan-ly-thanh-vien/doanh-nghiep/chinh-sua/${localStorage.getItem('enterprise_id')}`);
       }
     } catch (error) {
       showResponseError(error);
@@ -193,7 +205,7 @@ const BussinessPackageOrder = (props: any) => {
           Thông tin gói
         </p>
         <div className="flex gap-8 mb-2">
-          <div className="w-full">
+          <div className="w-full !border !border-orange-400">
             <p className="font-[400] text-[16px] leading-[24px] text-[#44444F] mb-1">
               Lĩnh vực <span className="text-[#EB4C4C]">*</span>
             </p>
@@ -266,7 +278,7 @@ const BussinessPackageOrder = (props: any) => {
         </div>
         <div className="flex gap-8 mb-2">
           <div className="w-full">
-            <p className="font-[400] text-[16px] leading-[24px] text-[#44444F] mb-1">
+            <p className="font-[400] text-[16px] leading-[24px] text-text-default mb-1">
               Tên gói
             </p>
             <FormItem
@@ -282,7 +294,7 @@ const BussinessPackageOrder = (props: any) => {
             </FormItem>
           </div>
           <div className="w-full">
-            <p className="font-[400] text-[16px] leading-[24px] text-[#44444F] mb-1">
+            <p className="font-[400] text-[16px] leading-[24px] text-text-default mb-1">
               Giá bán (VND)
             </p>
             <FormItem
@@ -298,7 +310,7 @@ const BussinessPackageOrder = (props: any) => {
             </FormItem>
           </div>
           <div className="w-full">
-            <p className="font-[400] text-[16px] leading-[24px] text-[#44444F] mb-1">
+            <p className="font-[400] text-[16px] leading-[24px] text-text-default mb-1">
               Giá niêm yết (VND)
             </p>
             <FormItem
@@ -316,7 +328,7 @@ const BussinessPackageOrder = (props: any) => {
         </div>
         <div className="flex gap-8 mb-2">
           <div className="w-full">
-            <p className="font-[400] text-[16px] leading-[24px] text-[#44444F] mb-1">
+            <p className="font-[400] text-[16px] leading-[24px] text-text-default mb-1">
               Thời gian sử dụng
             </p>
             <FormItem
@@ -340,7 +352,7 @@ const BussinessPackageOrder = (props: any) => {
             </FormItem>
           </div>
           <div className="w-full">
-            <p className="font-[400] text-[16px] leading-[24px] text-[#44444F] mb-1">
+            <p className={`font-[400] text-[16px] leading-[24px] ${type === 'edit' ? 'text-[#44444F]' : 'text-text-default'} mb-1`}>
               Số hồ sơ có thể xem
             </p>
             <FormItem
@@ -356,7 +368,7 @@ const BussinessPackageOrder = (props: any) => {
             </FormItem>
           </div>
           <div className="w-full">
-            <p className="font-[400] text-[16px] leading-[24px] text-[#44444F] mb-1">
+            <p className={`font-[400] text-[16px] leading-[24px] ${type === 'edit' ? 'text-[#44444F]' : 'text-text-default'} mb-1`}>
               Số hồ sơ có thể tiếp nhận
             </p>
             <FormItem
@@ -441,7 +453,7 @@ const BussinessPackageOrder = (props: any) => {
               </FormItem>
             </div>
             <div className="w-full">
-              <p className="font-[400] text-[16px] leading-[24px] text-[#44444F] mb-1">
+              <p className="font-[400] text-[16px] leading-[24px] text-text-default mb-1">
                 Tổng tiền (VND)
               </p>
               <FormItem
@@ -474,10 +486,10 @@ const BussinessPackageOrder = (props: any) => {
         </div>
         <div className="flex justify-end mt-2">
           <div className="flex items-center">
-            <Link href={'/quan-ly-viec-lam/goi-doanh-nghiep'}>
+            <Link href={`/quan-ly-thanh-vien/doanh-nghiep/chinh-sua/${localStorage.getItem('enterprise_id')}`}>
               <div className="custom-button !bg-[#EB4C4C] mr-2">Hủy bỏ</div>
             </Link>
-            <button className="custom-button">{type === 'edit' ? 'Lưu thay đổi' : 'Thêm mới'}</button>
+            <button className={`custom-button ${!isAllFieldsFilled ? '!bg-[#f1f1f5] !text-[#92929d] shadow-[0_3px_10px_rgb(0,0,0,0.2)]' : ''}`}>{type === 'edit' ? 'Lưu thay đổi' : 'Thêm mới'}</button>
           </div>
         </div>
       </Form>
