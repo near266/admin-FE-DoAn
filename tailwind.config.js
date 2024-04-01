@@ -10,6 +10,12 @@ module.exports = {
         active: 'var(--color-text-active)',
         placeholder: 'var(--color-text-placeholder)',
       },
+      colors: {
+        'text-default': '#92929d',
+        'color-error': '#ed5859',
+        'color-access': '#37ae82',
+        'color-default': '#bebec7',
+      },
       backgroundColor: {
         primary: 'var( --background-color)',
       },
