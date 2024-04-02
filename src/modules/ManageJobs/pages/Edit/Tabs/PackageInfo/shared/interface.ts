@@ -29,4 +29,5 @@ export interface IGetListLicenseRes {
   created_date?: string;
   last_modified_by?: string;
   last_modified_date?: string;
+  enterpriseId?:string;
 }

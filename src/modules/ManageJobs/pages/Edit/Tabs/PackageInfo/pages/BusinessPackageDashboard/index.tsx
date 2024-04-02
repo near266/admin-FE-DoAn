@@ -101,7 +101,9 @@ export function BussinessPackageChild(props: IProps) {
       try {
         const page = 0;
         const pageSize = 10; 
-        const params = {}; 
+        const params = {
+          enterpriseId: localStorage.getItem('enterprise_id')
+        }; 
         const response = await managerServiceService.getAllLicenseOrder(page, pageSize, params);
         if (response.data && response.data.length > 0) {
           setDataTable(response.data);

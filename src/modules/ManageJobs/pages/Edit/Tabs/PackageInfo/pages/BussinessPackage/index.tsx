@@ -1,7 +1,7 @@
 import SrcIcons from '@/assets/icons';
 import { EditorBlock } from '@/modules/ManageAssessments/components/EditorBlock';
 import { RECRUITMENT_DATA_FIELD } from '@/modules/ManageJobs/shared/enum';
-import { DatePicker, Form, Input, Select, message } from 'antd';
+import { DatePicker, Form, Input, InputNumber, Select, message } from 'antd';
 import { UploadFile } from 'antd/es/upload';
 import FormItem from 'antd/lib/form/FormItem';
 import { UploadChangeParam } from 'antd/lib/upload';
@@ -43,11 +43,18 @@ const BussinessPackageOrder = (props: any) => {
   const [listImgEdit, setListImgEdit] = useState<string[]>([]);
   const [activationDate, setActivationDate] = useState<Date | null>(null);
   const [isAllFieldsFilled, setIsAllFieldsFilled] = useState<boolean>(false);
+  const [status, setStatus] = useState(0);
 
   const handleActivationDateChange = (date: moment.Moment | null) => {
     setActivationDate(date ? date.toDate() : null);
+    const periodMonths1 = form.getFieldValue(LICENSE_DATA_FIELD.period);
+    const currentDate = moment();
+    const expirationDate1 = date ? moment(date).add(periodMonths1, 'months').toDate().toISOString() : null;
+    if(type === 'edit'){
+      form.setFieldsValue({ [LICENSE_DATA_FIELD.expiration_date]: moment(expirationDate1) });
+    }
   };
-  
+
   useEffect(() => {
     const careerFieldId = form.getFieldValue(LICENSE_DATA_FIELD.career_field_id);
     const licenseCode = form.getFieldValue(LICENSE_DATA_FIELD.license_code);
@@ -264,6 +271,7 @@ const BussinessPackageOrder = (props: any) => {
             <FormItem
               name={LICENSE_DATA_FIELD.activation_date}
               className="w-full"
+              initialValue={moment()} 
               rules={[{ required: true, message: 'Trường này là bắt buộc' }]}
             >
               <DatePicker
@@ -271,6 +279,7 @@ const BussinessPackageOrder = (props: any) => {
                 placeholder="12/03/2002"
                 className="rounded-[10px] p-2 w-full"
                 format="DD/MM/YYYY"
+                disabledDate={(current) => current && current < moment().startOf('day')}
                 onChange={handleActivationDateChange}
               />
             </FormItem>
@@ -301,12 +310,15 @@ const BussinessPackageOrder = (props: any) => {
               name={LICENSE_DATA_FIELD.selling_price}
               className="w-full"
             >
-              <Input
+              <InputNumber
                 size="large"
                 className="rounded-[10px] bg-white w-full"
-                allowClear
+                formatter={(value) =>
+                  `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, '.')
+                }
+                parser={(value) => value!.replace(/\$\s?|(\.*)/g, '')}
                 disabled
-              ></Input>
+              ></InputNumber>
             </FormItem>
           </div>
           <div className="w-full">
@@ -317,12 +329,15 @@ const BussinessPackageOrder = (props: any) => {
               name={LICENSE_DATA_FIELD.listed_price}
               className="w-full"
             >
-              <Input
+              <InputNumber
                 size="large"
                 className="rounded-[10px] bg-white w-full"
-                allowClear
+                formatter={(value) =>
+                  `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, '.')
+                }
+                parser={(value) => value!.replace(/\$\s?|(\.*)/g, '')}
                 disabled
-              ></Input>
+              ></InputNumber>
             </FormItem>
           </div>
         </div>
@@ -460,13 +475,16 @@ const BussinessPackageOrder = (props: any) => {
                 name={LICENSE_DATA_FIELD.total_amount}
                 className="w-full"
               >
-                <Input
+                <InputNumber
                   size="large"
                   className="rounded-[10px] bg-white w-full"
                   placeholder='0'
-                  allowClear
+                  formatter={(value) =>
+                    `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, '.')
+                  }
+                  parser={(value) => value!.replace(/\$\s?|(\.*)/g, '')}
                   disabled
-                ></Input>
+                ></InputNumber>
               </FormItem>
             </div>
             <div className="w-full"></div>
