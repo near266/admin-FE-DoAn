@@ -271,6 +271,7 @@ const BussinessPackageOrder = (props: any) => {
             <FormItem
               name={LICENSE_DATA_FIELD.activation_date}
               className="w-full"
+              initialValue={moment()} 
               rules={[{ required: true, message: 'Trường này là bắt buộc' }]}
             >
               <DatePicker
@@ -278,6 +279,7 @@ const BussinessPackageOrder = (props: any) => {
                 placeholder="12/03/2002"
                 className="rounded-[10px] p-2 w-full"
                 format="DD/MM/YYYY"
+                disabledDate={(current) => current && current < moment().startOf('day')}
                 onChange={handleActivationDateChange}
               />
             </FormItem>
