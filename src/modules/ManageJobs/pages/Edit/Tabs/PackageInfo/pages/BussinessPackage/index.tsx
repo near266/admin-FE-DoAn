@@ -212,7 +212,7 @@ const BussinessPackageOrder = (props: any) => {
           Thông tin gói
         </p>
         <div className="flex gap-8 mb-2">
-          <div className="w-full !border !border-orange-400">
+          <div className="w-full">
             <p className="font-[400] text-[16px] leading-[24px] text-[#44444F] mb-1">
               Lĩnh vực <span className="text-[#EB4C4C]">*</span>
             </p>
@@ -224,7 +224,9 @@ const BussinessPackageOrder = (props: any) => {
               <Select
                 size="large"
                 placeholder="Chọn lĩnh vực"
+                style={{ border: '1px solid blue', borderRadius: '10px' }}
                 className="!rounded-[10px] bg-white w-full"
+                status='warning'
                 allowClear
                 onChange={handleCareerChange}
               >
@@ -250,6 +252,8 @@ const BussinessPackageOrder = (props: any) => {
               <Select
                 size="large"
                 placeholder="Nhập mã gói"
+                status='warning'
+                style={{ border: '1px solid blue', borderRadius: '10px' }}
                 className="!rounded-[10px] bg-white w-full"
                 allowClear
                 onChange={handleCodePackageChange}
@@ -276,6 +280,8 @@ const BussinessPackageOrder = (props: any) => {
             >
               <DatePicker
                 locale={locale}
+                status="warning"
+                style={{borderColor: 'blue'}}
                 placeholder="12/03/2002"
                 className="rounded-[10px] p-2 w-full"
                 format="DD/MM/YYYY"
@@ -460,6 +466,8 @@ const BussinessPackageOrder = (props: any) => {
               >
                 <Input
                   size="large"
+                  status = 'warning'
+                  style={{borderColor: 'blue'}}
                   placeholder="0"
                   className="rounded-[10px] bg-white w-full"
                   allowClear
@@ -496,6 +504,8 @@ const BussinessPackageOrder = (props: any) => {
             <FormItem name={LICENSE_DATA_FIELD.description} className="w-full">
               <TextArea
                 rows={6}
+                status='warning'
+                style={{borderColor: 'blue'}}
                 className="rounded-[10px]"
                 placeholder="Nhập lời nhắn"
               ></TextArea>
