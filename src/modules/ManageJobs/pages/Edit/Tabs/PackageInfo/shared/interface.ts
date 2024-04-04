@@ -4,6 +4,7 @@ export interface IGetListLicenseReq {
   career_field_id?: number;
   created_date?: string;
   status?: number;
+  enterpriseId?:string;
 }
 
 export interface IGetListLicenseRes {

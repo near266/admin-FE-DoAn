@@ -1,4 +1,3 @@
-// import { IGetListLicenseReq } from '@/pages/quan-ly-thanh-vien/doanh-nghiep/chinh-sua/[id]';
 import { axiosInstanceV4 } from '@/shared/axios';
 import { IGetListLicenseReq, IGetListLicenseRes } from './interface';
 
@@ -8,6 +7,7 @@ class ManagerServiceService {
     return data;
   };
 
+  // Search
   getAllLicense = async (page: number, pageSize: number, params: IGetListLicenseReq) => {
     const { data } = await axiosInstanceV4.post(
       `/licenses?Page=${page}&PageSize=${pageSize}`,

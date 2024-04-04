@@ -116,6 +116,22 @@ export function BussinessPackageChild(props: IProps) {
     fetchData(); 
   }, []);
 
+  const fetchData2 = async (params) => {
+    appLibrary.showloading();
+    try {
+      const page = 0;
+      const pageSize = 10; 
+      const response = await managerServiceService.getAllLicense(page, pageSize, params);
+      if (response.data && response.data.length > 0) {
+        appLibrary.hideloading();
+        setDataTable(response.data);
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+  
+
   const handleDelete = async (id) => {
     try {
       const response = await managerServiceService.deleteLicenseOrder(id);
@@ -134,24 +150,21 @@ export function BussinessPackageChild(props: IProps) {
     }
   };
 
-  const handleSearch = useCallback(
-    debounce((value: string) => {
-      if (value === '') {
-        return setDataTable(filtedData);
-      }
-      try {
-        const newData = filtedData.filter((item) =>
-          Common.removeVietnameseTones(item.license_name)
-            .toLowerCase()
-            .includes(Common.removeVietnameseTones(value).toLowerCase())
-        );
-        setDataTable(newData);
-      } catch (error) {
-        message.warning('Không tìm thấy kết quả!');
-      }
-    }, 500),
-    [dataTable, filtedData]
-  );
+  const handleSearch = debounce(async (value) => {
+    appLibrary.showloading();
+    try {
+      const { data } = await managerServiceService.getAllLicense(
+        0,
+        10,
+        Common.removeVietnameseTones(value).toLowerCase()
+      );
+      setDataTable(data);
+      appLibrary.hideloading();
+    } catch (error) {
+      console.log(error);
+      appLibrary.hideloading();
+    }
+  }, 300);
   const handlePublise = async (value, assessment_id) => {
     console.log(value, assessment_id);
 
@@ -305,11 +318,25 @@ export function BussinessPackageChild(props: IProps) {
     return list.find((item: any) => item.value === value)?.label;
   };
 
+  // const handleFormSubmit = () => {
+  //   const dateString = JSON.stringify(form.getFieldValue('created_date'));
+  //   // form.setFieldValue('created_date', dateString);
+  //   console.log('bbb', form.getFieldValue('created_date')?.format('YYYY-MM-DD'));
+  //   // console.log('aaa', form.getFieldsValue());
+  // };
+
   const handleFormSubmit = () => {
-    const dateString = JSON.stringify(form.getFieldValue('created_date'));
-    // form.setFieldValue('created_date', dateString);
-    console.log('bbb', form.getFieldValue('created_date')?.format('YYYY-MM-DD'));
-    // console.log('aaa', form.getFieldsValue());
+    const values = form.getFieldsValue();
+    const params = {
+      enterprise_id: localStorage.getItem('enterprise_id'),
+      license_code: values[LICENSE_DATA_FIELD.license_code],
+      license_name: values[LICENSE_DATA_FIELD.license_name],
+      status: values[LICENSE_DATA_FIELD.status],
+      career_field_id: values[LICENSE_DATA_FIELD.career_field_id],
+      activation_date: values[LICENSE_DATA_FIELD.activation_date],
+      expiration_date: values[LICENSE_DATA_FIELD.expiration_date],
+    };
+    fetchData2(params);
   };
 
   return (
@@ -326,6 +353,7 @@ export function BussinessPackageChild(props: IProps) {
               placeholder="Mã gói"
               className="rounded-[10px] bg-white w-full"
               allowClear
+              onChange={onSearch}
             />
           </FormItem>
           <FormItem name={LICENSE_DATA_FIELD.license_name} className="w-1/6">
@@ -334,6 +362,7 @@ export function BussinessPackageChild(props: IProps) {
               placeholder="Tên gói"
               className="rounded-[10px] bg-white w-full"
               allowClear
+              onChange={onSearch}
             />
           </FormItem>
           <FormItem name={LICENSE_DATA_FIELD.career_field_id} className="w-1/6">
@@ -401,7 +430,7 @@ export function BussinessPackageChild(props: IProps) {
         </div>
         <div className="flex items-center justify-between mt-5 mb-3">
           <p className="text-[var(--primary-color)] font-bold text-xl mb-3">
-            Danh sách gói doanh nghiệp
+            Danh sách gói
           </p>
           <Link href={`/quan-ly-thanh-vien/doanh-nghiep/them-moi`}>
             <div className="w-fit cursor-pointer rounded-[10px] bg-[var(--primary-color)] text-white py-3 px-4">
