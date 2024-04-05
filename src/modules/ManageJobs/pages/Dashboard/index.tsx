@@ -45,7 +45,7 @@ const columns = [
   { name: 'DOANH NGHIỆP', uid: 'name' },
   { name: 'ĐẠI DIỆN', uid: 'represent' },
   { name: 'EMAIL', uid: 'email' },
-  { name: 'GÓI', uid: 'plan' },
+  // { name: 'GÓI', uid: 'plan' },
   { name: 'NGÀY TẠO', uid: 'created_at' },
   // { name: 'TRẠNG THÁI', uid: 'status' },
   { name: 'THAO TÁC', uid: 'actions' },
