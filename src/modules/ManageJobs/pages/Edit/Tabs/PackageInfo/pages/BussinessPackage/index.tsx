@@ -459,8 +459,9 @@ const BussinessPackageOrder = (props: any) => {
                   style={type === 'edit' ? {border: '1px solid blue'} : {}}
                 >
                   {listStatus.map((item: any) => {
+                     const isDisabled = item.value !== 0 && (status === 1 || status === 2);
                     return (
-                      <Select.Option key={item.value} value={item.value}>
+                      <Select.Option key={item.value} value={item.value} disabled={!isDisabled}>
                         {item.label}
                       </Select.Option>
                     );

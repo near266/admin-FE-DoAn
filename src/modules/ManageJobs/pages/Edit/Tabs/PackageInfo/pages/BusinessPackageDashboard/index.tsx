@@ -126,6 +126,9 @@ export function BussinessPackageChild(props: IProps) {
         appLibrary.hideloading();
         setDataTable(response.data);
       }
+      else {
+        appLibrary.hideloading();
+      }
     } catch (error) {
       console.error('Error fetching data:', error);
     }
@@ -148,6 +151,14 @@ export function BussinessPackageChild(props: IProps) {
     } finally {
       appLibrary.hideloading();
     }
+  };
+
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+    return `${day < 10 ? '0' + day : day}/${month < 10 ? '0' + month : month}/${year}`;
   };
 
   const handleSearch = debounce(async (value) => {
@@ -180,9 +191,6 @@ export function BussinessPackageChild(props: IProps) {
           }
           return item;
         });
-        // setFiltedData(newData);
-        // console.log(newData);
-        // setDataTable(newData);
         appLibrary.hideloading();
         return message.success('Cập nhật thành công!');
       }
@@ -241,7 +249,7 @@ export function BussinessPackageChild(props: IProps) {
         return (
           <Col>
             <Row align="center">
-              <span className="text-[14px]">{item.expiration_date}</span>
+              <span className="text-[14px]">{formatDate(item.expiration_date)}</span>
             </Row>
           </Col>
         );
@@ -249,7 +257,7 @@ export function BussinessPackageChild(props: IProps) {
         return (
           <Col>
             <Row align="center">
-              <span className="text-[14px]">{item.activation_date}</span>
+              <span className="text-[14px]">{formatDate(item.activation_date)}</span>
             </Row>
           </Col>
         );
