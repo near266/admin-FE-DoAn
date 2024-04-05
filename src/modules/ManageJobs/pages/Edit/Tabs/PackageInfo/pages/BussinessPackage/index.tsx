@@ -35,15 +35,10 @@ const BussinessPackageOrder = (props: any) => {
   const router = useRouter();
   const id = router.query.id;
   const [form] = Form.useForm();
-  const avatarFile = Form.useWatch<UploadChangeParam<UploadFile<any>>>(
-    LICENSE_DATA_FIELD.images,
-    form
-  );
-  const [descriptionEdit, setDescriptionEdit] = useState<string>('');
-  const [listImgEdit, setListImgEdit] = useState<string[]>([]);
   const [activationDate, setActivationDate] = useState<Date | null>(null);
   const [isAllFieldsFilled, setIsAllFieldsFilled] = useState<boolean>(false);
   const [status, setStatus] = useState(0);
+  const [change, setChange] = useState<boolean>(false);
 
   const handleActivationDateChange = (date: moment.Moment | null) => {
     const selectedDate = date ? date.toDate() : null;
@@ -52,7 +47,8 @@ const BussinessPackageOrder = (props: any) => {
     const currentDate = moment();
     const expirationDate1 = selectedDate ? moment(selectedDate).add(periodMonths1, 'months').toDate().toISOString() : null;
       form.setFieldsValue({ [LICENSE_DATA_FIELD.expiration_date]: moment(expirationDate1) });
-  };
+    setChange(true)
+  };    
 
   useEffect(() => {
     const careerFieldId = form.getFieldValue(LICENSE_DATA_FIELD.career_field_id);
@@ -68,7 +64,7 @@ const BussinessPackageOrder = (props: any) => {
       getLicense();
     }
   }, []);
-
+  
   const getLicense = async () => {
     try {
       const res: IGetListLicenseRes = await managerServiceService.getLicenseOrderDetail(
@@ -98,6 +94,25 @@ const BussinessPackageOrder = (props: any) => {
     }
   };
 
+  useEffect(() => {
+    const currentDate = moment();
+    const activationDate = form.getFieldValue(LICENSE_DATA_FIELD.activation_date);
+    const expirationDate = form.getFieldValue(LICENSE_DATA_FIELD.expiration_date);
+  
+    if (activationDate && currentDate.isSame(activationDate, 'day')) {
+      setStatus(1); // Đã kích hoạt
+      form.setFieldsValue({ [LICENSE_DATA_FIELD.status]: 1 });
+    } 
+    if(activationDate && currentDate.isBefore(activationDate, 'day')) {
+      setStatus(0); // Chưa kích hoạt
+      form.setFieldsValue({ [LICENSE_DATA_FIELD.status]: 0 });
+    }
+    if (expirationDate && currentDate.isAfter(expirationDate, 'day')) {
+      setStatus(2); // Đã hết hạn
+      form.setFieldsValue({ [LICENSE_DATA_FIELD.status]: 2 });
+    }
+  }, [form.getFieldValue(LICENSE_DATA_FIELD.activation_date), form.getFieldValue(LICENSE_DATA_FIELD.expiration_date)]);
+
   console.log("ID Cập nhật: ", id)
 
   const handleFormSubmit = async () => {
@@ -105,6 +120,7 @@ const BussinessPackageOrder = (props: any) => {
       const formData = form.getFieldsValue();
       const periodMonths = formData[LICENSE_DATA_FIELD.period];
       const expirationDate = moment(activationDate).add(periodMonths, 'months').toISOString();
+      const expirationDate2 = moment(moment()).add(periodMonths, 'months').toISOString();
       const params = {
         career_field_id: type === 'edit' ? null : formData[LICENSE_DATA_FIELD.career_field_id],
         license_id: type === 'edit' ? null : 0,
@@ -117,8 +133,8 @@ const BussinessPackageOrder = (props: any) => {
         period: formData[LICENSE_DATA_FIELD.period],
         quantity_record_view: formData[LICENSE_DATA_FIELD.quantity_record_view],
         quantity_record_take: formData[LICENSE_DATA_FIELD.quantity_record_take],
-        expiration_date: expirationDate,
-        status: formData[LICENSE_DATA_FIELD.status],
+        expiration_date: change ? expirationDate : expirationDate2,
+        status: status,
         discount: formData[LICENSE_DATA_FIELD.discount],
         total_amount: formData[LICENSE_DATA_FIELD.total_amount],
         description: formData[LICENSE_DATA_FIELD.description],
@@ -281,6 +297,7 @@ const BussinessPackageOrder = (props: any) => {
                 format="DD/MM/YYYY"
                 disabledDate={(current) => current && current < moment().startOf('day')}
                 onChange={handleActivationDateChange}
+                defaultValue={moment()}
               />
             </FormItem>
           </div>
@@ -437,6 +454,8 @@ const BussinessPackageOrder = (props: any) => {
                   placeholder="Chọn trạng thái"
                   className="!rounded-[10px] bg-white w-full"
                   allowClear
+                  value={status} 
+                  onChange={(value) => setStatus(value)}
                   style={type === 'edit' ? {border: '1px solid blue'} : {}}
                 >
                   {listStatus.map((item: any) => {
@@ -520,7 +539,7 @@ const BussinessPackageOrder = (props: any) => {
             <Link href={`/quan-ly-thanh-vien/doanh-nghiep/chinh-sua/${localStorage.getItem('enterprise_id')}`}>
               <div className="custom-button !bg-[#EB4C4C] mr-2">Hủy bỏ</div>
             </Link>
-            <button className={`custom-button ${!isAllFieldsFilled ? '!bg-[#f1f1f5] !text-[#92929d] shadow-[0_3px_10px_rgb(0,0,0,0.2)]' : ''}`}>{type === 'edit' ? 'Lưu thay đổi' : 'Thêm mới'}</button>
+            <button className="custom-button shadow-[0_3px_10px_rgb(0,0,0,0.2)]">{type === 'edit' ? 'Lưu thay đổi' : 'Thêm mới'}</button>
           </div>
         </div>
       </Form>
