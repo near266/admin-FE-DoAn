@@ -39,6 +39,7 @@ const BussinessPackageOrder = (props: any) => {
   const [isAllFieldsFilled, setIsAllFieldsFilled] = useState<boolean>(false);
   const [status, setStatus] = useState(0);
   const [change, setChange] = useState<boolean>(false);
+  const [change2, setChange2] = useState<boolean>(false);
 
   const handleActivationDateChange = (date: moment.Moment | null) => {
     const selectedDate = date ? date.toDate() : null;
@@ -48,8 +49,22 @@ const BussinessPackageOrder = (props: any) => {
     const expirationDate1 = selectedDate ? moment(selectedDate).add(periodMonths1, 'months').toDate().toISOString() : null;
       form.setFieldsValue({ [LICENSE_DATA_FIELD.expiration_date]: moment(expirationDate1) });
     setChange(true)
-  };    
-
+  };   
+  
+  const handleExpirationDateChange = (date: moment.Moment | null) => {
+    const currentDate = moment();
+    const newExpirationDate = date ? date.toDate() : null;
+  
+    if (newExpirationDate && moment(newExpirationDate).isAfter(currentDate, 'day')) {
+      setStatus(1); // Đã kích hoạt
+      form.setFieldsValue({ [LICENSE_DATA_FIELD.status]: 1 });
+    } else {
+      setStatus(2); // Đã hết hạn
+      form.setFieldsValue({ [LICENSE_DATA_FIELD.status]: 2 });
+    }
+    setChange2(true);
+  };
+  
   useEffect(() => {
     const careerFieldId = form.getFieldValue(LICENSE_DATA_FIELD.career_field_id);
     const licenseCode = form.getFieldValue(LICENSE_DATA_FIELD.license_code);
@@ -99,7 +114,7 @@ const BussinessPackageOrder = (props: any) => {
     const activationDate = form.getFieldValue(LICENSE_DATA_FIELD.activation_date);
     const expirationDate = form.getFieldValue(LICENSE_DATA_FIELD.expiration_date);
   
-    if (activationDate && currentDate.isSame(activationDate, 'day')) {
+    if (activationDate && currentDate.isSameOrAfter(activationDate, 'day')) {
       setStatus(1); // Đã kích hoạt
       form.setFieldsValue({ [LICENSE_DATA_FIELD.status]: 1 });
     } 
@@ -111,7 +126,7 @@ const BussinessPackageOrder = (props: any) => {
       setStatus(2); // Đã hết hạn
       form.setFieldsValue({ [LICENSE_DATA_FIELD.status]: 2 });
     }
-  }, [form.getFieldValue(LICENSE_DATA_FIELD.activation_date), form.getFieldValue(LICENSE_DATA_FIELD.expiration_date)]);
+  }, [router, form.getFieldValue(LICENSE_DATA_FIELD.activation_date), form.getFieldValue(LICENSE_DATA_FIELD.expiration_date)]);
 
   console.log("ID Cập nhật: ", id)
 
@@ -119,8 +134,15 @@ const BussinessPackageOrder = (props: any) => {
     try {
       const formData = form.getFieldsValue();
       const periodMonths = formData[LICENSE_DATA_FIELD.period];
-      const expirationDate = moment(activationDate).add(periodMonths, 'months').toISOString();
-      const expirationDate2 = moment(moment()).add(periodMonths, 'months').toISOString();
+      let expirationDate;
+      if(change) {
+        expirationDate = moment(activationDate).add(periodMonths, 'months').toISOString();
+      } else {
+        expirationDate = moment(moment()).add(periodMonths, 'months').toISOString();
+      } 
+      if (change2) {
+        expirationDate = formData[LICENSE_DATA_FIELD.expiration_date];
+      }
       const params = {
         career_field_id: type === 'edit' ? null : formData[LICENSE_DATA_FIELD.career_field_id],
         license_id: type === 'edit' ? null : 0,
@@ -133,7 +155,7 @@ const BussinessPackageOrder = (props: any) => {
         period: formData[LICENSE_DATA_FIELD.period],
         quantity_record_view: formData[LICENSE_DATA_FIELD.quantity_record_view],
         quantity_record_take: formData[LICENSE_DATA_FIELD.quantity_record_take],
-        expiration_date: change ? expirationDate : expirationDate2,
+        expiration_date: expirationDate,
         status: status,
         discount: formData[LICENSE_DATA_FIELD.discount],
         total_amount: formData[LICENSE_DATA_FIELD.total_amount],
@@ -290,9 +312,7 @@ const BussinessPackageOrder = (props: any) => {
             >
               <DatePicker
                 locale={locale}
-                status="warning"
                 style={{borderColor: 'blue'}}
-                placeholder="12/03/2002"
                 className="rounded-[10px] p-2 w-full"
                 format="DD/MM/YYYY"
                 disabledDate={(current) => current && current < moment().startOf('day')}
@@ -437,6 +457,7 @@ const BussinessPackageOrder = (props: any) => {
                   status={type === 'edit' ? 'warning' : ''}
                   style={type === 'edit' ? { borderColor: 'blue' } : {}}
                   format="DD/MM/YYYY"
+                  onChange={handleExpirationDateChange}
                 />
               </FormItem>
             </div>
@@ -459,7 +480,7 @@ const BussinessPackageOrder = (props: any) => {
                   style={type === 'edit' ? {border: '1px solid blue'} : {}}
                 >
                   {listStatus.map((item: any) => {
-                     const isDisabled = item.value !== 0 && (status === 1 || status === 2);
+                     const isDisabled = item.value !== 0 && (status === 1 || status === 2 || status === 0);
                     return (
                       <Select.Option key={item.value} value={item.value} disabled={!isDisabled}>
                         {item.label}

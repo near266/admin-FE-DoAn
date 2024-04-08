@@ -151,6 +151,10 @@ const sideBarItems = [
         label: 'CV tìm kiếm việc làm',
         pathName: '/quan-ly-cv/cv-tim-kiem-viec-lam',
       },
+      {
+        label: 'CV bài test',
+        pathName: '/quan-ly-cv/cv-bai-test',
+      },
     ],
   },
   {

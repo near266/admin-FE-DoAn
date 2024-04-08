@@ -92,6 +92,10 @@ const navItem = [
         queryString: '/quan-ly-cv/cv-tim-kiem-viec-lam',
         active: false,
       },
+      {
+        name: 'CV bài test',
+        queryString: '/quan-ly-cv/cv-bai-test',
+      }
     ],
   },
   { name: 'Quản lý nghề', path: 'quan-ly-nghe', tabs: [] },
