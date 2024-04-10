@@ -40,6 +40,8 @@ const BussinessPackageOrder = (props: any) => {
   const [status, setStatus] = useState(0);
   const [change, setChange] = useState<boolean>(false);
   const [change2, setChange2] = useState<boolean>(false);
+  const [isExpired, setIsExpired] = useState(false);
+  const [initialStatus, setInitialStatus] = useState(0);
 
   const handleActivationDateChange = (date: moment.Moment | null) => {
     const selectedDate = date ? date.toDate() : null;
@@ -50,20 +52,6 @@ const BussinessPackageOrder = (props: any) => {
       form.setFieldsValue({ [LICENSE_DATA_FIELD.expiration_date]: moment(expirationDate1) });
     setChange(true)
   };   
-  
-  const handleExpirationDateChange = (date: moment.Moment | null) => {
-    const currentDate = moment();
-    const newExpirationDate = date ? date.toDate() : null;
-  
-    if (newExpirationDate && moment(newExpirationDate).isAfter(currentDate, 'day')) {
-      setStatus(1); // Đã kích hoạt
-      form.setFieldsValue({ [LICENSE_DATA_FIELD.status]: 1 });
-    } else {
-      setStatus(2); // Đã hết hạn
-      form.setFieldsValue({ [LICENSE_DATA_FIELD.status]: 2 });
-    }
-    setChange2(true);
-  };
   
   useEffect(() => {
     const careerFieldId = form.getFieldValue(LICENSE_DATA_FIELD.career_field_id);
@@ -79,6 +67,12 @@ const BussinessPackageOrder = (props: any) => {
       getLicense();
     }
   }, []);
+
+  useEffect(() => {
+    if (status === 2) {
+      setIsExpired(true);
+    }
+  })
   
   const getLicense = async () => {
     try {
@@ -417,7 +411,7 @@ const BussinessPackageOrder = (props: any) => {
                 allowClear
                 status={type === 'edit' ? 'warning' : ''}
                 style={type === 'edit' ? { borderColor: 'blue' } : {}}
-                disabled={!isDisabled}
+                disabled={!isDisabled || isExpired}
               ></Input>
             </FormItem>
           </div>
@@ -457,7 +451,8 @@ const BussinessPackageOrder = (props: any) => {
                   status={type === 'edit' ? 'warning' : ''}
                   style={type === 'edit' ? { borderColor: 'blue' } : {}}
                   format="DD/MM/YYYY"
-                  onChange={handleExpirationDateChange}
+                  disabledDate={(current) => current && current < moment().startOf('day')}
+                  // onChange={handleExpirationDateChange}
                 />
               </FormItem>
             </div>
