@@ -29,6 +29,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { IGetListLicenseRes } from '../../shared/interface';
+import { managerServiceService } from '../../shared/api';
 import { formatServerDateToDurationString } from '@/shared/helpers';
 import { LICENSE_DATA_FIELD, listCareer, listStatus } from '../../shared/enum';
 import FormItem from 'antd/lib/form/FormItem';
@@ -111,6 +112,33 @@ export function BusinessPackageDashboard(props: IProps) {
     }, 500),
     [dataTable, filtedData]
   );
+
+  const fetchData2 = async (params) => {
+    appLibrary.showloading();
+    try {
+      const page = 0;
+      const pageSize = 10; 
+      const response = await managerServiceService.getAllLicense(page, pageSize, params);
+      if (response.data && response.data.length > 0) {
+        appLibrary.hideloading();
+        setDataTable(response.data);
+      }
+      else {
+        appLibrary.hideloading();
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+    return `${day < 10 ? '0' + day : day}/${month < 10 ? '0' + month : month}/${year}`;
+  };
+
   const handlePublise = async (value, assessment_id) => {
     console.log(value, assessment_id);
 
@@ -240,10 +268,14 @@ export function BusinessPackageDashboard(props: IProps) {
   };
 
   const handleFormSubmit = () => {
-    const dateString = JSON.stringify(form.getFieldValue('created_date'));
-    // form.setFieldValue('created_date', dateString);
-    console.log('bbb', form.getFieldValue('created_date')?.format('YYYY-MM-DD'));
-    // console.log('aaa', form.getFieldsValue());
+    const values = form.getFieldsValue();
+    const params = {
+      license_code: values[LICENSE_DATA_FIELD.license_code],
+      license_name: values[LICENSE_DATA_FIELD.license_name],
+      status: values[LICENSE_DATA_FIELD.status],
+      career_field_id: values[LICENSE_DATA_FIELD.career_field_id],
+    };
+    fetchData2(params);
   };
 
   return (
@@ -288,7 +320,7 @@ export function BusinessPackageDashboard(props: IProps) {
             </Select>
           </FormItem>
           <FormItem name={LICENSE_DATA_FIELD.created_date} className="w-1/6">
-            <DatePicker placeholder="Ngày tạo" className="!w-full !h-[39px]" />
+            <DatePicker placeholder="Ngày tạo" className="!w-full !h-[39px] rounded-[10px]" format="DD/MM/YYYY"/>
           </FormItem>
           <FormItem name={LICENSE_DATA_FIELD.status} className="w-1/6">
             <Select

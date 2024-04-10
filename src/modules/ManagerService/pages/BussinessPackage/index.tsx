@@ -1,7 +1,7 @@
 import SrcIcons from '@/assets/icons';
 import { EditorBlock } from '@/modules/ManageAssessments/components/EditorBlock';
 import { RECRUITMENT_DATA_FIELD } from '@/modules/ManageJobs/shared/enum';
-import { Form, Input, Select, message } from 'antd';
+import { Form, Input, InputNumber, Select, message } from 'antd';
 import { UploadFile } from 'antd/es/upload';
 import FormItem from 'antd/lib/form/FormItem';
 import { UploadChangeParam } from 'antd/lib/upload';
@@ -79,6 +79,7 @@ const BussinessPackage = (props: any) => {
       const res = await managerServiceService.addLicense(data);
       if (res) {
         message.success('Thêm mới thành công');
+        router.push(`/quan-ly-viec-lam/goi-doanh-nghiep`);
       }
       appLibrary.hideloading();
     } catch (error) {
@@ -95,6 +96,7 @@ const BussinessPackage = (props: any) => {
       const res = await managerServiceService.updateLicense(data);
       if (res) {
         message.success('Cập nhật thành công');
+        router.push(`/quan-ly-viec-lam/goi-doanh-nghiep`);
       }
       appLibrary.hideloading();
     } catch (error) {
@@ -188,12 +190,15 @@ const BussinessPackage = (props: any) => {
               className="w-full"
               rules={[{ required: true, message: 'Trường này là bắt buộc' }]}
             >
-              <Input
+              <InputNumber
                 size="large"
                 placeholder="Nhập giá bán"
                 className="rounded-[10px] bg-white w-full"
-                allowClear
-              ></Input>
+                formatter={(value) =>
+                  `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, '.')
+                }
+                parser={(value) => value!.replace(/\$\s?|(\.*)/g, '')}
+              ></InputNumber>
             </FormItem>
           </div>
           <div className="w-full">
@@ -205,12 +210,15 @@ const BussinessPackage = (props: any) => {
               className="w-full"
               rules={[{ required: true, message: 'Trường này là bắt buộc' }]}
             >
-              <Input
+              <InputNumber
                 size="large"
                 placeholder="Nhập mã gói"
                 className="rounded-[10px] bg-white w-full"
-                allowClear
-              ></Input>
+                formatter={(value) =>
+                  `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, '.')
+                }
+                parser={(value) => value!.replace(/\$\s?|(\.*)/g, '')}
+              ></InputNumber>
             </FormItem>
           </div>
           <div className="w-full">
