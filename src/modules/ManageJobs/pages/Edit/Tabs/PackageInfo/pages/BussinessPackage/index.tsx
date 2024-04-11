@@ -29,6 +29,18 @@ import TextArea from 'antd/lib/input/TextArea';
 import { IGetListLicenseRes } from '../../shared/interface';
 import moment from 'moment';
 
+const calculatePackageStatus = (activationDate: moment.Moment, expirationDate: moment.Moment) => {
+  const currentDate = moment();
+  
+  if (currentDate.isBefore(activationDate)) {
+    return 0; // Chưa kích hoạt
+  } else if (currentDate.isBetween(activationDate, expirationDate)) {
+    return 1; // Đã kích hoạt
+  } else {
+    return 2; // Đã hết hạn
+  }
+};
+
 const BussinessPackageOrder = (props: any) => {
   const { type } = props;
   const isDisabled = type === 'edit';
@@ -40,8 +52,8 @@ const BussinessPackageOrder = (props: any) => {
   const [status, setStatus] = useState(0);
   const [change, setChange] = useState<boolean>(false);
   const [change2, setChange2] = useState<boolean>(false);
-  const [isExpired, setIsExpired] = useState(false);
-  const [initialStatus, setInitialStatus] = useState(0);
+  const [isExpired, setIsExpired] = useState<boolean>(false);
+  const [initialStatus, setInitialStatus] = useState<boolean>(false);
 
   const handleActivationDateChange = (date: moment.Moment | null) => {
     const selectedDate = date ? date.toDate() : null;
@@ -67,12 +79,6 @@ const BussinessPackageOrder = (props: any) => {
       getLicense();
     }
   }, []);
-
-  useEffect(() => {
-    if (status === 2) {
-      setIsExpired(true);
-    }
-  })
   
   const getLicense = async () => {
     try {
@@ -104,23 +110,40 @@ const BussinessPackageOrder = (props: any) => {
   };
 
   useEffect(() => {
-    const currentDate = moment();
-    const activationDate = form.getFieldValue(LICENSE_DATA_FIELD.activation_date);
-    const expirationDate = form.getFieldValue(LICENSE_DATA_FIELD.expiration_date);
-  
-    if (activationDate && currentDate.isSameOrAfter(activationDate, 'day')) {
-      setStatus(1); // Đã kích hoạt
-      form.setFieldsValue({ [LICENSE_DATA_FIELD.status]: 1 });
-    } 
-    if(activationDate && currentDate.isBefore(activationDate, 'day')) {
-      setStatus(0); // Chưa kích hoạt
-      form.setFieldsValue({ [LICENSE_DATA_FIELD.status]: 0 });
+    if (type === 'edit') {
+      getLicense().then(() => {
+        const activationDate = form.getFieldValue(LICENSE_DATA_FIELD.activation_date);
+        const expirationDate = form.getFieldValue(LICENSE_DATA_FIELD.expiration_date);
+        console.log("Ngày kích hoạt: ", activationDate)
+        console.log("Ngày kết thúc: ", expirationDate)
+        const status = calculatePackageStatus(activationDate, expirationDate);
+        setStatus(status);
+        if (status === 1 ) {
+          setInitialStatus(true);
+          setIsExpired(false);
+          form.setFieldsValue({ [LICENSE_DATA_FIELD.status]: 1 });
+        }
+        if (status === 2 ) {
+          setInitialStatus(true);
+          setIsExpired(true)
+          form.setFieldsValue({ [LICENSE_DATA_FIELD.status]: 2 });
+        }
+        if (status === 0 ) {
+          setInitialStatus(false);
+          setIsExpired(false);
+          form.setFieldsValue({ [LICENSE_DATA_FIELD.status]: 0 });
+        }
+        console.log("Trạng thái Tus: ", status);
+      });
     }
-    if (expirationDate && currentDate.isAfter(expirationDate, 'day')) {
-      setStatus(2); // Đã hết hạn
-      form.setFieldsValue({ [LICENSE_DATA_FIELD.status]: 2 });
-    }
-  }, [router, form.getFieldValue(LICENSE_DATA_FIELD.activation_date), form.getFieldValue(LICENSE_DATA_FIELD.expiration_date)]);
+  }, [status]);
+
+  // useEffect(() => {
+  //   if (status === 2) {
+  //     setIsExpired(true);
+  //   }
+  // })
+
 
   console.log("ID Cập nhật: ", id)
 
@@ -295,8 +318,8 @@ const BussinessPackageOrder = (props: any) => {
             </FormItem>
           </div>
           <div className="w-full">
-            <p className="font-[400] text-[16px] leading-[24px] text-[#44444F] mb-1">
-              Ngày kích hoạt <span className="text-[#EB4C4C]">*</span>
+            <p className={`font-[400] text-[16px] leading-[24px] ${initialStatus ? 'text-text-default' : 'text-[#44444F]'} mb-1`}>
+              Ngày kích hoạt <span className={`${initialStatus ? 'hidden' : 'text-[#EB4C4C] '}`}>*</span>
             </p>
             <FormItem
               name={LICENSE_DATA_FIELD.activation_date}
@@ -309,6 +332,7 @@ const BussinessPackageOrder = (props: any) => {
                 style={{borderColor: 'blue'}}
                 className="rounded-[10px] p-2 w-full"
                 format="DD/MM/YYYY"
+                disabled={initialStatus}
                 disabledDate={(current) => current && current < moment().startOf('day')}
                 onChange={handleActivationDateChange}
                 defaultValue={moment()}
@@ -429,7 +453,7 @@ const BussinessPackageOrder = (props: any) => {
                 allowClear
                 status={type === 'edit' ? 'warning' : ''}
                 style={type === 'edit' ? { borderColor: 'blue' } : {}}
-                disabled={!isDisabled}
+                disabled={!isDisabled || isExpired}
               ></Input>
             </FormItem>
           </div>
