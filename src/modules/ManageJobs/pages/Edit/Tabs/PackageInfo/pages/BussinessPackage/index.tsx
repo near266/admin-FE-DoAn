@@ -63,7 +63,22 @@ const BussinessPackageOrder = (props: any) => {
     const expirationDate1 = selectedDate ? moment(selectedDate).add(periodMonths1, 'months').toDate().toISOString() : null;
       form.setFieldsValue({ [LICENSE_DATA_FIELD.expiration_date]: moment(expirationDate1) });
     setChange(true)
-  };   
+  };  
+  
+  const handleExpirationDateChange = (date: moment.Moment | null) => {
+    const currentDate = moment();
+    const newExpirationDate = date ? date.toDate() : null;
+  
+    if (newExpirationDate && moment(newExpirationDate).isAfter(currentDate, 'day')) {
+      setStatus(1); // Đã kích hoạt
+      form.setFieldsValue({ [LICENSE_DATA_FIELD.status]: 1 });
+    } else {
+      setStatus(2); // Đã hết hạn
+      form.setFieldsValue({ [LICENSE_DATA_FIELD.status]: 2 });
+    }
+    setChange2(true);
+  };
+
   
   useEffect(() => {
     const careerFieldId = form.getFieldValue(LICENSE_DATA_FIELD.career_field_id);
@@ -422,8 +437,8 @@ const BussinessPackageOrder = (props: any) => {
             </FormItem>
           </div>
           <div className="w-full">
-            <p className={`font-[400] text-[16px] leading-[24px] ${type === 'edit' ? 'text-[#44444F]' : 'text-text-default'} mb-1`}>
-              Số hồ sơ có thể xem <span className={`${type === 'edit' ? 'text-[#EB4C4C] ' : 'hidden'}`}>*</span>
+            <p className={`font-[400] text-[16px] leading-[24px] ${type === 'edit' && !isExpired ? 'text-[#44444F]' : 'text-text-default'} mb-1`}>
+              Số hồ sơ có thể xem <span className={`${type === 'edit' && !isExpired ? 'text-[#EB4C4C] ' : 'hidden'}`}>*</span>
             </p>
             <FormItem
               name={LICENSE_DATA_FIELD.quantity_record_view}
@@ -433,15 +448,15 @@ const BussinessPackageOrder = (props: any) => {
                 size="large"
                 className="rounded-[10px] bg-white w-full"
                 allowClear
-                status={type === 'edit' ? 'warning' : ''}
-                style={type === 'edit' ? { borderColor: 'blue' } : {}}
+                status={type === 'edit' && !isExpired ? 'warning' : ''}
+                style={type === 'edit' && !isExpired ? { borderColor: 'blue' } : {}}
                 disabled={!isDisabled || isExpired}
               ></Input>
             </FormItem>
           </div>
           <div className="w-full">
-            <p className={`font-[400] text-[16px] leading-[24px] ${type === 'edit' ? 'text-[#44444F]' : 'text-text-default'} mb-1`}>
-              Số hồ sơ có thể tiếp nhận <span className={`${type === 'edit' ? 'text-[#EB4C4C] ' : 'hidden'}`}>*</span>
+            <p className={`font-[400] text-[16px] leading-[24px] ${type === 'edit' && !isExpired ? 'text-[#44444F]' : 'text-text-default'} mb-1`}>
+              Số hồ sơ có thể tiếp nhận <span className={`${type === 'edit' && !isExpired ? 'text-[#EB4C4C] ' : 'hidden'}`}>*</span>
             </p>
             <FormItem
               name={LICENSE_DATA_FIELD.quantity_record_take}
@@ -451,8 +466,8 @@ const BussinessPackageOrder = (props: any) => {
                 size="large"
                 className="rounded-[10px] bg-white w-full"
                 allowClear
-                status={type === 'edit' ? 'warning' : ''}
-                style={type === 'edit' ? { borderColor: 'blue' } : {}}
+                status={type === 'edit' && !isExpired ? 'warning' : ''}
+                style={type === 'edit' && !isExpired ? { borderColor: 'blue' } : {}}
                 disabled={!isDisabled || isExpired}
               ></Input>
             </FormItem>
@@ -461,8 +476,8 @@ const BussinessPackageOrder = (props: any) => {
         { type === 'edit' && 
           <div className="flex gap-8 mb-2">
             <div className="w-full">
-              <p className="font-[400] text-[16px] leading-[24px] text-[#44444F] mb-1">
-                Ngày hết hạn <span className={`${type === 'edit' ? 'text-[#EB4C4C] ' : 'hidden'}`}>*</span>
+              <p className={`font-[400] text-[16px] leading-[24px] ${type === 'edit' && !isExpired ? 'text-[#44444F]' : 'text-text-default'} mb-1`}>
+                Ngày hết hạn <span className={`${type === 'edit' && !isExpired ? 'text-[#EB4C4C] ' : 'hidden'}`}>*</span>
               </p>
               <FormItem
                 name={LICENSE_DATA_FIELD.expiration_date}
@@ -476,7 +491,8 @@ const BussinessPackageOrder = (props: any) => {
                   style={type === 'edit' ? { borderColor: 'blue' } : {}}
                   format="DD/MM/YYYY"
                   disabledDate={(current) => current && current < moment().startOf('day')}
-                  // onChange={handleExpirationDateChange}
+                  disabled={isExpired}
+                  onChange={handleExpirationDateChange}
                 />
               </FormItem>
             </div>
