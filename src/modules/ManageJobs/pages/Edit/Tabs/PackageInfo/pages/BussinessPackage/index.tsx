@@ -65,6 +65,21 @@ const BussinessPackageOrder = (props: any) => {
     setChange(true)
   };  
   
+  useEffect(() => {
+    if (!activationDate) {
+      setStatus(1); // Đã kích hoạt
+    } else {
+      const currentDate = moment();
+      if (moment(activationDate).isAfter(currentDate, 'day')) {
+        setStatus(0); // Chưa kích hoạt
+      } else if (moment(activationDate).isSame(currentDate, 'day')) {
+        setStatus(1); // Đã kích hoạt
+      } else {
+        setStatus(2);
+      }
+    }
+  }, [activationDate]);
+   
   const handleExpirationDateChange = (date: moment.Moment | null) => {
     const currentDate = moment();
     const newExpirationDate = date ? date.toDate() : null;
