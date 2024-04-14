@@ -200,11 +200,12 @@ const BussinessPackageOrder = (props: any) => {
       let expirationDate;
       if(change) {
         expirationDate = moment(activationDate).add(periodMonths, 'months').toISOString();
-      } else {
+      }else if(!change && type !== 'edit') {
         expirationDate = moment(moment()).add(periodMonths, 'months').toISOString();
-      } 
-      if (change2) {
+      } else if (change2 && type === 'edit') {
         expirationDate = formData[LICENSE_DATA_FIELD.expiration_date];
+      } else if (!change2 && type === 'edit'){
+        expirationDate = moment(formData[LICENSE_DATA_FIELD.activation_date]).add(periodMonths, 'months').toISOString();
       }
       const params = {
         career_field_id: type === 'edit' ? null : formData[LICENSE_DATA_FIELD.career_field_id],
