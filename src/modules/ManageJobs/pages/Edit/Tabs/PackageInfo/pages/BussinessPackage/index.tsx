@@ -54,6 +54,7 @@ const BussinessPackageOrder = (props: any) => {
   const [change2, setChange2] = useState<boolean>(false);
   const [isExpired, setIsExpired] = useState<boolean>(false);
   const [initialStatus, setInitialStatus] = useState<boolean>(false);
+  const [formStatus, setFormStatus] = useState<number | null>(null);
 
   const handleActivationDateChange = (date: moment.Moment | null) => {
     const selectedDate = date ? date.toDate() : null;
@@ -65,6 +66,21 @@ const BussinessPackageOrder = (props: any) => {
     setChange(true)
   };  
   
+  useEffect(() => {
+    if (!activationDate) {
+      setStatus(1); // Đã kích hoạt
+    } else {
+      const currentDate = moment();
+      if (moment(activationDate).isAfter(currentDate, 'day')) {
+        setStatus(0); // Chưa kích hoạt
+      } else if (moment(activationDate).isSame(currentDate, 'day')) {
+        setStatus(1); // Đã kích hoạt
+      } else {
+        setStatus(2);
+      }
+    }
+  }, [activationDate]);
+   
   const handleExpirationDateChange = (date: moment.Moment | null) => {
     const currentDate = moment();
     const newExpirationDate = date ? date.toDate() : null;
@@ -129,29 +145,44 @@ const BussinessPackageOrder = (props: any) => {
       getLicense().then(() => {
         const activationDate = form.getFieldValue(LICENSE_DATA_FIELD.activation_date);
         const expirationDate = form.getFieldValue(LICENSE_DATA_FIELD.expiration_date);
-        console.log("Ngày kích hoạt: ", activationDate)
-        console.log("Ngày kết thúc: ", expirationDate)
-        const status = calculatePackageStatus(activationDate, expirationDate);
-        setStatus(status);
-        if (status === 1 ) {
-          setInitialStatus(true);
-          setIsExpired(false);
-          form.setFieldsValue({ [LICENSE_DATA_FIELD.status]: 1 });
+        const calculatedStatus = calculatePackageStatus(activationDate, expirationDate);
+
+        if (formStatus !== calculatedStatus) {
+          setStatus(calculatedStatus);
+          setFormStatus(calculatedStatus);
+
+          if (calculatedStatus === 1) {
+            setInitialStatus(true);
+            setIsExpired(false);
+            form.setFieldsValue({ [LICENSE_DATA_FIELD.status]: 1 });
+          } else if (calculatedStatus === 2) {
+            setInitialStatus(true);
+            setIsExpired(true);
+            form.setFieldsValue({ [LICENSE_DATA_FIELD.status]: 2 });
+          } else {
+            setInitialStatus(false);
+            setIsExpired(false);
+            form.setFieldsValue({ [LICENSE_DATA_FIELD.status]: 0 });
+          } 
         }
-        if (status === 2 ) {
-          setInitialStatus(true);
-          setIsExpired(true)
-          form.setFieldsValue({ [LICENSE_DATA_FIELD.status]: 2 });
-        }
-        if (status === 0 ) {
-          setInitialStatus(false);
-          setIsExpired(false);
-          form.setFieldsValue({ [LICENSE_DATA_FIELD.status]: 0 });
-        }
-        console.log("Trạng thái Tus: ", status);
       });
     }
-  }, [status]);
+  }, [formStatus]);
+
+  const handleStatusChange = (value) => {
+    setStatus(value);
+
+    if (value === 1) {
+      setInitialStatus(true);
+      setIsExpired(false);
+    } else if (value === 2) {
+      setInitialStatus(true);
+      setIsExpired(true);
+    } else {
+      setInitialStatus(false);
+      setIsExpired(false);
+    }
+  };
 
   // useEffect(() => {
   //   if (status === 2) {
@@ -490,7 +521,7 @@ const BussinessPackageOrder = (props: any) => {
                   status={type === 'edit' ? 'warning' : ''}
                   style={type === 'edit' ? { borderColor: 'blue' } : {}}
                   format="DD/MM/YYYY"
-                  disabledDate={(current) => current && current < moment().startOf('day')}
+                  // disabledDate={(current) => current && current < moment().startOf('day')}
                   disabled={isExpired}
                   onChange={handleExpirationDateChange}
                 />
@@ -511,7 +542,7 @@ const BussinessPackageOrder = (props: any) => {
                   className="!rounded-[10px] bg-white w-full"
                   allowClear
                   value={status} 
-                  onChange={(value) => setStatus(value)}
+                  onChange={handleStatusChange}
                   style={type === 'edit' ? {border: '1px solid blue'} : {}}
                 >
                   {listStatus.map((item: any) => {
