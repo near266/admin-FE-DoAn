@@ -67,13 +67,13 @@ const navItem = [
     path: 'quan-ly-viec-lam',
     tabs: [
       {
-        name: 'Danh sách doanh nghiệp',
-        queryString: '/quan-ly-viec-lam/danh-sach-doanh-nghiep',
+        name: 'Tin tuyển dụng',
+        queryString: '/quan-ly-viec-lam/tin-tuyen-dung',
         active: false,
       },
       {
-        name: 'Tin tuyển dụng',
-        queryString: '/quan-ly-viec-lam/tin-tuyen-dung',
+        name: 'Gói doanh nghiệp',
+        queryString: '/quan-ly-viec-lam/goi-doanh-nghiep',
         active: false,
       },
     ],
