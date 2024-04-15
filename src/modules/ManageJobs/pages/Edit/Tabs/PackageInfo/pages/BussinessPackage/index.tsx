@@ -146,24 +146,42 @@ const BussinessPackageOrder = (props: any) => {
         const activationDate = form.getFieldValue(LICENSE_DATA_FIELD.activation_date);
         const expirationDate = form.getFieldValue(LICENSE_DATA_FIELD.expiration_date);
         const calculatedStatus = calculatePackageStatus(activationDate, expirationDate);
-
         if (formStatus !== calculatedStatus) {
           setStatus(calculatedStatus);
           setFormStatus(calculatedStatus);
-
-          if (calculatedStatus === 1) {
+          
+          console.log("Trạng thái 15/4: ", form.getFieldValue(LICENSE_DATA_FIELD.status));
+          if (form.getFieldValue(LICENSE_DATA_FIELD.status) === 1 && calculatedStatus === 1) {
             setInitialStatus(true);
             setIsExpired(false);
-            form.setFieldsValue({ [LICENSE_DATA_FIELD.status]: 1 });
-          } else if (calculatedStatus === 2) {
+            form.setFieldsValue({ [LICENSE_DATA_FIELD.status]: form.getFieldValue(LICENSE_DATA_FIELD.status) });
+            setStatus(form.getFieldValue(LICENSE_DATA_FIELD.status));
+          } else if(form.getFieldValue(LICENSE_DATA_FIELD.status) === 1 && calculatedStatus !== 1){
+            setInitialStatus(true);
+            setIsExpired(false);
+            form.setFieldsValue({ [LICENSE_DATA_FIELD.status]: form.getFieldValue(LICENSE_DATA_FIELD.status) });
+            setStatus(form.getFieldValue(LICENSE_DATA_FIELD.status));
+          } else if (form.getFieldValue(LICENSE_DATA_FIELD.status) === 2 && calculatedStatus === 2) {
             setInitialStatus(true);
             setIsExpired(true);
-            form.setFieldsValue({ [LICENSE_DATA_FIELD.status]: 2 });
-          } else {
+            form.setFieldsValue({ [LICENSE_DATA_FIELD.status]: form.getFieldValue(LICENSE_DATA_FIELD.status) });
+            setStatus(form.getFieldValue(LICENSE_DATA_FIELD.status));
+          } else if (form.getFieldValue(LICENSE_DATA_FIELD.status) === 2 && calculatedStatus === 0){
+            setInitialStatus(true);
+            setIsExpired(true);
+            form.setFieldsValue({ [LICENSE_DATA_FIELD.status]: form.getFieldValue(LICENSE_DATA_FIELD.status) });
+            setStatus(form.getFieldValue(LICENSE_DATA_FIELD.status));
+          } else if (form.getFieldValue(LICENSE_DATA_FIELD.status) === 0 && calculatedStatus === 0) {
             setInitialStatus(false);
             setIsExpired(false);
-            form.setFieldsValue({ [LICENSE_DATA_FIELD.status]: 0 });
-          } 
+            form.setFieldsValue({ [LICENSE_DATA_FIELD.status]: form.getFieldValue(LICENSE_DATA_FIELD.status) });
+            setStatus(form.getFieldValue(LICENSE_DATA_FIELD.status));
+          } else if (form.getFieldValue(LICENSE_DATA_FIELD.status) === 0 && calculatedStatus !== 0){
+            setInitialStatus(false);
+            setIsExpired(false);
+            form.setFieldsValue({ [LICENSE_DATA_FIELD.status]: form.getFieldValue(LICENSE_DATA_FIELD.status) });
+            setStatus(form.getFieldValue(LICENSE_DATA_FIELD.status));
+          }
         }
       });
     }

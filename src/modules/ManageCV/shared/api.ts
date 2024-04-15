@@ -1,7 +1,9 @@
 import { axiosInstanceV2 } from '@/shared/axios';
+import { axiosInstanceV4 } from '@/shared/axios';
 import { AssessmentTypeNumeric } from '@/shared/enums/enums';
 import { ROW_PERPAGE } from './constance';
 import { PayloadAssessment } from './utils';
+import { IGetListLicenseRes } from './interface';
 
 class AssessmentService {
   /* Do not login */
@@ -13,6 +15,11 @@ class AssessmentService {
     const res = await axiosInstanceV2.get('assessments');
     return res.data;
   }
+
+  getListCV = async (params: IGetListLicenseRes) => {
+    const { data } = await axiosInstanceV4.post('/Admin/SearchCandidatesAdmin', {rq: params});
+    return data;
+  };
 
   /* Need login */
 

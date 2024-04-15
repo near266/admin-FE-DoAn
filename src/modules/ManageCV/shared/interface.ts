@@ -1,7 +1,14 @@
 export interface IGetListLicenseRes {
-    fullName?: string;
+    account_id?:string;
+    name?: string;
     nameTest?: string;
     field?: number;
-    point?: number;
+    type?:number;
+    gender?:number;
+    typeSearch?:number;
+    status?:number;
+    points?: number;
     createdDate?: string;
+    page?:number;
+    pageSize?:number;
 }
