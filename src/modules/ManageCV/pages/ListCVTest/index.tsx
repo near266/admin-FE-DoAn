@@ -2,7 +2,6 @@ import SrcIcons from '@/assets/icons';
 import SrcImages from '@/assets/images';
 import { IconButton } from '@/components/IconButton';
 import IAssessment from '@/interfaces/models/IAssessment';
-import { assessmentService } from '@/modules/ManageAssessments/shared/api';
 import {
   AssessmentStatusCode,
   AssessmentTypeNumeric,
@@ -32,6 +31,7 @@ import { formatServerDateToDurationString } from '@/shared/helpers';
 import FormItem from 'antd/lib/form/FormItem';
 import moment from 'moment';
 import { IGetListLicenseRes } from '../../shared/interface';
+import { assessmentService } from '../../shared/api';
 
 export interface IProps {
     license: IGetListLicenseRes[];
@@ -50,10 +50,10 @@ const columns = [
 const mapToTableData = (license: IGetListLicenseRes[]) =>
   license &&
   license.map((item) => ({
-    fullName: item.fullName,
+    fullName: item.name,
     nameTest: item.nameTest,
     field: item.field,
-    point: item.point,
+    points: item.points,
     createdDate: item.createdDate,
 }));
 
@@ -64,7 +64,7 @@ const renderCell = (item: IGetListLicenseRes, columnKey: React.Key) => {
         return (
           <Col>
             <Row>
-              <span className="text-[14px]">{item.fullName}</span>
+              <span className="text-[14px]">{item.name}</span>
             </Row>
           </Col>
         );
@@ -90,7 +90,7 @@ const renderCell = (item: IGetListLicenseRes, columnKey: React.Key) => {
         return (
           <Col>
             <Row align="center">
-                <span className="text-[14px]">{item.point}</span>
+                <span className="text-[14px]">{item.points}</span>
             </Row>
           </Col>
         );
@@ -151,6 +151,29 @@ export function ListCVTestDashboard(props: IProps) {
     }, []);
 
     const list = useAsyncList({ load, sort });
+
+    useEffect(() => {
+      const fetchData = async () => {
+        // appLibrary.showloading();
+        try {
+          const params = {
+            account_id: "c4ca4238a0b923820dcc509a6f75849b", 
+            page: 1, 
+            pageSize: 10 
+          }
+          const response = await assessmentService.getListCV(params);
+          console.log(response.data)
+          // if (response.data && response.data.length > 0) {
+          //   setDataTable(response.data);
+          // }    
+          appLibrary.hideloading();
+        } catch (error) {
+          console.error('Error fetching data:', error);
+          appLibrary.hideloading();
+        }
+      };
+      fetchData();
+    }, []);
 
     return (
         <>
