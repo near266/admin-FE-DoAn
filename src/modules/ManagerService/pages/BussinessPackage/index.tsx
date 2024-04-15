@@ -18,6 +18,7 @@ import { managerServiceService } from '../../shared/api';
 import {
   showResponseError,
   showResponseError2,
+  showResponseError3,
   showSuccessMessage,
 } from '@/shared/utils/common';
 import { useEffect, useState } from 'react';
@@ -84,7 +85,8 @@ const BussinessPackage = (props: any) => {
       appLibrary.hideloading();
     } catch (error) {
       appLibrary.hideloading();
-      showResponseError(error);
+      // showResponseError(error);
+      showResponseError3(error?.response?.data);
       console.log(error);
     }
   };
@@ -101,7 +103,7 @@ const BussinessPackage = (props: any) => {
       appLibrary.hideloading();
     } catch (error) {
       appLibrary.hideloading();
-      showResponseError2(error?.response?.data);
+      showResponseError3(error?.response?.data);
       console.log(error);
     }
   };
@@ -152,7 +154,9 @@ const BussinessPackage = (props: any) => {
             <FormItem
               name={LICENSE_DATA_FIELD.license_code}
               className="w-full"
-              rules={[{ required: true, message: 'Trường này là bắt buộc' }]}
+              rules={[
+                {required: true, message: 'Trường này là bắt buộc' },
+              ]}
             >
               <Input
                 size="large"
@@ -188,7 +192,9 @@ const BussinessPackage = (props: any) => {
             <FormItem
               name={LICENSE_DATA_FIELD.selling_price}
               className="w-full"
-              rules={[{ required: true, message: 'Trường này là bắt buộc' }]}
+              rules={[
+                { required: true, message: 'Trường này là bắt buộc' },
+              ]}
             >
               <InputNumber
                 size="large"
@@ -255,7 +261,13 @@ const BussinessPackage = (props: any) => {
             <FormItem
               name={LICENSE_DATA_FIELD.quantity_record_view}
               className="w-full"
-              rules={[{ required: true, message: 'Trường này là bắt buộc' }]}
+              rules={[
+              { required: true, message: 'Trường này là bắt buộc' },
+              {
+                pattern: /^([-]?[1-9][0-9]*|0)$/,
+                message: 'Định dạng số không hợp lệ',
+              },
+            ]}
             >
               <Input
                 size="large"
@@ -272,7 +284,13 @@ const BussinessPackage = (props: any) => {
             <FormItem
               name={LICENSE_DATA_FIELD.quantity_record_take}
               className="w-full"
-              rules={[{ required: true, message: 'Trường này là bắt buộc' }]}
+              rules={[
+                { required: true, message: 'Trường này là bắt buộc' },
+                {
+                  pattern: /^([-]?[1-9][0-9]*|0)$/,
+                  message: 'Định dạng số không hợp lệ',
+                },
+              ]}
             >
               <Input
                 size="large"

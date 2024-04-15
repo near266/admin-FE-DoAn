@@ -80,6 +80,10 @@ export function showResponseError2(error) {
   message.error(error ?? 'Có lỗi xảy ra');
 }
 
+export function showResponseError3(error) {
+  message.error("Mã gói đã tồn tại" ?? 'Có lỗi xảy ra');
+}
+
 export function showSuccessMessage(message) {
   message.success(message ?? 'Thao tác thành công');
 }

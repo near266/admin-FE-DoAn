@@ -351,7 +351,7 @@ export function BusinessPackageDashboard(props: IProps) {
             </div>
           </button>
         </Form>
-        <div className="counter pointer-events-none absolute z-10 bottom-[1rem] translate-x-[100px]">
+        <div className="counter pointer-events-none absolute z-10 bottom-[1.5rem] translate-x-[20px]">
           Tổng số gói: {dataTable.length} gói
         </div>
         <div className="flex items-center justify-between mt-5 mb-3">
