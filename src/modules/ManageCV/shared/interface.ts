@@ -8,7 +8,13 @@ export interface IGetListLicenseRes {
     typeSearch?:number;
     status?:number;
     points?: number;
-    createdDate?: string;
     page?:number;
     pageSize?:number;
+    id_assessment_user?:number;
+    assessment_id?:number;
+    cvPath?:string;
+    assessment_Test_Results: {
+        result?:number;
+        updated_at?:string;
+    }
 }

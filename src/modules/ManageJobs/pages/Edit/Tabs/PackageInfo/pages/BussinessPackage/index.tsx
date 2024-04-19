@@ -166,7 +166,7 @@ const BussinessPackageOrder = (props: any) => {
             setIsExpired(true);
             form.setFieldsValue({ [LICENSE_DATA_FIELD.status]: form.getFieldValue(LICENSE_DATA_FIELD.status) });
             setStatus(form.getFieldValue(LICENSE_DATA_FIELD.status));
-          } else if (form.getFieldValue(LICENSE_DATA_FIELD.status) === 2 && calculatedStatus === 0){
+          } else if (form.getFieldValue(LICENSE_DATA_FIELD.status) === 2 && calculatedStatus !== 2){
             setInitialStatus(true);
             setIsExpired(true);
             form.setFieldsValue({ [LICENSE_DATA_FIELD.status]: form.getFieldValue(LICENSE_DATA_FIELD.status) });
