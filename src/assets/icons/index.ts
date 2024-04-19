@@ -31,6 +31,7 @@ class SrcIcons {
   public static file_plus = `${SrcIcons.iconsPath}file_plus.svg`;
   public static back_arrow = `${SrcIcons.iconsPath}back_arrow.svg`;
   public static sort = `${SrcIcons.iconsPath}sort.svg`;
+  public static download = `${SrcIcons.iconsPath}download.svg`;
 
   // loading icons
   public static catLoading = `${SrcIcons.iconsPath}cat-loading.svg`;
