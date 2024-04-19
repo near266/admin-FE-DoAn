@@ -67,20 +67,29 @@ const mapToTableData = (license: IGetListLicenseRes[]) =>
     },
   }));
 
+// function downloadFile(path, file_name) {
+//     fetch(path)
+//       .then((response) => response.arrayBuffer())
+//       .then((buffer) => {
+//         const url = URL.createObjectURL(new Blob([buffer], { type: 'application/pdf' }));
+//         const link = document.createElement('a');
+//         link.href = path;
+//         link.download = file_name;
+//         document.body.appendChild(link);
+//         link.click();
+//         document.body.removeChild(link);
+//         URL.revokeObjectURL(url);
+//       });
+//   }
 function downloadFile(path, file_name) {
-    fetch(path)
-      .then((response) => response.arrayBuffer())
-      .then((buffer) => {
-        const url = URL.createObjectURL(new Blob([buffer], { type: 'application/pdf' }));
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = file_name;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        URL.revokeObjectURL(url);
-      });
-  }
+  const link = document.createElement('a');
+  link.href = path;
+  link.download = file_name;
+  link.target = '_blank';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
 
 
 export function ListCVTestDashboard(props: IProps) {
