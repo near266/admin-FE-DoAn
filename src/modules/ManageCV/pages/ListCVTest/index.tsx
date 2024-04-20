@@ -67,20 +67,6 @@ const mapToTableData = (license: IGetListLicenseRes[]) =>
     },
   }));
 
-// function downloadFile(path, file_name) {
-//     fetch(path)
-//       .then((response) => response.arrayBuffer())
-//       .then((buffer) => {
-//         const url = URL.createObjectURL(new Blob([buffer], { type: 'application/pdf' }));
-//         const link = document.createElement('a');
-//         link.href = path;
-//         link.download = file_name;
-//         document.body.appendChild(link);
-//         link.click();
-//         document.body.removeChild(link);
-//         URL.revokeObjectURL(url);
-//       });
-//   }
 function downloadFile(path, file_name) {
   const link = document.createElement('a');
   link.href = path;
@@ -296,9 +282,10 @@ export function ListCVTestDashboard(props: IProps) {
             </div>
           </div>
           {/* <div className="counter pointer-events-none absolute z-10 bottom-[1rem] translate-x-[100px]">
-            Tổng số CV: {dataTable.length}
+            Tổng số CV: {totalCount}
           </div> */}
           <Table
+              key={page} 
               selectionMode="none"
               lang="vi"
               sticked={false}
@@ -325,7 +312,7 @@ export function ListCVTestDashboard(props: IProps) {
                 )}
               </Table.Header>
               <Table.Body items={dataTable} loadingState={list.loadingState}>
-                {(item: IGetListLicenseRes) => (
+                {(item) => (
                   <Table.Row key={item.id_assessment_user} css={{ background: 'red' }}>
                     {(columnKey) => (
                       <Table.Cell css={{ background: 'red' }}>
