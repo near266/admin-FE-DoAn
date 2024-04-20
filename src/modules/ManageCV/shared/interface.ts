@@ -14,6 +14,7 @@ export interface IGetListLicenseRes {
     assessment_id?:number;
     cvPath?:string;
     assessment_Test_Results: {
+        id?:number;
         result?:number;
         updated_at?:string;
     }
