@@ -217,13 +217,13 @@ const BussinessPackageOrder = (props: any) => {
       const periodMonths = formData[LICENSE_DATA_FIELD.period];
       let expirationDate;
       if(change) {
-        expirationDate = moment(activationDate).add(periodMonths, 'months').toISOString();
-      }else if(!change && type !== 'edit') {
-        expirationDate = moment(moment()).add(periodMonths, 'months').toISOString();
-      } else if (change2 && type === 'edit') {
-        expirationDate = formData[LICENSE_DATA_FIELD.expiration_date];
-      } else if (!change2 && type === 'edit'){
-        expirationDate = moment(formData[LICENSE_DATA_FIELD.activation_date]).add(periodMonths, 'months').toISOString();
+        expirationDate = moment(activationDate).add(periodMonths, 'months').format("YYYY-MM-DD");
+      } else if(!change && type !== 'edit') {
+        expirationDate = moment(moment()).add(periodMonths, 'months').format("YYYY-MM-DD");
+      } else if (change2 && type === 'edit') { //Bấm change Ngày hết hạn
+        expirationDate = moment(formData[LICENSE_DATA_FIELD.expiration_date]).format("YYYY-MM-DD");
+      } else if (!change2 && type === 'edit'){ //Không bấm change ngày hết hạn
+        expirationDate = moment(formData[LICENSE_DATA_FIELD.activation_date]).add(periodMonths, 'months').format("YYYY-MM-DD");
       }
       const params = {
         career_field_id: type === 'edit' ? null : formData[LICENSE_DATA_FIELD.career_field_id],
@@ -231,7 +231,7 @@ const BussinessPackageOrder = (props: any) => {
         enterpise_id: type === 'edit' ? null : localStorage.getItem('enterprise_id'),
         license_code: type === 'edit' ? null : formData[LICENSE_DATA_FIELD.license_code],
         license_name: type === 'edit' ? null : formData[LICENSE_DATA_FIELD.license_name],
-        activation_date: formData[LICENSE_DATA_FIELD.activation_date],
+        activation_date: moment(formData[LICENSE_DATA_FIELD.activation_date]).format("YYYY-MM-DD"),
         selling_price: formData[LICENSE_DATA_FIELD.selling_price],
         listed_price: formData[LICENSE_DATA_FIELD.listed_price],
         period: formData[LICENSE_DATA_FIELD.period],
