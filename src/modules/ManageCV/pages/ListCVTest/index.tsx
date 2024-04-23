@@ -85,6 +85,7 @@ export function ListCVTestDashboard(props: IProps) {
   const [dataTable, setDataTable] = useState<IGetListLicenseRes[]>(rootData);
   const collator = useCollator({ numeric: true });
   const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState<number>(0);
 
   const load = async ({ signal }) => {
       return {
@@ -127,6 +128,8 @@ export function ListCVTestDashboard(props: IProps) {
         if (response.data && response.data.length > 0) {
           appLibrary.hideloading();
           setDataTable(response.data);
+          const totalPages = Math.ceil(response.totalCount / 10);
+          setTotalPages(totalPages);
           console.log('thuonggg: ', dataTable)
         }    
       } catch (error) {
@@ -327,7 +330,8 @@ export function ListCVTestDashboard(props: IProps) {
                 align="center"
                 rowsPerPage={10}
                 initialPage={page}
-                total={Math.ceil(dataTable.length)}
+                // total={Math.ceil(dataTable.length)}
+                total={totalPages}
                 onPageChange={(newPage) => setPage(newPage)}
               ></Table.Pagination>
           </Table>
