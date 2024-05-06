@@ -186,7 +186,7 @@ export function EnterpriseDashboard(props: IProps) {
         return (
           <Col>
             <Row>
-              <span className="text-[14px]">YOUTH+</span>
+              <span className="text-[14px]">EZTEK</span>
             </Row>
           </Col>
         );

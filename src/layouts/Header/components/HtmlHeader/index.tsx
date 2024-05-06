@@ -7,7 +7,7 @@ interface IProps {
   children?: ReactNode;
 }
 
-const defaultSiteTitle = 'Youth+ Admin';
+const defaultSiteTitle = 'EZTEK Admin';
 
 /**
  * Usage note
@@ -18,11 +18,11 @@ const defaultSiteTitle = 'Youth+ Admin';
 const HtmlHeader: FC<IProps> = ({ title, children, keepMetaData }) => {
   const MetaData = (
     <>
-      <meta name="description" content="Youth+ Admin" />
-      <meta name="keywords" content="youth, youth+, youth plus, sinh viên, giới trẻ" />
+      <meta name="description" content="EZTEK Admin" />
+      <meta name="keywords" content="youth, EZTEK, youth plus, sinh viên, giới trẻ" />
       <meta property="og:title" content={title || defaultSiteTitle} />
       <meta property="og:url" content="https://youth.com.vn/" />
-      <meta property="og:description" content="Youth+ Admin" />
+      <meta property="og:description" content="EZTEK Admin" />
       <meta property="og:type" content="website" />
       <link rel="preconnect" href="https://fonts.googleapis.com" />
       <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="true" />
@@ -36,7 +36,7 @@ const HtmlHeader: FC<IProps> = ({ title, children, keepMetaData }) => {
   return (
     <Head>
       <meta charSet="utf-8" />
-      <meta name="author" content="Youth+" />
+      <meta name="author" content="EZTEK" />
       <meta
         name="viewport"
         content="width=device-width, initial-scale=1.0, maximum-scale=1.0"

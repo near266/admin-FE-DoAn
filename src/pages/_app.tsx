@@ -10,7 +10,6 @@ import type { AppProps } from 'next/app';
 import { Provider } from 'react-redux';
 import '../assets/styles/app.scss';
 import '../assets/styles/layouts/antd-custom.less';
-
 if (isBrowser()) {
   store.dispatch(asyncProcessAuth());
 }

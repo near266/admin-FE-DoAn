@@ -41,21 +41,6 @@ const itemsIcon = {
 
 const sideBarItems = [
   {
-    label: 'Quản lý mentor',
-    icon: itemsIcon.Mentors,
-    pathName: '/quan-ly-mentors',
-    children: [
-      {
-        label: 'Doanh nghiệp',
-        pathName: '/quan-ly-mentors/doanh-nghiep',
-      },
-      {
-        label: 'Người dùng',
-        pathName: '/quan-ly-mentors/nguoi-dung',
-      },
-    ],
-  },
-  {
     label: 'Quản lý thành viên',
     icon: itemsIcon.Mentors,
     pathName: '/quan-ly-thanh-vien',
@@ -70,25 +55,7 @@ const sideBarItems = [
       },
     ],
   },
-  {
-    label: 'Quản lý khóa học',
-    icon: itemsIcon.Courses,
-    pathName: '/quan-ly-khoa-hoc',
-    children: [
-      {
-        label: 'Danh sách khoá học',
-        pathName: '/quan-ly-khoa-hoc/danh-sach-khoa-hoc',
-      },
-      {
-        label: 'Danh sách người mua',
-        pathName: '/quan-ly-khoa-hoc/danh-sach-nguoi-mua',
-      },
-      {
-        label: 'Danh mục',
-        pathName: '/quan-ly-khoa-hoc/danh-muc',
-      },
-    ],
-  },
+
   {
     label: 'Quản lý bài test',
     icon: itemsIcon.Assessments,
@@ -157,20 +124,11 @@ const sideBarItems = [
       },
     ],
   },
-  {
-    label: 'Quản lý nghề',
-    icon: itemsIcon.JobMng,
-    pathName: '/quan-ly-nghe',
-  },
+
   {
     label: 'Quản lý lĩnh vực',
     icon: itemsIcon.MajorMng,
     pathName: '/quan-ly-linh-vuc',
-  },
-  {
-    label: 'COUPON',
-    icon: itemsIcon.Coupon,
-    pathName: '/coupon',
   },
 ];
 
@@ -219,7 +177,7 @@ export function SideBar(props: ISideBarProps) {
         <div className="relative w-full place-items-center cursor-pointer	flex items-center justify-center gap-2 h-[64px]">
           <Image src={SrcIcons.iconYouth} alt="Logo" width={36} height={36} priority />
           <h2 className="text-title font-title text-active m-0 uppercase text-[#22216D] text-xl w-[117px]">
-            Youth+
+            EZTEK
           </h2>
         </div>
       </Link>

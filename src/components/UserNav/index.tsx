@@ -17,6 +17,7 @@ const UserPop: React.FC = (props: IProps) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const dispatch = useDispatch();
   const { avatar, id, name } = useSelector((state: IRootState) => state.auth.me);
+  const { data } = useSelector((state: any) => state.login);
   const handleClick = (e) => {
     setIsOpen(!isOpen);
     setAnchorEl(anchorEl ? null : e.target);
@@ -30,8 +31,8 @@ const UserPop: React.FC = (props: IProps) => {
         dropdownMenu={
           <div className={styles.menu}>
             <div className={styles.currentUser}>
-              <div className={styles.currentUser__name}>{name}</div>
-              <div className="username">{`@${name}`}</div>
+              <div className={styles.currentUser__name}>{data.userName}</div>
+              <div className="username">{`@${data.userName}`}</div>
             </div>
             <div className={styles.divider} />
             <ul className={styles.expandMenu}>
@@ -53,18 +54,7 @@ const UserPop: React.FC = (props: IProps) => {
                   Quản lý CV
                 </Link>
               </li>
-              <li>
-                <Link href="#" className={styles.expandMenu__item}>
-                  <i className="fas fa-rocket" />
-                  Khám phá
-                </Link>
-              </li>
-              <li>
-                <Link href="#" className={styles.expandMenu__item}>
-                  <i className="fa fa-trophy" />
-                  Bảng xếp hạng
-                </Link>
-              </li>
+
               <div className={styles.divider} />
               <li>
                 {/* TODOKOGAP: Xem co che dang xuat khac hay hon k */}
@@ -82,8 +72,8 @@ const UserPop: React.FC = (props: IProps) => {
             as="button"
             size="md"
             color="primary"
-            name={name}
-            description={`@${name}`}
+            name={data.userName}
+            description={`@${data.userName}`}
             src={avatar ?? SrcIcons.iconYouth}
           />
           <Image src={SrcIcons.dropDown} height={20} width={20} />

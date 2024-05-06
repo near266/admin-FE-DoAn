@@ -1,6 +1,7 @@
 import { AxiosResponse } from 'axios';
 import { axiosInstanceV1 } from '../axios';
 import { clearCookies } from '../utils/common';
+import { createAsyncThunk } from '@reduxjs/toolkit';
 
 class AuthService {
   async currentUser() {

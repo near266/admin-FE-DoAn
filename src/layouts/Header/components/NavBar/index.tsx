@@ -40,18 +40,20 @@ const navItem = [
   },
 
   {
-    name: 'Quản lý thành viên', path: 'quan-ly-thanh-vien', 
+    name: 'Quản lý thành viên',
+    path: 'quan-ly-thanh-vien',
     tabs: [
-    {
-      name: 'Doanh nghiệp',
-      queryString: '/quan-ly-thanh-vien/doanh-nghiep',
-      active: false,
-    },
-    {
-      name: 'Người dùng',
-      queryString: '/quan-ly-thanh-vien/nguoi-dung',
-      active: false,
-    }],
+      {
+        name: 'Doanh nghiệp',
+        queryString: '/quan-ly-thanh-vien/doanh-nghiep',
+        active: false,
+      },
+      {
+        name: 'Người dùng',
+        queryString: '/quan-ly-thanh-vien/nguoi-dung',
+        active: false,
+      },
+    ],
   },
 
   {
@@ -95,7 +97,7 @@ const navItem = [
       {
         name: 'CV bài test',
         queryString: '/quan-ly-cv/cv-bai-test',
-      }
+      },
     ],
   },
   { name: 'Quản lý nghề', path: 'quan-ly-nghe', tabs: [] },

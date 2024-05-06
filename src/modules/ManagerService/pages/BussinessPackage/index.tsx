@@ -154,9 +154,7 @@ const BussinessPackage = (props: any) => {
             <FormItem
               name={LICENSE_DATA_FIELD.license_code}
               className="w-full"
-              rules={[
-                {required: true, message: 'Trường này là bắt buộc' },
-              ]}
+              rules={[{ required: true, message: 'Trường này là bắt buộc' }]}
             >
               <Input
                 size="large"
@@ -192,17 +190,13 @@ const BussinessPackage = (props: any) => {
             <FormItem
               name={LICENSE_DATA_FIELD.selling_price}
               className="w-full"
-              rules={[
-                { required: true, message: 'Trường này là bắt buộc' },
-              ]}
+              rules={[{ required: true, message: 'Trường này là bắt buộc' }]}
             >
               <InputNumber
                 size="large"
                 placeholder="Nhập giá bán"
                 className="rounded-[10px] bg-white w-full"
-                formatter={(value) =>
-                  `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, '.')
-                }
+                formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, '.')}
                 parser={(value) => value!.replace(/\$\s?|(\.*)/g, '')}
               ></InputNumber>
             </FormItem>
@@ -220,9 +214,7 @@ const BussinessPackage = (props: any) => {
                 size="large"
                 placeholder="Nhập mã gói"
                 className="rounded-[10px] bg-white w-full"
-                formatter={(value) =>
-                  `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, '.')
-                }
+                formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, '.')}
                 parser={(value) => value!.replace(/\$\s?|(\.*)/g, '')}
               ></InputNumber>
             </FormItem>
@@ -262,12 +254,12 @@ const BussinessPackage = (props: any) => {
               name={LICENSE_DATA_FIELD.quantity_record_view}
               className="w-full"
               rules={[
-              { required: true, message: 'Trường này là bắt buộc' },
-              {
-                pattern: /^([-]?[1-9][0-9]*|0)$/,
-                message: 'Định dạng số không hợp lệ',
-              },
-            ]}
+                { required: true, message: 'Trường này là bắt buộc' },
+                {
+                  pattern: /^([-]?[1-9][0-9]*|0)$/,
+                  message: 'Định dạng số không hợp lệ',
+                },
+              ]}
             >
               <Input
                 size="large"
@@ -351,7 +343,7 @@ const BussinessPackage = (props: any) => {
             >
               {listImgEdit.length > 0 ? (
                 <div className="relative w-full min-h-[52px]">
-                  <Image src={listImgEdit[0]} alt="Youth+ Doanh nghiệp" layout="fill" />
+                  <Image src={listImgEdit[0]} alt="EZTEK Doanh nghiệp" layout="fill" />
                 </div>
               ) : (
                 <div className="ant-upload-drag-icon flex justify-center">
@@ -359,7 +351,7 @@ const BussinessPackage = (props: any) => {
                     src={SrcIcons.file_plus}
                     width={42}
                     height={52}
-                    alt="Youth+ Doanh nghiệp"
+                    alt="EZTEK Doanh nghiệp"
                   />
                 </div>
               )}
@@ -413,7 +405,9 @@ const BussinessPackage = (props: any) => {
             <Link href={'/quan-ly-viec-lam/goi-doanh-nghiep'}>
               <div className="custom-button !bg-[#EB4C4C] mr-2">Hủy bỏ</div>
             </Link>
-            <button className="custom-button">{type === 'edit' ? 'Lưu thay đổi' : 'Thêm mới'}</button>
+            <button className="custom-button">
+              {type === 'edit' ? 'Lưu thay đổi' : 'Thêm mới'}
+            </button>
           </div>
         </div>
       </Form>

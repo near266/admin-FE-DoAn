@@ -1,7 +1,6 @@
 import axios, { AxiosError, AxiosInstance } from 'axios';
-import { Cookies } from '.';
-import { SV_RES_STATUS_CODE } from '../enums/enums';
-import { authService } from '../services';
+
+import { Cookies, authService } from '@/shared';
 
 let isRefreshing = false;
 let failedQueue = [];
@@ -25,12 +24,20 @@ function rejectErrorAndClearToken(error: AxiosError) {
   return Promise.reject(error);
 }
 
+/**
+ * Nếu migration sang lib khác thì cần thay đổi:
+ *
+ * - Sửa file API này.
+ * - Sửa component search header.
+ * - Update hàm downloadFileNormally ở common.
+ * - Check lại các nơi dùng trực tiếp file API.
+ *
+ */
+
 const cancelTokenSource = axios.CancelToken.source();
 
-const apiVer1: AxiosInstance = axios.create({
-  //baseURL: process.env.NEXT_PUBLIC_API_URL,
-  baseURL: process.env.NEXT_PUBLIC_API_URL_LOCAL,
-
+const api: AxiosInstance = axios.create({
+  baseURL: process.env.NEXT_PUBLIC_API_URL,
   timeout: 10000,
   headers: {
     Accept: 'application/json',
@@ -38,7 +45,7 @@ const apiVer1: AxiosInstance = axios.create({
   cancelToken: cancelTokenSource.token,
 });
 
-apiVer1.interceptors.request.use(
+api.interceptors.request.use(
   (config) => {
     const accessToken = Cookies.get(process.env.NEXT_PUBLIC_ACCESS_TOKEN_NAME);
     if (accessToken) {
@@ -53,7 +60,7 @@ apiVer1.interceptors.request.use(
   }
 );
 
-apiVer1.interceptors.response.use(
+api.interceptors.response.use(
   (response) => {
     return response;
   },
@@ -81,7 +88,7 @@ apiVer1.interceptors.response.use(
         failedQueue.push({ resolve, reject });
       })
         .then((token) => {
-          return apiVer1(originalRequest);
+          return api(originalRequest);
         })
         .catch((err) => {
           return Promise.reject(err);
@@ -103,13 +110,13 @@ apiVer1.interceptors.response.use(
         isRefreshing = false;
       });
 
-    if (res.code === SV_RES_STATUS_CODE.success) {
+    if (res.code === 'SUCCESS') {
       processQueue(null, res.payload.access_token);
-      return Promise.resolve(apiVer1(originalRequest));
+      return Promise.resolve(api(originalRequest));
     }
 
     return rejectErrorAndClearToken(error);
   }
 );
 
-export { apiVer1 };
+export { api, cancelTokenSource };

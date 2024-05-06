@@ -342,7 +342,7 @@ const ManageJobsNewsDetail = (props: Iprops) => {
                       <div className="relative w-full min-h-[52px]">
                         <Image
                           src={recruitment.image_url}
-                          alt="Youth+ Doanh nghiệp"
+                          alt="EZTEK Doanh nghiệp"
                           layout="fill"
                         />
                       </div>
@@ -352,7 +352,7 @@ const ManageJobsNewsDetail = (props: Iprops) => {
                           src={SrcIcons.file_plus}
                           width={42}
                           height={52}
-                          alt="Youth+ Doanh nghiệp"
+                          alt="EZTEK Doanh nghiệp"
                         />
                       </p>
                     )}
@@ -549,7 +549,7 @@ const ManageJobsNewsDetail = (props: Iprops) => {
                             {career.name}
                           </Select.Option>
                         ))} */}
-                        {MASTER_DATA_CAREER_FIELD_ID.map((item: TOption) => (
+                      {MASTER_DATA_CAREER_FIELD_ID.map((item: TOption) => (
                         <Select.Option key={item.key} value={item.key.toString()}>
                           {item.label}
                         </Select.Option>
