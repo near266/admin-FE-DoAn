@@ -3,9 +3,9 @@ import { Paper, Button } from '@mui/material';
 import { useFormik } from 'formik';
 import { useRouter } from 'next/router';
 
-//import { appLibrary, authService } from '@/shared';
+// import { appLibrary, authService } from '@/shared';
 import { Form, PasswordInput, FormHelper } from '@/shared/forms';
-//import { useSnackbar } from '@/shared/snackbar';
+// import { useSnackbar } from '@/shared/snackbar';
 
 import { appLibrary } from '@/shared/utils/loading';
 import { validationSchema } from './validationSchema';
@@ -13,7 +13,7 @@ import { ChangePasswordForm } from '../../models';
 import styles from './styles.module.scss';
 
 const ChangePassword: FC<any> = () => {
-  //const snackbar = useSnackbar();
+  // const snackbar = useSnackbar();
   const router = useRouter();
 
   const myForm = useFormik<ChangePasswordForm>({
