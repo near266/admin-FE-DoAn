@@ -87,8 +87,8 @@ export function LicenseForm() {
           data.status === JOBS_STATUS_NUMERIC.PENDING
             ? 'PENDING'
             : JOBS_STATUS_NUMERIC.APPROVED
-              ? 'APPROVED'
-              : 'REJECTED'
+            ? 'APPROVED'
+            : 'REJECTED'
         );
         return message.success('Cập nhật thành công');
       }
@@ -133,8 +133,8 @@ export function LicenseForm() {
         <Form
           name="basic"
           initialValues={{ remember: true }}
-          onFinish={() => { }}
-          onFinishFailed={() => { }}
+          onFinish={() => {}}
+          onFinishFailed={() => {}}
           autoComplete="off"
           className="flex flex-col gap-[8px]"
         >
@@ -150,8 +150,8 @@ export function LicenseForm() {
                   enterpriseStatus === 'APPROVED'
                     ? 'text-[#30AB7E]'
                     : enterpriseStatus === 'PENDING'
-                      ? 'text-[#3BB1CF]'
-                      : ''
+                    ? 'text-[#3BB1CF]'
+                    : ''
                 )}
               >
                 {JOBS_STATUS[enterpriseStatus]}
@@ -232,7 +232,7 @@ export function LicenseForm() {
 
             <div className="flex flex-col w-full gap-[10px]">
               <Form.Item name="additional_license" className="w-full">
-                <IconButton className="!rounded-[10px] !p-0" onClick={() => { }}>
+                <IconButton className="!rounded-[10px] !p-0" onClick={() => {}}>
                   <Image src={SrcIcons.attachment} height={20} width={20} />
                 </IconButton>
               </Form.Item>

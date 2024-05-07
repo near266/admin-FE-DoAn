@@ -4,12 +4,12 @@ import { Common } from '@/shared/utils';
 import axios from 'axios';
 import { GetServerSideProps, NextPage } from 'next';
 
-export interface IAssessmentData{
+export interface IAssessmentData {
   current_page: number;
   data: IAssessment[];
 }
 export interface IProps {
-  assessments:IAssessmentData;
+  assessments: IAssessmentData;
 }
 
 const AssessmentMng: NextPage = (props: IProps) => {
@@ -45,4 +45,3 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     };
   }
 };
-

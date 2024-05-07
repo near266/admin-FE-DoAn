@@ -57,7 +57,6 @@ const BusinessPackagePage: React.FC<IPropBussiness> = ({ license }: IPropBussine
   <BussinessPackageChild license={license} />
 );
 
-
 export function EditJobsModule({ account, company, posts, total_page, license }: IProps) {
   const tabs = [
     { key: 1, tab: <AccountInfoPage account={account} />, name: 'Thông tin tài khoản' },
@@ -71,7 +70,7 @@ export function EditJobsModule({ account, company, posts, total_page, license }:
     { key: 5, tab: <CVPage />, name: 'CV' },
     { key: 6, tab: <Efficiency />, name: 'Hiệu suất' },
     { key: 7, tab: <Classify />, name: 'Phân loại' },
-    { key: 8, tab: <BusinessPackagePage license={license}/>, name: 'Gói doanh nghiệp' },
+    { key: 8, tab: <BusinessPackagePage license={license} />, name: 'Gói doanh nghiệp' },
   ];
 
   const [currentTabs, setCurrentTabs] = useState(tabs[0].key);

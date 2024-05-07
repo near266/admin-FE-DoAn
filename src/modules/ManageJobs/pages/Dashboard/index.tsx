@@ -82,7 +82,7 @@ export function ManageJobsDashBoard({ jobs, total_page }: IProps) {
     [router]
   );
   const handleEnterpriseId = (id) => {
-    setEnterpriseId(id); 
+    setEnterpriseId(id);
   };
   useEffect(() => {
     if (Number(currentPage) !== 1) {
@@ -229,10 +229,12 @@ export function ManageJobsDashBoard({ jobs, total_page }: IProps) {
                   href={`/quan-ly-thanh-vien/doanh-nghiep/chinh-sua/${item.id}`}
                   legacyBehavior
                 >
-                  <IconButton onClick={() => {
-                    handleEnterpriseId(item.id)
-                    localStorage.setItem('enterprise_id', item.id);                
-                  }}>
+                  <IconButton
+                    onClick={() => {
+                      handleEnterpriseId(item.id);
+                      localStorage.setItem('enterprise_id', item.id);
+                    }}
+                  >
                     <Image src={SrcIcons.seeDetail} height={30} width={30} />
                   </IconButton>
                 </Link>

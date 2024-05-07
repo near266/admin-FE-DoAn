@@ -76,7 +76,7 @@ const mapToTableData = (assessments: any) =>
     post_slug: item.post_slug,
     jobEnterprise_name: item.jobEnterprise_name,
     jobEnterprise_slug: item.jobEnterprise_slug,
-    jobEnterprise_id: item.jobEnterprise_id
+    jobEnterprise_id: item.jobEnterprise_id,
   }));
 
 export function AssessmentDashboard(props: IProps) {
@@ -205,7 +205,10 @@ export function AssessmentDashboard(props: IProps) {
           <Row align="flex-start">
             <Tooltip content="Tải CV" css={{ marginRight: 20 }}>
               <div className="flex w-fit items-center justify-center bg-grey-lighter">
-                <Link target="_blank" href={`https://youthplus.s3.ap-northeast-1.amazonaws.com/${item?.cv_path}`}>
+                <Link
+                  target="_blank"
+                  href={`https://youthplus.s3.ap-northeast-1.amazonaws.com/${item?.cv_path}`}
+                >
                   <label className="w-fit flex flex-col items-center px-2 py-3 text-white bg-green-300 text-blue rounded-lg shadow-lg tracking-wide uppercase border border-blue cursor-pointer hover:bg-blue">
                     <span className="text-sm leading-normal m-0">Download CV</span>
                     {/* <button

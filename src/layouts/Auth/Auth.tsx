@@ -113,9 +113,7 @@ const Auth = ({ children }) => {
                   </Form.Item>
 
                   <div className="flex justify-between">
-                    <Form.Item
-                    //   name={FORM_DATA_FIELD.remember_me}
-                    >
+                    <Form.Item>
                       <Checkbox
                         onChange={(value) => {
                           // form.setFields([

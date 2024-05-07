@@ -12,11 +12,11 @@ const ManageJobsNewsDetail = dynamic(
 type Props = {
   data: {
     data: IRecruitment;
-  }
+  };
 };
 
 const EditRecruitment = (props: Props) => {
-  console.log("🚀 ~ file: [id].tsx:17 ~ EditRecruitment ~ props:", props.data)
+  console.log('🚀 ~ file: [id].tsx:17 ~ EditRecruitment ~ props:', props.data);
   return (
     <>
       <ManageJobsNewsDetail recruitment={props.data.data} />
@@ -40,7 +40,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
         Authorization: `Bearer ${accessToken}`,
       },
     });
-    const data = response.data
+    const data = response.data;
     console.log(response.data);
     return {
       props: { data },

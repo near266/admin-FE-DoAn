@@ -78,7 +78,7 @@ export function BussinessPackageChild(props: IProps) {
   };
   const handleAddNewDataFromOrder = useCallback((newData: IGetListLicenseRes) => {
     // Thêm dữ liệu mới vào bảng
-    setDataTable(prevData => [...prevData, newData]);
+    setDataTable((prevData) => [...prevData, newData]);
   }, []);
   const sort = useCallback(async ({ items, sortDescriptor }) => {
     const sortedItems = items.sort((a, b) => {
@@ -100,11 +100,15 @@ export function BussinessPackageChild(props: IProps) {
     const fetchData = async () => {
       try {
         const page = 0;
-        const pageSize = 10; 
+        const pageSize = 10;
         const params = {
-          enterpriseId: localStorage.getItem('enterprise_id')
-        }; 
-        const response = await managerServiceService.getAllLicenseOrder(page, pageSize, params);
+          enterpriseId: localStorage.getItem('enterprise_id'),
+        };
+        const response = await managerServiceService.getAllLicenseOrder(
+          page,
+          pageSize,
+          params
+        );
         if (response.data && response.data.length > 0) {
           setDataTable(response.data);
         }
@@ -113,27 +117,29 @@ export function BussinessPackageChild(props: IProps) {
       }
     };
 
-    fetchData(); 
+    fetchData();
   }, []);
 
   const fetchData2 = async (params) => {
     appLibrary.showloading();
     try {
       const page = 0;
-      const pageSize = 10; 
-      const response = await managerServiceService.getAllLicenseOrder(page, pageSize, params);
+      const pageSize = 10;
+      const response = await managerServiceService.getAllLicenseOrder(
+        page,
+        pageSize,
+        params
+      );
       if (response.data && response.data.length > 0) {
         appLibrary.hideloading();
         setDataTable(response.data);
-      }
-      else {
+      } else {
         appLibrary.hideloading();
       }
     } catch (error) {
       console.error('Error fetching data:', error);
     }
   };
-  
 
   const handleDelete = async (id) => {
     try {
@@ -158,7 +164,7 @@ export function BussinessPackageChild(props: IProps) {
     const day = date.getDate();
     const month = date.getMonth() + 1;
     const year = date.getFullYear();
-    return `${day < 10 ? '0' + day : day}/${month < 10 ? '0' + month : month}/${year}`;
+    return `${day < 10 ? `0${day}` : day}/${month < 10 ? `0${month}` : month}/${year}`;
   };
 
   const handlePublise = async (value, assessment_id) => {
@@ -254,10 +260,18 @@ export function BussinessPackageChild(props: IProps) {
         return (
           <Col>
             <Row align="center">
-              <span className={`text-[14px] 
-                ${item.status === 0 ? 'text-color-error' :
-                item.status === 1 ? 'text-color-access' :
-                item.status === 2 ? 'text-color-default' : ''}`}>
+              <span
+                className={`text-[14px] 
+                ${
+                  item.status === 0
+                    ? 'text-color-error'
+                    : item.status === 1
+                    ? 'text-color-access'
+                    : item.status === 2
+                    ? 'text-color-default'
+                    : ''
+                }`}
+              >
                 {viewValueItem(item.status, listStatus)}
               </span>
             </Row>
@@ -283,12 +297,10 @@ export function BussinessPackageChild(props: IProps) {
                   src={SrcIcons.deleteActionIcon}
                   height={30}
                   width={30}
-                  onClick={() => 
-                    {
-                      handleDelete(item.id)
-                      console.log('ID: ', item.id)
-                    }
-                  }
+                  onClick={() => {
+                    handleDelete(item.id);
+                    console.log('ID: ', item.id);
+                  }}
                 />
               </IconButton>
             </Tooltip>
@@ -363,17 +375,17 @@ export function BussinessPackageChild(props: IProps) {
             </Select>
           </FormItem>
           <FormItem name={LICENSE_DATA_FIELD.activation_date} className="w-1/6">
-            <DatePicker 
-                placeholder="Ngày kích hoạt" 
-                className="!w-full !h-[39px] rounded-[10px]" 
-                format="DD/MM/YYYY"
+            <DatePicker
+              placeholder="Ngày kích hoạt"
+              className="!w-full !h-[39px] rounded-[10px]"
+              format="DD/MM/YYYY"
             />
           </FormItem>
           <FormItem name={LICENSE_DATA_FIELD.expiration_date} className="w-1/6">
-            <DatePicker 
-                placeholder="Ngày hết hạn" 
-                className="!w-full !h-[39px] rounded-[10px]" 
-                format="DD/MM/YYYY"
+            <DatePicker
+              placeholder="Ngày hết hạn"
+              className="!w-full !h-[39px] rounded-[10px]"
+              format="DD/MM/YYYY"
             />
           </FormItem>
           <FormItem name={LICENSE_DATA_FIELD.status} className="w-1/6">
@@ -412,7 +424,7 @@ export function BussinessPackageChild(props: IProps) {
           <p className="text-[var(--primary-color)] font-bold text-xl mb-3">
             Danh sách gói
           </p>
-          <Link href={`/quan-ly-thanh-vien/doanh-nghiep/them-moi`}>
+          <Link href={'/quan-ly-thanh-vien/doanh-nghiep/them-moi'}>
             <div className="w-fit cursor-pointer rounded-[10px] bg-[var(--primary-color)] text-white py-3 px-4">
               Thêm mới
             </div>

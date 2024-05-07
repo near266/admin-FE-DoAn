@@ -17,7 +17,9 @@ class AssessmentService {
   }
 
   getListCV = async (params: IGetListLicenseRes) => {
-    const { data } = await axiosInstanceV4.post('/Admin/SearchCandidatesAdmin', {rq: params});
+    const { data } = await axiosInstanceV4.post('/Admin/SearchCandidatesAdmin', {
+      rq: params,
+    });
     return data;
   };
 

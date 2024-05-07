@@ -4,7 +4,7 @@ export interface IGetListLicenseReq {
   career_field_id?: number;
   created_date?: string;
   status?: number;
-  enterpriseId?:string;
+  enterpriseId?: string;
 }
 
 export interface IGetListLicenseRes {
@@ -30,5 +30,5 @@ export interface IGetListLicenseRes {
   created_date?: string;
   last_modified_by?: string;
   last_modified_date?: string;
-  enterpriseId?:string;
+  enterpriseId?: string;
 }

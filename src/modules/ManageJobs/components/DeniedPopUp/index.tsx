@@ -46,7 +46,7 @@ export function DeniedPopUpJob({ open, onChange, type, id, update, info }: Props
           setData(null);
           onChange(false);
         }}
-        onConfirm={() => { }}
+        onConfirm={() => {}}
       />
     </>
   );
@@ -77,7 +77,7 @@ export default function DeniedPopUp({ open, onChange, type, id, update }: Props)
           setData(null);
           onChange(false);
         }}
-        onConfirm={() => { }}
+        onConfirm={() => {}}
       />
     </>
   );

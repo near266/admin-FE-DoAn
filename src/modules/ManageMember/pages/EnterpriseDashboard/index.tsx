@@ -229,7 +229,7 @@ export function EnterpriseDashboard(props: IProps) {
             <Tooltip content="Xem chi tiết" css={{ marginRight: 20 }}>
               <IconButton
                 onClick={() => {
-                  router.push(``, undefined, {
+                  router.push('', undefined, {
                     shallow: true,
                   });
                 }}

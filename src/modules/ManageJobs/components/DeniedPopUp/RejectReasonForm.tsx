@@ -41,7 +41,7 @@ function RejectReasonForm({ type, onChange, id, data, update }: IProps) {
   const handleEnterprise = async (reason) => {
     const data = {
       status: JOBS_STATUS_NUMERIC.REJECTED,
-      reason_of_rejection: reason
+      reason_of_rejection: reason,
     };
     console.log(data);
     appLibrary.showloading();
@@ -71,7 +71,6 @@ function RejectReasonForm({ type, onChange, id, data, update }: IProps) {
       // reason_of_rejection: reason,
       status: JOBS_STATUS_NUMERIC.REJECTED,
       api_key: 'ywvJro$Dna5p11dGg$Q7L3dI#',
-      
     };
     appLibrary.showloading();
     try {
@@ -105,7 +104,7 @@ function RejectReasonForm({ type, onChange, id, data, update }: IProps) {
               : handleRecruitNews(value.reason);
             onChange(false);
           }}
-          onFinishFailed={() => { }}
+          onFinishFailed={() => {}}
           autoComplete="off"
           className="flex flex-col gap-[8px]"
         >
@@ -145,7 +144,14 @@ function RejectReasonForm({ type, onChange, id, data, update }: IProps) {
   );
 }
 
-export function RejectReasonFormJob({ type, onChange, id, data, update, info }: IPropsJob) {
+export function RejectReasonFormJob({
+  type,
+  onChange,
+  id,
+  data,
+  update,
+  info,
+}: IPropsJob) {
   const [form] = useForm();
 
   useEffect(() => {
@@ -162,9 +168,9 @@ export function RejectReasonFormJob({ type, onChange, id, data, update, info }: 
     const data = {
       status: JOBS_STATUS_NUMERIC.REJECTED,
       reason_of_rejection: reason,
-      user_id: info["user_id"],
-      email: info["email"],
-      api_key: info["api_key"],
+      user_id: info['user_id'],
+      email: info['email'],
+      api_key: info['api_key'],
     };
     console.log(data);
     appLibrary.showloading();
@@ -227,7 +233,7 @@ export function RejectReasonFormJob({ type, onChange, id, data, update, info }: 
               : handleRecruitNews(value.reason);
             onChange(false);
           }}
-          onFinishFailed={() => { }}
+          onFinishFailed={() => {}}
           autoComplete="off"
           className="flex flex-col gap-[8px]"
         >

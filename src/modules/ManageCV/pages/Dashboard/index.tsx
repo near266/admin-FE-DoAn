@@ -189,8 +189,11 @@ export function AssessmentDashboard(props: IProps) {
               </Button> */}
               <div className="flex w-fit items-center justify-center bg-grey-lighter">
                 <label className="w-fit flex flex-col items-center px-2 py-3 text-white bg-green-300 text-blue rounded-lg shadow-lg tracking-wide uppercase border border-blue cursor-pointer hover:bg-blue">
-                  <span className="text-sm leading-normal m-0" >Download CV</span>
-                  <button className="hidden" onClick={() => downloadFile(item?.path, item?.file_name)}/>
+                  <span className="text-sm leading-normal m-0">Download CV</span>
+                  <button
+                    className="hidden"
+                    onClick={() => downloadFile(item?.path, item?.file_name)}
+                  />
                 </label>
               </div>
             </Tooltip>
@@ -203,7 +206,7 @@ export function AssessmentDashboard(props: IProps) {
               {/* <input
                 className="w-fit"
                 type="file"
-                
+
               /> */}
               {/* <input
                 className="block w-full text-xs h-6 text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
@@ -213,8 +216,12 @@ export function AssessmentDashboard(props: IProps) {
               ></input> */}
               <div className="flex w-fit items-center justify-center bg-grey-lighter">
                 <label className="w-fit flex flex-col items-center px-2 py-3 bg-white text-blue rounded-lg shadow-lg tracking-wide uppercase border border-blue cursor-pointer hover:bg-blue hover:text-green-300">
-                  <span className="text-sm leading-normal m-0" >Select a file</span>
-                  <input type="file" className="hidden" onChange={(event) => handleFileSelect(event, item?.id)}/>
+                  <span className="text-sm leading-normal m-0">Select a file</span>
+                  <input
+                    type="file"
+                    className="hidden"
+                    onChange={(event) => handleFileSelect(event, item?.id)}
+                  />
                 </label>
               </div>
             </Tooltip>

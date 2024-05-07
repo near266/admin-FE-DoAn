@@ -12,7 +12,7 @@ interface IProps {
 
 const RecruitNewsPage: NextPage = (props: IProps) => {
   const postPerPage = 5;
-  const total_page = Math.ceil(props.data.total / postPerPage)
+  const total_page = Math.ceil(props.data.total / postPerPage);
   return <RecruitNews posts={props.data.data} total_page={total_page} />;
 };
 

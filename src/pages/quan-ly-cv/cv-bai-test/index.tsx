@@ -1,21 +1,20 @@
-import { ListCVTestDashboard } from "@/modules/ManageCV/pages/ListCVTest";
-import { IGetListLicenseRes } from "@/modules/ManageCV/shared/interface";
+import { ListCVTestDashboard } from '@/modules/ManageCV/pages/ListCVTest';
+import { IGetListLicenseRes } from '@/modules/ManageCV/shared/interface';
 import { Common } from '@/shared/utils';
 import axios from 'axios';
 import { GetServerSideProps, NextPage } from 'next';
-
 
 export interface IProps {
   license: IGetListLicenseRes[];
 }
 
 const ListCVTest: NextPage = (props: IProps) => {
-    const { license } = props;
-    return (
-        <>
-          <ListCVTestDashboard license={[]}/>
-        </>
-    );
+  const { license } = props;
+  return (
+    <>
+      <ListCVTestDashboard license={[]} />
+    </>
+  );
 };
 export default ListCVTest;
 

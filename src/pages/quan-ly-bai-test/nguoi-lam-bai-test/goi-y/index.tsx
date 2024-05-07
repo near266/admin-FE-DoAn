@@ -55,23 +55,27 @@ export const genChartData = (
 ): { subject: string; point: number; maxPoint: number }[] | number => {
   if (chartType === AssessmentType.YOUR_SELF) {
     if (data?.length === 0) return [];
-    return data?.map((item) => {
-      return {
-        subject: item.name,
-        point: item.point,
-        maxPoint: item.max_point,
-      };
-    }).sort((a, b) => b.point - a.point);
+    return data
+      ?.map((item) => {
+        return {
+          subject: item.name,
+          point: item.point,
+          maxPoint: item.max_point,
+        };
+      })
+      .sort((a, b) => b.point - a.point);
   }
   if (chartType === AssessmentType.COMPETENCY) {
     if (data?.length === 0) return [];
-    return data?.map((item) => {
-      return {
-        subject: item.name,
-        point: item.level,
-        maxPoint: item.max_level,
-      };
-    }).sort((a, b) => b.point - a.point);
+    return data
+      ?.map((item) => {
+        return {
+          subject: item.name,
+          point: item.level,
+          maxPoint: item.max_level,
+        };
+      })
+      .sort((a, b) => b.point - a.point);
   }
 
   if (chartType === AssessmentType.CAREER) {
@@ -112,13 +116,15 @@ export const genSuggestion = (result: any, chartType: AssessmentType): any => {
       };
     });
     // lấy dữ liệu từ mô tả của chart
-    const fromChart = data.map((item) => {
-      return {
-        title: item.name ?? '',
-        description: item.description ?? '',
-        subData: item.point ?? '',
-      };
-    }).sort((a, b) => b.subData - a.subData);
+    const fromChart = data
+      .map((item) => {
+        return {
+          title: item.name ?? '',
+          description: item.description ?? '',
+          subData: item.point ?? '',
+        };
+      })
+      .sort((a, b) => b.subData - a.subData);
 
     finalSuggestion.textContent = [...fromSugesstion, ...fromChart];
     finalSuggestion.mentors = mentors ?? [];

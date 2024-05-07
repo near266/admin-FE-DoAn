@@ -24,16 +24,16 @@ import { IGetListLicenseRes } from '../../shared/interface';
 import { assessmentService } from '../../shared/api';
 
 export interface IProps {
-    license: IGetListLicenseRes[];
+  license: IGetListLicenseRes[];
 }
 
 const columns = [
-    { name: 'HỌ VÀ TÊN', uid: 'fullName' },
-    { name: 'TÊN BÀI TEST', uid: 'assessment_id' },
-    { name: 'LĨNH VỰC', uid: 'field' },
-    { name: 'SỐ ĐIỂM', uid: 'result' },
-    { name: 'NGÀY TẠO', uid: 'updated_at' },
-    { name: 'XEM CV', uid: 'cvPath' },
+  { name: 'HỌ VÀ TÊN', uid: 'fullName' },
+  { name: 'TÊN BÀI TEST', uid: 'assessment_id' },
+  { name: 'LĨNH VỰC', uid: 'field' },
+  { name: 'SỐ ĐIỂM', uid: 'result' },
+  { name: 'NGÀY TẠO', uid: 'updated_at' },
+  { name: 'XEM CV', uid: 'cvPath' },
 ];
 
 const assessmentNames = {
@@ -63,7 +63,7 @@ const mapToTableData = (license: IGetListLicenseRes[]) =>
       result: item.assessment_Test_Results.result,
       // suggestion_id: item.assessment_Test_Results.suggestion_id,
       // created_at: item.assessment_Test_Results.created_at,
-      updated_at: item.assessment_Test_Results.updated_at
+      updated_at: item.assessment_Test_Results.updated_at,
     },
   }));
 
@@ -77,7 +77,6 @@ function downloadFile(path, file_name) {
   document.body.removeChild(link);
 }
 
-
 export function ListCVTestDashboard(props: IProps) {
   const { license } = props;
   const [form] = Form.useForm();
@@ -88,12 +87,12 @@ export function ListCVTestDashboard(props: IProps) {
   const [totalPages, setTotalPages] = useState<number>(0);
 
   const load = async ({ signal }) => {
-      return {
-        items: dataTable,
-      };
+    return {
+      items: dataTable,
     };
+  };
   const handleResetForm = () => {
-      form.resetFields();
+    form.resetFields();
   };
   const sort = useCallback(async ({ items, sortDescriptor }) => {
     const sortedItems = items.sort((a, b) => {
@@ -118,20 +117,20 @@ export function ListCVTestDashboard(props: IProps) {
       appLibrary.showloading();
       try {
         const params = {
-          account_id: "c4ca4238a0b923820dcc509a6f75849b", 
-          page: page, 
+          account_id: 'c4ca4238a0b923820dcc509a6f75849b',
+          page: page,
           pageSize: 10,
-          assessment_Test_Results: {}
-        }
+          assessment_Test_Results: {},
+        };
         const response = await assessmentService.getListCV(params);
-        console.log(response.data)
+        console.log(response.data);
         if (response.data && response.data.length > 0) {
           appLibrary.hideloading();
           setDataTable(response.data);
           const totalPages = Math.ceil(response.totalCount / 10);
           setTotalPages(totalPages);
-          console.log('thuonggg: ', dataTable)
-        }    
+          console.log('thuonggg: ', dataTable);
+        }
       } catch (error) {
         console.error('Error fetching data:', error);
         appLibrary.hideloading();
@@ -163,9 +162,7 @@ export function ListCVTestDashboard(props: IProps) {
         return (
           <Col>
             <Row align="center">
-              <span className="text-[14px]">
-                {item.field}
-              </span>
+              <span className="text-[14px]">{item.field}</span>
             </Row>
           </Col>
         );
@@ -173,7 +170,7 @@ export function ListCVTestDashboard(props: IProps) {
         return (
           <Col>
             <Row align="center">
-                <span className="text-[14px]">{item.assessment_Test_Results.result}</span>
+              <span className="text-[14px]">{item.assessment_Test_Results.result}</span>
             </Row>
           </Col>
         );
@@ -181,7 +178,9 @@ export function ListCVTestDashboard(props: IProps) {
         return (
           <Col>
             <Row align="center">
-              <span className="text-[14px]">{moment(item.assessment_Test_Results.updated_at).format('DD/MM/YYYY')}</span>
+              <span className="text-[14px]">
+                {moment(item.assessment_Test_Results.updated_at).format('DD/MM/YYYY')}
+              </span>
             </Row>
           </Col>
         );
@@ -189,11 +188,11 @@ export function ListCVTestDashboard(props: IProps) {
         return (
           <Col>
             <Row align="center">
-                <Tooltip content="Xem CV">
-                  <IconButton onClick={() => downloadFile(item?.cvPath, item?.name)}>
-                    <Image src={SrcIcons.download} height={24} width={24} />
-                  </IconButton>
-                </Tooltip>
+              <Tooltip content="Xem CV">
+                <IconButton onClick={() => downloadFile(item?.cvPath, item?.name)}>
+                  <Image src={SrcIcons.download} height={24} width={24} />
+                </IconButton>
+              </Tooltip>
             </Row>
           </Col>
         );
@@ -202,141 +201,143 @@ export function ListCVTestDashboard(props: IProps) {
     }
   };
 
-  const handleFormSubmit = () => {
-
-  };
+  const handleFormSubmit = () => {};
 
   return (
-      <>
-          <div className="relative">
-            <Form
-              form={form}
-              onFinish={handleFormSubmit}
-              className="flex mb-[1rem] gap-3 justify-between"
+    <>
+      <div className="relative">
+        <Form
+          form={form}
+          onFinish={handleFormSubmit}
+          className="flex mb-[1rem] gap-3 justify-between"
+        >
+          <FormItem className="w-1/6">
+            <Input
+              size="large"
+              placeholder="HỌ VÀ TÊN"
+              className="rounded-[10px] bg-white w-full"
+              allowClear
+            />
+          </FormItem>
+          <FormItem className="w-1/6">
+            <Input
+              size="large"
+              placeholder="TÊN BÀI TEST"
+              className="rounded-[10px] bg-white w-full"
+              allowClear
+            />
+          </FormItem>
+          <FormItem className="w-1/6">
+            <Select
+              size="large"
+              className="!w-full"
+              showSearch
+              placeholder="LĨNH VỰC"
+              allowClear
             >
-              <FormItem className="w-1/6">
-                <Input
-                  size="large"
-                  placeholder="HỌ VÀ TÊN"
-                  className="rounded-[10px] bg-white w-full"
-                  allowClear
-                />
-              </FormItem>
-              <FormItem className="w-1/6">
-                <Input
-                  size="large"
-                  placeholder="TÊN BÀI TEST"
-                  className="rounded-[10px] bg-white w-full"
-                  allowClear
-                />
-              </FormItem>
-              <FormItem className="w-1/6">
-                <Select
-                  size="large"
-                  className="!w-full"
-                  showSearch
-                  placeholder="LĨNH VỰC"
-                  allowClear
-                >
-                  {/* {listCareer.map((item: any) => {
+              {/* {listCareer.map((item: any) => {
                     return (
                       <Select.Option key={item.value} value={item.value}>
                         {item.label}
                       </Select.Option>
                     );
                   })} */}
-                </Select>
-              </FormItem>
-              <FormItem className="w-1/6">
-                <Input
-                  size="large"
-                  placeholder="SỐ ĐIỂM"
-                  className="rounded-[10px] bg-white w-full"
-                  allowClear
-                />
-              </FormItem>
-              <FormItem className="w-1/6">
-                <DatePicker placeholder="NGÀY TẠO" className="!w-full !h-[39px] rounded-[10px]" format="DD/MM/YYYY"/>
-              </FormItem>
-              <button
-                className="min-w-[150px] px-3 cursor-pointer rounded-[10px] bg-[#EB4C4C] flex items-center justify-center text-[var(--primary-color)] "
-                onClick={handleResetForm}
-              >
-                  <span className="text-sm text-white font-[600] tracking-[0.1px] leading-[21px] mr-1">
-                      Huỷ bỏ
-                  </span>
-              </button>
-              <button
-                type="submit"
-                className="min-w-[150px] px-3 cursor-pointer rounded-[10px] bg-[var(--primary-color)] flex items-center justify-center text-[var(--primary-color)] "
-              >
-                  <span className="text-sm text-white font-[600] tracking-[0.1px] leading-[21px] mr-1">
-                      Tìm kiếm
-                  </span>
-                  <div className="relative h-4 w-4">
-                    <Image src={SrcIcons.searchIcon} layout="fill" />
-                  </div>
-              </button>
-            </Form>
-            <div className="flex items-center justify-between mt-5 mb-3">
-              <p className="text-[var(--primary-color)] font-bold text-xl mb-3">
-                Danh sách CV
-              </p>
+            </Select>
+          </FormItem>
+          <FormItem className="w-1/6">
+            <Input
+              size="large"
+              placeholder="SỐ ĐIỂM"
+              className="rounded-[10px] bg-white w-full"
+              allowClear
+            />
+          </FormItem>
+          <FormItem className="w-1/6">
+            <DatePicker
+              placeholder="NGÀY TẠO"
+              className="!w-full !h-[39px] rounded-[10px]"
+              format="DD/MM/YYYY"
+            />
+          </FormItem>
+          <button
+            className="min-w-[150px] px-3 cursor-pointer rounded-[10px] bg-[#EB4C4C] flex items-center justify-center text-[var(--primary-color)] "
+            onClick={handleResetForm}
+          >
+            <span className="text-sm text-white font-[600] tracking-[0.1px] leading-[21px] mr-1">
+              Huỷ bỏ
+            </span>
+          </button>
+          <button
+            type="submit"
+            className="min-w-[150px] px-3 cursor-pointer rounded-[10px] bg-[var(--primary-color)] flex items-center justify-center text-[var(--primary-color)] "
+          >
+            <span className="text-sm text-white font-[600] tracking-[0.1px] leading-[21px] mr-1">
+              Tìm kiếm
+            </span>
+            <div className="relative h-4 w-4">
+              <Image src={SrcIcons.searchIcon} layout="fill" />
             </div>
-          </div>
-          {/* <div className="counter pointer-events-none absolute z-10 bottom-[1rem] translate-x-[100px]">
+          </button>
+        </Form>
+        <div className="flex items-center justify-between mt-5 mb-3">
+          <p className="text-[var(--primary-color)] font-bold text-xl mb-3">
+            Danh sách CV
+          </p>
+        </div>
+      </div>
+      {/* <div className="counter pointer-events-none absolute z-10 bottom-[1rem] translate-x-[100px]">
             Tổng số CV: {totalCount}
           </div> */}
-          <Table
-              key={page} 
-              selectionMode="none"
-              lang="vi"
-              sticked={false}
-              lined
-              autoSave="true"
-              suppressHydrationWarning
-              aria-label="Danh sách bài test"
-              aria-labelledby="Danh sách bài test"
-              css={{ background: 'white' }}
-              striped
-              color="secondary"
-              sortDescriptor={list.sortDescriptor}
-              onSortChange={list.sort}
-          >
-              <Table.Header columns={columns}>
-                {(column) => (
-                  <Table.Column
-                    key={column.uid}
-                    align={'start'}
-                    allowsSorting={column.uid !== 'actions' && column.uid !== 'published'}
-                  >
-                    {column.name}
-                  </Table.Column>
-                )}
-              </Table.Header>
-              <Table.Body items={dataTable} loadingState={list.loadingState}>
-                {(item) => (
-                  <Table.Row key={item.id_assessment_user} css={{ background: 'red' }}>
-                    {(columnKey) => (
-                      <Table.Cell css={{ background: 'red' }}>
-                        {renderCell(item, columnKey)}
-                      </Table.Cell>
-                    )}
-                  </Table.Row>
-                )}
-              </Table.Body>
-              <Table.Pagination
-                noMargin
-                align="center"
-                rowsPerPage={10}
-                initialPage={page}
-                // total={Math.ceil(dataTable.length)}
-                total={totalPages}
-                onPageChange={(newPage) => setPage(newPage)}
-              ></Table.Pagination>
-          </Table>
+      <Table
+        key={page}
+        selectionMode="none"
+        lang="vi"
+        sticked={false}
+        lined
+        autoSave="true"
+        suppressHydrationWarning
+        aria-label="Danh sách bài test"
+        aria-labelledby="Danh sách bài test"
+        css={{ background: 'white' }}
+        striped
+        color="secondary"
+        sortDescriptor={list.sortDescriptor}
+        onSortChange={list.sort}
+      >
+        <Table.Header columns={columns}>
+          {(column) => (
+            <Table.Column
+              key={column.uid}
+              align={'start'}
+              allowsSorting={column.uid !== 'actions' && column.uid !== 'published'}
+            >
+              {column.name}
+            </Table.Column>
+          )}
+        </Table.Header>
+        <Table.Body items={dataTable} loadingState={list.loadingState}>
+          {(item) => (
+            <Table.Row key={item.id_assessment_user} css={{ background: 'red' }}>
+              {(columnKey) => (
+                <Table.Cell css={{ background: 'red' }}>
+                  {renderCell(item, columnKey)}
+                </Table.Cell>
+              )}
+            </Table.Row>
+          )}
+        </Table.Body>
+        <Table.Pagination
+          noMargin
+          align="center"
+          rowsPerPage={10}
+          initialPage={page}
+          // total={Math.ceil(dataTable.length)}
+          total={totalPages}
+          onPageChange={(newPage) => setPage(newPage)}
+        ></Table.Pagination>
+      </Table>
     </>
-  )
+  );
 }
 
 export default ListCVTestDashboard;

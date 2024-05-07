@@ -29,9 +29,12 @@ import TextArea from 'antd/lib/input/TextArea';
 import { IGetListLicenseRes } from '../../shared/interface';
 import moment from 'moment';
 
-const calculatePackageStatus = (activationDate: moment.Moment, expirationDate: moment.Moment) => {
+const calculatePackageStatus = (
+  activationDate: moment.Moment,
+  expirationDate: moment.Moment
+) => {
   const currentDate = moment();
-  
+
   if (currentDate.isBefore(activationDate)) {
     return 0; // Chưa kích hoạt
   } else if (currentDate.isBetween(activationDate, expirationDate)) {
@@ -61,11 +64,15 @@ const BussinessPackageOrder = (props: any) => {
     setActivationDate(selectedDate);
     const periodMonths1 = form.getFieldValue(LICENSE_DATA_FIELD.period);
     const currentDate = moment();
-    const expirationDate1 = selectedDate ? moment(selectedDate).add(periodMonths1, 'months').toDate().toISOString() : null;
-      form.setFieldsValue({ [LICENSE_DATA_FIELD.expiration_date]: moment(expirationDate1) });
-    setChange(true)
-  };  
-  
+    const expirationDate1 = selectedDate
+      ? moment(selectedDate).add(periodMonths1, 'months').toDate().toISOString()
+      : null;
+    form.setFieldsValue({
+      [LICENSE_DATA_FIELD.expiration_date]: moment(expirationDate1),
+    });
+    setChange(true);
+  };
+
   useEffect(() => {
     if (!activationDate) {
       setStatus(1); // Đã kích hoạt
@@ -80,11 +87,11 @@ const BussinessPackageOrder = (props: any) => {
       }
     }
   }, [activationDate]);
-   
+
   const handleExpirationDateChange = (date: moment.Moment | null) => {
     const currentDate = moment();
     const newExpirationDate = date ? date.toDate() : null;
-  
+
     if (newExpirationDate && moment(newExpirationDate).isAfter(currentDate, 'day')) {
       setStatus(1); // Đã kích hoạt
       form.setFieldsValue({ [LICENSE_DATA_FIELD.status]: 1 });
@@ -95,7 +102,6 @@ const BussinessPackageOrder = (props: any) => {
     setChange2(true);
   };
 
-  
   useEffect(() => {
     const careerFieldId = form.getFieldValue(LICENSE_DATA_FIELD.career_field_id);
     const licenseCode = form.getFieldValue(LICENSE_DATA_FIELD.license_code);
@@ -110,7 +116,7 @@ const BussinessPackageOrder = (props: any) => {
       getLicense();
     }
   }, []);
-  
+
   const getLicense = async () => {
     try {
       const res: IGetListLicenseRes = await managerServiceService.getLicenseOrderDetail(
@@ -122,13 +128,13 @@ const BussinessPackageOrder = (props: any) => {
         [LICENSE_DATA_FIELD.career_field_id]: res.career_field_id,
         [LICENSE_DATA_FIELD.license_code]: res.license_code,
         [LICENSE_DATA_FIELD.license_name]: res.license_name,
-        [LICENSE_DATA_FIELD.activation_date]: moment(res.activation_date), 
+        [LICENSE_DATA_FIELD.activation_date]: moment(res.activation_date),
         [LICENSE_DATA_FIELD.selling_price]: res.selling_price,
         [LICENSE_DATA_FIELD.listed_price]: res.listed_price,
         [LICENSE_DATA_FIELD.period]: res.period,
         [LICENSE_DATA_FIELD.quantity_record_view]: res.quantity_record_view,
         [LICENSE_DATA_FIELD.quantity_record_take]: res.quantity_record_take,
-        [LICENSE_DATA_FIELD.expiration_date]: moment(res.expiration_date), 
+        [LICENSE_DATA_FIELD.expiration_date]: moment(res.expiration_date),
         [LICENSE_DATA_FIELD.status]: res.status,
         [LICENSE_DATA_FIELD.description]: res.description,
         [LICENSE_DATA_FIELD.discount]: res.discount,
@@ -149,37 +155,67 @@ const BussinessPackageOrder = (props: any) => {
         if (formStatus !== calculatedStatus) {
           setStatus(calculatedStatus);
           setFormStatus(calculatedStatus);
-          
-          console.log("Trạng thái 15/4: ", form.getFieldValue(LICENSE_DATA_FIELD.status));
-          if (form.getFieldValue(LICENSE_DATA_FIELD.status) === 1 && calculatedStatus === 1) {
+
+          console.log('Trạng thái 15/4: ', form.getFieldValue(LICENSE_DATA_FIELD.status));
+          if (
+            form.getFieldValue(LICENSE_DATA_FIELD.status) === 1 &&
+            calculatedStatus === 1
+          ) {
             setInitialStatus(true);
             setIsExpired(false);
-            form.setFieldsValue({ [LICENSE_DATA_FIELD.status]: form.getFieldValue(LICENSE_DATA_FIELD.status) });
+            form.setFieldsValue({
+              [LICENSE_DATA_FIELD.status]: form.getFieldValue(LICENSE_DATA_FIELD.status),
+            });
             setStatus(form.getFieldValue(LICENSE_DATA_FIELD.status));
-          } else if(form.getFieldValue(LICENSE_DATA_FIELD.status) === 1 && calculatedStatus !== 1){
+          } else if (
+            form.getFieldValue(LICENSE_DATA_FIELD.status) === 1 &&
+            calculatedStatus !== 1
+          ) {
             setInitialStatus(true);
             setIsExpired(false);
-            form.setFieldsValue({ [LICENSE_DATA_FIELD.status]: form.getFieldValue(LICENSE_DATA_FIELD.status) });
+            form.setFieldsValue({
+              [LICENSE_DATA_FIELD.status]: form.getFieldValue(LICENSE_DATA_FIELD.status),
+            });
             setStatus(form.getFieldValue(LICENSE_DATA_FIELD.status));
-          } else if (form.getFieldValue(LICENSE_DATA_FIELD.status) === 2 && calculatedStatus === 2) {
+          } else if (
+            form.getFieldValue(LICENSE_DATA_FIELD.status) === 2 &&
+            calculatedStatus === 2
+          ) {
             setInitialStatus(true);
             setIsExpired(true);
-            form.setFieldsValue({ [LICENSE_DATA_FIELD.status]: form.getFieldValue(LICENSE_DATA_FIELD.status) });
+            form.setFieldsValue({
+              [LICENSE_DATA_FIELD.status]: form.getFieldValue(LICENSE_DATA_FIELD.status),
+            });
             setStatus(form.getFieldValue(LICENSE_DATA_FIELD.status));
-          } else if (form.getFieldValue(LICENSE_DATA_FIELD.status) === 2 && calculatedStatus !== 2){
+          } else if (
+            form.getFieldValue(LICENSE_DATA_FIELD.status) === 2 &&
+            calculatedStatus !== 2
+          ) {
             setInitialStatus(true);
             setIsExpired(true);
-            form.setFieldsValue({ [LICENSE_DATA_FIELD.status]: form.getFieldValue(LICENSE_DATA_FIELD.status) });
+            form.setFieldsValue({
+              [LICENSE_DATA_FIELD.status]: form.getFieldValue(LICENSE_DATA_FIELD.status),
+            });
             setStatus(form.getFieldValue(LICENSE_DATA_FIELD.status));
-          } else if (form.getFieldValue(LICENSE_DATA_FIELD.status) === 0 && calculatedStatus === 0) {
+          } else if (
+            form.getFieldValue(LICENSE_DATA_FIELD.status) === 0 &&
+            calculatedStatus === 0
+          ) {
             setInitialStatus(false);
             setIsExpired(false);
-            form.setFieldsValue({ [LICENSE_DATA_FIELD.status]: form.getFieldValue(LICENSE_DATA_FIELD.status) });
+            form.setFieldsValue({
+              [LICENSE_DATA_FIELD.status]: form.getFieldValue(LICENSE_DATA_FIELD.status),
+            });
             setStatus(form.getFieldValue(LICENSE_DATA_FIELD.status));
-          } else if (form.getFieldValue(LICENSE_DATA_FIELD.status) === 0 && calculatedStatus !== 0){
+          } else if (
+            form.getFieldValue(LICENSE_DATA_FIELD.status) === 0 &&
+            calculatedStatus !== 0
+          ) {
             setInitialStatus(false);
             setIsExpired(false);
-            form.setFieldsValue({ [LICENSE_DATA_FIELD.status]: form.getFieldValue(LICENSE_DATA_FIELD.status) });
+            form.setFieldsValue({
+              [LICENSE_DATA_FIELD.status]: form.getFieldValue(LICENSE_DATA_FIELD.status),
+            });
             setStatus(form.getFieldValue(LICENSE_DATA_FIELD.status));
           }
         }
@@ -208,30 +244,42 @@ const BussinessPackageOrder = (props: any) => {
   //   }
   // })
 
-
-  console.log("ID Cập nhật: ", id)
+  console.log('ID Cập nhật: ', id);
 
   const handleFormSubmit = async () => {
     try {
       const formData = form.getFieldsValue();
       const periodMonths = formData[LICENSE_DATA_FIELD.period];
       let expirationDate;
-      if(change) {
-        expirationDate = moment(activationDate).add(periodMonths, 'months').format("YYYY-MM-DD");
-      } else if(!change && type !== 'edit') {
-        expirationDate = moment(moment()).add(periodMonths, 'months').format("YYYY-MM-DD");
-      } else if (change2 && type === 'edit') { //Bấm change Ngày hết hạn
-        expirationDate = moment(formData[LICENSE_DATA_FIELD.expiration_date]).format("YYYY-MM-DD");
-      } else if (!change2 && type === 'edit'){ //Không bấm change ngày hết hạn
-        expirationDate = moment(formData[LICENSE_DATA_FIELD.activation_date]).add(periodMonths, 'months').format("YYYY-MM-DD");
+      if (change) {
+        expirationDate = moment(activationDate)
+          .add(periodMonths, 'months')
+          .format('YYYY-MM-DD');
+      } else if (!change && type !== 'edit') {
+        expirationDate = moment(moment())
+          .add(periodMonths, 'months')
+          .format('YYYY-MM-DD');
+      } else if (change2 && type === 'edit') {
+        // Bấm change Ngày hết hạn
+        expirationDate = moment(formData[LICENSE_DATA_FIELD.expiration_date]).format(
+          'YYYY-MM-DD'
+        );
+      } else if (!change2 && type === 'edit') {
+        // Không bấm change ngày hết hạn
+        expirationDate = moment(formData[LICENSE_DATA_FIELD.activation_date])
+          .add(periodMonths, 'months')
+          .format('YYYY-MM-DD');
       }
       const params = {
-        career_field_id: type === 'edit' ? null : formData[LICENSE_DATA_FIELD.career_field_id],
+        career_field_id:
+          type === 'edit' ? null : formData[LICENSE_DATA_FIELD.career_field_id],
         license_id: type === 'edit' ? null : 0,
         enterpise_id: type === 'edit' ? null : localStorage.getItem('enterprise_id'),
         license_code: type === 'edit' ? null : formData[LICENSE_DATA_FIELD.license_code],
         license_name: type === 'edit' ? null : formData[LICENSE_DATA_FIELD.license_name],
-        activation_date: moment(formData[LICENSE_DATA_FIELD.activation_date]).format("YYYY-MM-DD"),
+        activation_date: moment(formData[LICENSE_DATA_FIELD.activation_date]).format(
+          'YYYY-MM-DD'
+        ),
         selling_price: formData[LICENSE_DATA_FIELD.selling_price],
         listed_price: formData[LICENSE_DATA_FIELD.listed_price],
         period: formData[LICENSE_DATA_FIELD.period],
@@ -244,27 +292,35 @@ const BussinessPackageOrder = (props: any) => {
         description: formData[LICENSE_DATA_FIELD.description],
         id: type === 'edit' ? id : undefined,
       };
-      if(type === 'edit'){
+      if (type === 'edit') {
         await managerServiceService.updateLicenseOrder(params);
         appLibrary.hideloading();
         message.success('Cập nhật thành công');
-        router.push(`/quan-ly-thanh-vien/doanh-nghiep/chinh-sua/${localStorage.getItem('enterprise_id')}`);
+        router.push(
+          `/quan-ly-thanh-vien/doanh-nghiep/chinh-sua/${localStorage.getItem(
+            'enterprise_id'
+          )}`
+        );
       } else {
         await managerServiceService.getLicenseOrder(params);
         appLibrary.hideloading();
         message.success('Thêm mới thành công');
-        router.push(`/quan-ly-thanh-vien/doanh-nghiep/chinh-sua/${localStorage.getItem('enterprise_id')}`);
+        router.push(
+          `/quan-ly-thanh-vien/doanh-nghiep/chinh-sua/${localStorage.getItem(
+            'enterprise_id'
+          )}`
+        );
       }
     } catch (error) {
       showResponseError(error);
       console.log(error);
     }
   };
-  
+
   const [packageOptions, setPackageOptions] = useState([]);
   const fetchPackageOptions = async (careerId: number) => {
     try {
-      const response = await managerServiceService.getLicenseCode(careerId); 
+      const response = await managerServiceService.getLicenseCode(careerId);
       setPackageOptions(response);
     } catch (error) {
       console.error('Lỗi fetchPackageOptions: ', error);
@@ -274,7 +330,7 @@ const BussinessPackageOrder = (props: any) => {
   const handleCareerChange = (careerId: number) => {
     fetchPackageOptions(careerId);
     form.setFieldsValue({
-      [LICENSE_DATA_FIELD.license_code]: null, 
+      [LICENSE_DATA_FIELD.license_code]: null,
       [LICENSE_DATA_FIELD.license_name]: null,
       [LICENSE_DATA_FIELD.selling_price]: null,
       [LICENSE_DATA_FIELD.listed_price]: null,
@@ -327,8 +383,15 @@ const BussinessPackageOrder = (props: any) => {
         </p>
         <div className="flex gap-8 mb-2">
           <div className="w-full">
-            <p className={`font-[400] text-[16px] leading-[24px] ${type === 'edit' ? 'text-text-default' : 'text-[#44444F]'} mb-1`}>
-              Lĩnh vực <span className={`${type === 'edit' ? 'hidden' : 'text-[#EB4C4C] '}`}>*</span>
+            <p
+              className={`font-[400] text-[16px] leading-[24px] ${
+                type === 'edit' ? 'text-text-default' : 'text-[#44444F]'
+              } mb-1`}
+            >
+              Lĩnh vực{' '}
+              <span className={`${type === 'edit' ? 'hidden' : 'text-[#EB4C4C] '}`}>
+                *
+              </span>
             </p>
             <FormItem
               name={LICENSE_DATA_FIELD.career_field_id}
@@ -341,7 +404,7 @@ const BussinessPackageOrder = (props: any) => {
                 className="!rounded-[10px] w-full"
                 allowClear
                 disabled={isDisabled}
-                style={type === 'edit' ? {} : {border: '1px solid blue'}}
+                style={type === 'edit' ? {} : { border: '1px solid blue' }}
                 onChange={handleCareerChange}
               >
                 {listCareer.map((item: any) => {
@@ -355,8 +418,15 @@ const BussinessPackageOrder = (props: any) => {
             </FormItem>
           </div>
           <div className="w-full">
-            <p className={`font-[400] text-[16px] leading-[24px] ${type === 'edit' ? 'text-text-default' : 'text-[#44444F]'} mb-1`}>
-              Mã gói <span className={`${type === 'edit' ? 'hidden' : 'text-[#EB4C4C] '}`}>*</span>
+            <p
+              className={`font-[400] text-[16px] leading-[24px] ${
+                type === 'edit' ? 'text-text-default' : 'text-[#44444F]'
+              } mb-1`}
+            >
+              Mã gói{' '}
+              <span className={`${type === 'edit' ? 'hidden' : 'text-[#EB4C4C] '}`}>
+                *
+              </span>
             </p>
             <FormItem
               name={LICENSE_DATA_FIELD.license_code}
@@ -367,7 +437,7 @@ const BussinessPackageOrder = (props: any) => {
                 size="large"
                 placeholder="Nhập mã gói"
                 disabled={isDisabled}
-                style={type === 'edit' ? {} : {border: '1px solid blue'}}
+                style={type === 'edit' ? {} : { border: '1px solid blue' }}
                 className="!rounded-[10px] bg-white w-full"
                 allowClear
                 onChange={handleCodePackageChange}
@@ -383,18 +453,23 @@ const BussinessPackageOrder = (props: any) => {
             </FormItem>
           </div>
           <div className="w-full">
-            <p className={`font-[400] text-[16px] leading-[24px] ${initialStatus ? 'text-text-default' : 'text-[#44444F]'} mb-1`}>
-              Ngày kích hoạt <span className={`${initialStatus ? 'hidden' : 'text-[#EB4C4C] '}`}>*</span>
+            <p
+              className={`font-[400] text-[16px] leading-[24px] ${
+                initialStatus ? 'text-text-default' : 'text-[#44444F]'
+              } mb-1`}
+            >
+              Ngày kích hoạt{' '}
+              <span className={`${initialStatus ? 'hidden' : 'text-[#EB4C4C] '}`}>*</span>
             </p>
             <FormItem
               name={LICENSE_DATA_FIELD.activation_date}
               className="w-full"
-              initialValue={moment()} 
+              initialValue={moment()}
               rules={[{ required: true, message: 'Trường này là bắt buộc' }]}
             >
               <DatePicker
                 locale={locale}
-                style={{borderColor: 'blue'}}
+                style={{ borderColor: 'blue' }}
                 className="rounded-[10px] p-2 w-full"
                 format="DD/MM/YYYY"
                 disabled={initialStatus}
@@ -410,10 +485,7 @@ const BussinessPackageOrder = (props: any) => {
             <p className="font-[400] text-[16px] leading-[24px] text-text-default mb-1">
               Tên gói
             </p>
-            <FormItem
-              name={LICENSE_DATA_FIELD.license_name}
-              className="w-full"
-            >
+            <FormItem name={LICENSE_DATA_FIELD.license_name} className="w-full">
               <Input
                 size="large"
                 className="rounded-[10px] bg-white w-full"
@@ -426,16 +498,11 @@ const BussinessPackageOrder = (props: any) => {
             <p className="font-[400] text-[16px] leading-[24px] text-text-default mb-1">
               Giá bán (VND)
             </p>
-            <FormItem
-              name={LICENSE_DATA_FIELD.selling_price}
-              className="w-full"
-            >
+            <FormItem name={LICENSE_DATA_FIELD.selling_price} className="w-full">
               <InputNumber
                 size="large"
                 className="rounded-[10px] bg-white w-full"
-                formatter={(value) =>
-                  `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, '.')
-                }
+                formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, '.')}
                 parser={(value) => value!.replace(/\$\s?|(\.*)/g, '')}
                 disabled
               ></InputNumber>
@@ -445,16 +512,11 @@ const BussinessPackageOrder = (props: any) => {
             <p className="font-[400] text-[16px] leading-[24px] text-text-default mb-1">
               Giá niêm yết (VND)
             </p>
-            <FormItem
-              name={LICENSE_DATA_FIELD.listed_price}
-              className="w-full"
-            >
+            <FormItem name={LICENSE_DATA_FIELD.listed_price} className="w-full">
               <InputNumber
                 size="large"
                 className="rounded-[10px] bg-white w-full"
-                formatter={(value) =>
-                  `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, '.')
-                }
+                formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, '.')}
                 parser={(value) => value!.replace(/\$\s?|(\.*)/g, '')}
                 disabled
               ></InputNumber>
@@ -466,10 +528,7 @@ const BussinessPackageOrder = (props: any) => {
             <p className="font-[400] text-[16px] leading-[24px] text-text-default mb-1">
               Thời gian sử dụng
             </p>
-            <FormItem
-              name={LICENSE_DATA_FIELD.period}
-              className="w-full"
-            >
+            <FormItem name={LICENSE_DATA_FIELD.period} className="w-full">
               <Select
                 size="large"
                 className="!rounded-[10px] !bg-white w-full"
@@ -487,13 +546,21 @@ const BussinessPackageOrder = (props: any) => {
             </FormItem>
           </div>
           <div className="w-full">
-            <p className={`font-[400] text-[16px] leading-[24px] ${type === 'edit' && !isExpired ? 'text-[#44444F]' : 'text-text-default'} mb-1`}>
-              Số hồ sơ có thể xem <span className={`${type === 'edit' && !isExpired ? 'text-[#EB4C4C] ' : 'hidden'}`}>*</span>
-            </p>
-            <FormItem
-              name={LICENSE_DATA_FIELD.quantity_record_view}
-              className="w-full"
+            <p
+              className={`font-[400] text-[16px] leading-[24px] ${
+                type === 'edit' && !isExpired ? 'text-[#44444F]' : 'text-text-default'
+              } mb-1`}
             >
+              Số hồ sơ có thể xem{' '}
+              <span
+                className={`${
+                  type === 'edit' && !isExpired ? 'text-[#EB4C4C] ' : 'hidden'
+                }`}
+              >
+                *
+              </span>
+            </p>
+            <FormItem name={LICENSE_DATA_FIELD.quantity_record_view} className="w-full">
               <Input
                 size="large"
                 className="rounded-[10px] bg-white w-full"
@@ -505,13 +572,21 @@ const BussinessPackageOrder = (props: any) => {
             </FormItem>
           </div>
           <div className="w-full">
-            <p className={`font-[400] text-[16px] leading-[24px] ${type === 'edit' && !isExpired ? 'text-[#44444F]' : 'text-text-default'} mb-1`}>
-              Số hồ sơ có thể tiếp nhận <span className={`${type === 'edit' && !isExpired ? 'text-[#EB4C4C] ' : 'hidden'}`}>*</span>
-            </p>
-            <FormItem
-              name={LICENSE_DATA_FIELD.quantity_record_take}
-              className="w-full"
+            <p
+              className={`font-[400] text-[16px] leading-[24px] ${
+                type === 'edit' && !isExpired ? 'text-[#44444F]' : 'text-text-default'
+              } mb-1`}
             >
+              Số hồ sơ có thể tiếp nhận{' '}
+              <span
+                className={`${
+                  type === 'edit' && !isExpired ? 'text-[#EB4C4C] ' : 'hidden'
+                }`}
+              >
+                *
+              </span>
+            </p>
+            <FormItem name={LICENSE_DATA_FIELD.quantity_record_take} className="w-full">
               <Input
                 size="large"
                 className="rounded-[10px] bg-white w-full"
@@ -523,16 +598,24 @@ const BussinessPackageOrder = (props: any) => {
             </FormItem>
           </div>
         </div>
-        { type === 'edit' && 
+        {type === 'edit' && (
           <div className="flex gap-8 mb-2">
             <div className="w-full">
-              <p className={`font-[400] text-[16px] leading-[24px] ${type === 'edit' && !isExpired ? 'text-[#44444F]' : 'text-text-default'} mb-1`}>
-                Ngày hết hạn <span className={`${type === 'edit' && !isExpired ? 'text-[#EB4C4C] ' : 'hidden'}`}>*</span>
-              </p>
-              <FormItem
-                name={LICENSE_DATA_FIELD.expiration_date}
-                className="w-full"
+              <p
+                className={`font-[400] text-[16px] leading-[24px] ${
+                  type === 'edit' && !isExpired ? 'text-[#44444F]' : 'text-text-default'
+                } mb-1`}
               >
+                Ngày hết hạn{' '}
+                <span
+                  className={`${
+                    type === 'edit' && !isExpired ? 'text-[#EB4C4C] ' : 'hidden'
+                  }`}
+                >
+                  *
+                </span>
+              </p>
+              <FormItem name={LICENSE_DATA_FIELD.expiration_date} className="w-full">
                 <DatePicker
                   locale={locale}
                   placeholder="12/03/2002"
@@ -548,7 +631,10 @@ const BussinessPackageOrder = (props: any) => {
             </div>
             <div className="w-full">
               <p className="font-[400] text-[16px] leading-[24px] text-[#44444F] mb-1">
-                Trạng thái <span className={`${type === 'edit' ? 'text-[#EB4C4C] ' : 'hidden'}`}>*</span>
+                Trạng thái{' '}
+                <span className={`${type === 'edit' ? 'text-[#EB4C4C] ' : 'hidden'}`}>
+                  *
+                </span>
               </p>
               <FormItem
                 name={LICENSE_DATA_FIELD.status}
@@ -560,14 +646,19 @@ const BussinessPackageOrder = (props: any) => {
                   placeholder="Chọn trạng thái"
                   className="!rounded-[10px] bg-white w-full"
                   allowClear
-                  value={status} 
+                  value={status}
                   onChange={handleStatusChange}
-                  style={type === 'edit' ? {border: '1px solid blue'} : {}}
+                  style={type === 'edit' ? { border: '1px solid blue' } : {}}
                 >
                   {listStatus.map((item: any) => {
-                     const isDisabled = item.value !== 0 && (status === 1 || status === 2 || status === 0);
+                    const isDisabled =
+                      item.value !== 0 && (status === 1 || status === 2 || status === 0);
                     return (
-                      <Select.Option key={item.value} value={item.value} disabled={!isDisabled}>
+                      <Select.Option
+                        key={item.value}
+                        value={item.value}
+                        disabled={!isDisabled}
+                      >
                         {item.label}
                       </Select.Option>
                     );
@@ -575,9 +666,9 @@ const BussinessPackageOrder = (props: any) => {
                 </Select>
               </FormItem>
             </div>
-          <div className="w-full"></div>
-        </div>
-        }
+            <div className="w-full"></div>
+          </div>
+        )}
         <div className="my-3 w-full border-solid border-t-[1px] border-[#ccc]">
           <p className="text-[var(--primary-color)] font-bold text-xl mb-3 my-4">
             Thông tin thanh toán
@@ -587,18 +678,15 @@ const BussinessPackageOrder = (props: any) => {
               <p className="font-[400] text-[16px] leading-[24px] text-[#44444F] mb-1">
                 Chiết khấu (VND)
               </p>
-              <FormItem
-                name={LICENSE_DATA_FIELD.discount}
-                className="w-full"
-              >
+              <FormItem name={LICENSE_DATA_FIELD.discount} className="w-full">
                 <Input
                   size="large"
                   status={type === 'edit' ? '' : 'warning'}
-                  style={type === 'edit' ? {} : {borderColor: 'blue' }}
+                  style={type === 'edit' ? {} : { borderColor: 'blue' }}
                   placeholder="0"
                   className="rounded-[10px] bg-white w-full"
                   allowClear
-                  disabled = {isDisabled}
+                  disabled={isDisabled}
                   onChange={(e) => handleDiscountChange(parseFloat(e.target.value))}
                 ></Input>
               </FormItem>
@@ -607,17 +695,12 @@ const BussinessPackageOrder = (props: any) => {
               <p className="font-[400] text-[16px] leading-[24px] text-text-default mb-1">
                 Tổng tiền (VND)
               </p>
-              <FormItem
-                name={LICENSE_DATA_FIELD.total_amount}
-                className="w-full"
-              >
+              <FormItem name={LICENSE_DATA_FIELD.total_amount} className="w-full">
                 <InputNumber
                   size="large"
                   className="rounded-[10px] bg-white w-full"
-                  placeholder='0'
-                  formatter={(value) =>
-                    `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, '.')
-                  }
+                  placeholder="0"
+                  formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, '.')}
                   parser={(value) => value!.replace(/\$\s?|(\.*)/g, '')}
                   disabled
                 ></InputNumber>
@@ -626,15 +709,19 @@ const BussinessPackageOrder = (props: any) => {
             <div className="w-full"></div>
           </div>
           <div className="w-full">
-            <p className={`font-[400] text-[16px] leading-[24px] ${type === 'edit' ? 'text-text-default' : 'text-[#44444F]'} mb-1`}>
+            <p
+              className={`font-[400] text-[16px] leading-[24px] ${
+                type === 'edit' ? 'text-text-default' : 'text-[#44444F]'
+              } mb-1`}
+            >
               Ghi chú
             </p>
             <FormItem name={LICENSE_DATA_FIELD.description} className="w-full">
               <TextArea
                 rows={6}
                 status={type === 'edit' ? '' : 'warning'}
-                style={type === 'edit' ? {} : {borderColor: 'blue' }}
-                disabled = {isDisabled}
+                style={type === 'edit' ? {} : { borderColor: 'blue' }}
+                disabled={isDisabled}
                 className="rounded-[10px]"
                 placeholder="Nhập lời nhắn"
               ></TextArea>
@@ -643,10 +730,16 @@ const BussinessPackageOrder = (props: any) => {
         </div>
         <div className="flex justify-end mt-2">
           <div className="flex items-center">
-            <Link href={`/quan-ly-thanh-vien/doanh-nghiep/chinh-sua/${localStorage.getItem('enterprise_id')}`}>
+            <Link
+              href={`/quan-ly-thanh-vien/doanh-nghiep/chinh-sua/${localStorage.getItem(
+                'enterprise_id'
+              )}`}
+            >
               <div className="custom-button !bg-[#EB4C4C] mr-2">Hủy bỏ</div>
             </Link>
-            <button className="custom-button shadow-[0_3px_10px_rgb(0,0,0,0.2)]">{type === 'edit' ? 'Lưu thay đổi' : 'Thêm mới'}</button>
+            <button className="custom-button shadow-[0_3px_10px_rgb(0,0,0,0.2)]">
+              {type === 'edit' ? 'Lưu thay đổi' : 'Thêm mới'}
+            </button>
           </div>
         </div>
       </Form>

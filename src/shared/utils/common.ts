@@ -11,7 +11,7 @@ export function redirectToAuthenticate() {
   const redirectUrl = `${
     process.env.NEXT_PUBLIC_AUTH_URL
   }/login?redirect=${encodeURIComponent(window.location.href)}`;
-  window.location.href = "/Login";
+  window.location.href = '/Login';
 }
 
 export function downloadFileNormally(response) {
@@ -81,10 +81,9 @@ export function showResponseError2(error) {
 }
 
 export function showResponseError3(error) {
-  message.error("Mã gói đã tồn tại" ?? 'Có lỗi xảy ra');
+  message.error('Mã gói đã tồn tại' ?? 'Có lỗi xảy ra');
 }
 
 export function showSuccessMessage(message) {
   message.success(message ?? 'Thao tác thành công');
 }
-

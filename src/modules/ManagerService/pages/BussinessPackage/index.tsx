@@ -80,7 +80,7 @@ const BussinessPackage = (props: any) => {
       const res = await managerServiceService.addLicense(data);
       if (res) {
         message.success('Thêm mới thành công');
-        router.push(`/quan-ly-viec-lam/goi-doanh-nghiep`);
+        router.push('/quan-ly-viec-lam/goi-doanh-nghiep');
       }
       appLibrary.hideloading();
     } catch (error) {
@@ -98,7 +98,7 @@ const BussinessPackage = (props: any) => {
       const res = await managerServiceService.updateLicense(data);
       if (res) {
         message.success('Cập nhật thành công');
-        router.push(`/quan-ly-viec-lam/goi-doanh-nghiep`);
+        router.push('/quan-ly-viec-lam/goi-doanh-nghiep');
       }
       appLibrary.hideloading();
     } catch (error) {

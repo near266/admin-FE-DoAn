@@ -1,4 +1,4 @@
-class   SrcImages {
+class SrcImages {
   static iconsPath = '/images/';
   public static sideImage = `${SrcImages.iconsPath}side-image-login.png`;
   public static successSignup = `${SrcImages.iconsPath}success-signup.png`;

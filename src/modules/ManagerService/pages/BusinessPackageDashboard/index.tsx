@@ -117,13 +117,12 @@ export function BusinessPackageDashboard(props: IProps) {
     appLibrary.showloading();
     try {
       const page = 0;
-      const pageSize = 10; 
+      const pageSize = 10;
       const response = await managerServiceService.getAllLicense(page, pageSize, params);
       if (response.data && response.data.length > 0) {
         appLibrary.hideloading();
         setDataTable(response.data);
-      }
-      else {
+      } else {
         appLibrary.hideloading();
       }
     } catch (error) {
@@ -136,7 +135,7 @@ export function BusinessPackageDashboard(props: IProps) {
     const day = date.getDate();
     const month = date.getMonth() + 1;
     const year = date.getFullYear();
-    return `${day < 10 ? '0' + day : day}/${month < 10 ? '0' + month : month}/${year}`;
+    return `${day < 10 ? `0${day}` : day}/${month < 10 ? `0${month}` : month}/${year}`;
   };
 
   const handlePublise = async (value, assessment_id) => {
@@ -244,7 +243,10 @@ export function BusinessPackageDashboard(props: IProps) {
         );
       case 'action':
         return (
-          <Link legacyBehavior href={`/quan-ly-viec-lam/goi-doanh-nghiep/chinh-sua/${item.id}`}>
+          <Link
+            legacyBehavior
+            href={`/quan-ly-viec-lam/goi-doanh-nghiep/chinh-sua/${item.id}`}
+          >
             <Row align="flex-start">
               <Tooltip content="Xem chi tiết" css={{ marginRight: 20 }}>
                 <IconButton>
@@ -320,7 +322,11 @@ export function BusinessPackageDashboard(props: IProps) {
             </Select>
           </FormItem>
           <FormItem name={LICENSE_DATA_FIELD.created_date} className="w-1/6">
-            <DatePicker placeholder="Ngày tạo" className="!w-full !h-[39px] rounded-[10px]" format="DD/MM/YYYY"/>
+            <DatePicker
+              placeholder="Ngày tạo"
+              className="!w-full !h-[39px] rounded-[10px]"
+              format="DD/MM/YYYY"
+            />
           </FormItem>
           <FormItem name={LICENSE_DATA_FIELD.status} className="w-1/6">
             <Select
