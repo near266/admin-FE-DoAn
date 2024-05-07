@@ -2,8 +2,9 @@
 import { ApolloClient, InMemoryCache } from '@apollo/client';
 import { GetServerSidePropsContext } from 'next';
 
-import { IServerResponse } from '@/interfaces';
-import { Common } from '@/shared';
+import { IServerResponse } from '@/interfaces/server';
+
+import { Common } from '@/shared/utils';
 
 export const callAPI = async (
   ctx: GetServerSidePropsContext,

@@ -1,9 +1,9 @@
 import { useMemo } from 'react';
 import { ApolloClient, HttpLink, InMemoryCache } from '@apollo/client';
 import { concatPagination } from '@apollo/client/utilities';
+import { Cookies } from '@/shared/axios';
 
-import { Cookies } from '@/shared';
-import { isBrowser } from '@/helpers';
+import { isBrowser } from '@/shared/helpers';
 
 let apolloClient;
 

@@ -1,0 +1,22 @@
+.box {
+  padding: 20px 40px;
+
+  &__title {
+    text-transform: uppercase;
+    margin-bottom: 28px;
+    font-weight: 600;
+  }
+}
+
+.inputField {
+  margin-bottom: 22px;
+  width: 320px;
+}
+
+.submitArea {
+  &__button {
+    i {
+      margin-right: 10px;
+    }
+  }
+}

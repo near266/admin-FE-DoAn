@@ -3,13 +3,12 @@ import { Paper, Button } from '@mui/material';
 import { useFormik } from 'formik';
 import { useSelector, useDispatch } from 'react-redux';
 
-//import { appLibrary, authService } from '@/shared';
-import { appLibrary } from '@/shared/utils/loading';
+import { appLibrary, authService } from '@/shared';
 import { Form, TextInput, FileUpload, FormHelper } from '@/shared/forms';
-import { useSnackbar } from '@/hooks/snackbar';
+import { useSnackbar } from '@/shared/snackbar';
 import { IRootState, setAuthUser } from '@/store';
 import { validationSchema } from './validationSchema';
-import { SettingForm } from '@/modules/User/Setting/models';
+import { SettingForm } from '../../models';
 import styles from './styles.module.scss';
 
 const UserInfo: FC<any> = () => {
@@ -24,18 +23,19 @@ const UserInfo: FC<any> = () => {
   });
 
   async function handleSubmit(formValues: SettingForm) {
-    // appLibrary.showloading();
-    // const res = await authService
-    //   .updateMeInfo(formValues)
-    //   .catch((errors) => {
-    //     FormHelper.handleValidationErrors(settingForm, errors);
-    //     snackbar.showMessage('Có lỗi, vui lòng kiểm tra lại thông tin', 'error');
-    //   })
-    //   .finally(() => appLibrary.hideloading());
-    // if (res?.code === 'SUCCESS') {
-    //   dispatch(setAuthUser(res.payload));
-    //   snackbar.showMessage('Cập nhật thông tin thành công', 'success');
-    // }
+    appLibrary.showloading();
+    const res = await authService
+      .updateMeInfo(formValues)
+      .catch((errors) => {
+        FormHelper.handleValidationErrors(settingForm, errors);
+        snackbar.showMessage('Có lỗi, vui lòng kiểm tra lại thông tin', 'error');
+      })
+      .finally(() => appLibrary.hideloading());
+
+    if (res?.code === 'SUCCESS') {
+      dispatch(setAuthUser(res.payload));
+      snackbar.showMessage('Cập nhật thông tin thành công', 'success');
+    }
   }
 
   return (

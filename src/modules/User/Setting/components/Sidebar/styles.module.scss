@@ -1,0 +1,49 @@
+.sidebar {
+  padding: 16px 24px;
+  min-height: 300px;
+
+  &__back {
+    font-size: 14px;
+    display: inline-flex;
+    cursor: pointer;
+    font-weight: 600;
+    color: #474747;
+    align-items: center;
+
+    i {
+      font-size: 12px;
+      margin-right: 5px;
+    }
+  }
+}
+
+.menu {
+  margin-top: 18px;
+}
+
+.menuItem {
+  display: flex;
+  align-items: center;
+  padding: 16px 10px;
+  cursor: pointer;
+  border-bottom: 1px solid hsl(0deg 0% 59.2% / 15%);
+
+  &__icon {
+    width: 38px;
+    color: #222;
+    font-size: 18px;
+  }
+
+  &__title {
+    font-size: 16px;
+    margin-right: auto;
+
+    &_active {
+      color: #1780de;
+    }
+  }
+
+  &__showIcon {
+    font-size: 14px;
+  }
+}

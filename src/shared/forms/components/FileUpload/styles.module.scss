@@ -1,0 +1,32 @@
+.uploadArea {
+  border: 1px dotted #3a7bd5;
+  height: 64px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &__file {
+    display: none;
+  }
+
+  &__chosser {
+    display: flex;
+    align-items: center;
+    color: #3a7bd5;
+
+    i {
+      margin-right: 10px;
+      font-size: 20px;
+    }
+  }
+}
+
+.preview {
+  margin-top: 5px;
+
+  img {
+    width: 200px;
+    height: auto;
+  }
+}

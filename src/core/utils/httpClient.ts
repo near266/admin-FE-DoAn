@@ -1,7 +1,7 @@
 import axios, { AxiosError, AxiosInstance } from 'axios';
 
-import { Cookies, authService } from '@/shared';
-
+import { Cookies } from '@/shared/axios';
+import { authService } from '@/shared/services';
 let isRefreshing = false;
 let failedQueue = [];
 

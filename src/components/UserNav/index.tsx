@@ -37,7 +37,7 @@ const UserPop: React.FC = (props: IProps) => {
             <div className={styles.divider} />
             <ul className={styles.expandMenu}>
               <li>
-                <Link href={`/profile/${name}`} className={styles.expandMenu__item}>
+                <Link href={`/profile}`} className={styles.expandMenu__item}>
                   <i className="fa-solid fa-user" />
                   Trang cá nhân
                 </Link>
