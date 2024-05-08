@@ -1,0 +1,74 @@
+/* bounce animation */
+.bounce {
+  min-height: 0 !important;
+  transform: translateX(-50%);
+  min-width: 0 !important;
+  border-radius: 50%;
+  animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+  0%,
+  20%,
+  50%,
+  80%,
+  100% {
+    transform: translateY(0) translateX(-50%);
+  }
+
+  40% {
+    transform: translateY(-30px) translateX(-50%);
+  }
+
+  60% {
+    transform: translateY(-15px) translateX(-50%);
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes ping {
+  75%,
+  100% {
+    transform: scale(1.02);
+    opacity: 0;
+  }
+}
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes push {
+  50% {
+    transform: scale(0.8);
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+.smooth_animation {
+  transform: all 0.6s ease;
+}
+
+@keyframes scroll-infinity {
+  100% {
+    left: -100%;
+  }
+  /* top is the number of spans (in this case 8) multiplied by span height (45px as described above) */
+}

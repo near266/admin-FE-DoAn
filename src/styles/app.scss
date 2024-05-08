@@ -1,0 +1,19 @@
+// Variables
+@import 'common/variables';
+@import 'common/mixins';
+@import 'common/fonts';
+
+// library
+@import './layouts/nprogress';
+@import 'antd/dist/antd.css';
+@import './layouts/ant';
+@import './layouts/next-ui';
+@import './layouts/rechart';
+@import './layouts/ckeditor';
+@import 'tailwindcss/tailwind.css';
+@import './libs/tailwind';
+
+// layouts
+@import './layouts/animation';
+@import './layouts/youth-design-system';
+@import './layouts/global';

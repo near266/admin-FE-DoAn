@@ -1,11 +1,19 @@
 .box {
   padding: 20px 40px;
-
+  height: 70vh;
+  width: 100vh;
+  
   &__title {
     text-transform: uppercase;
     margin-bottom: 28px;
     font-weight: 600;
+    text-align: center;
+
+    
   }
+}
+.primary-button {
+  @apply bg-primary hover:bg-primary text-white hover:text-white rounded-[10px] font-[600] leading-[21px] flex px-[17px] py-[10px] justify-center items-center drop-shadow-[0_0px_7px_rgba(41,41,50,0.1)] focus:bg-primary focus:text-white focus:outline-none border-primary;
 }
 
 .inputField {

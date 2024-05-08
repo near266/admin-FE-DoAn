@@ -1,5 +1,4 @@
-import { IUser } from '@/interfaces';
-
+import { IUser } from '@/interfaces/models/IUser';
 export class SettingForm {
   constructor(item: IUser = null) {
     if (item) {

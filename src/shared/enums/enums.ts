@@ -14,7 +14,7 @@ export enum FORM_DATA_FIELD {
   enterprise_name = 'enterprise_name',
   city_id = 'city_id',
   district_id = 'district_id',
-  emails = 'email',
+  email = 'email',
   password = 'password',
   new_password = 'new_password',
   remember_me = 'remember_me',
@@ -25,7 +25,12 @@ export enum FORM_DATA_FIELD {
   verify_code = 'code',
   avatar = 'avatar',
 }
-
+export enum RESETPASSWORD {
+  UserName = 'UserName',
+  Password = 'Password',
+  oldPass = 'oldPass',
+  ConfirmPassword = 'ConfirmPassword',
+}
 export enum AssessmentTypeVi {
   YOUR_SELF = 'Hiểu mình',
   CAREER = 'Hiểu nghề',

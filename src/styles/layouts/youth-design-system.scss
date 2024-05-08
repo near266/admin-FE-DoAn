@@ -1,0 +1,54 @@
+.primary-button {
+  @apply bg-primary hover:bg-primary text-white hover:text-white rounded-[10px] font-[600] leading-[21px] flex px-[17px] py-[10px] justify-center items-center drop-shadow-[0_0px_7px_rgba(41,41,50,0.1)] focus:bg-primary focus:text-white focus:outline-none border-primary;
+}
+
+.secondary-button {
+  @apply bg-transparent ml-auto text-[#403ecc] rounded-[10px] font-[600] leading-[21px] flex px-[17px] py-[10px] justify-center items-center drop-shadow-[0_0px_7px_rgba(41,41,50,0.1)];
+}
+
+.typo-h1-primary {
+  font-style: normal;
+  font-weight: 600;
+  font-size: 40px;
+  line-height: 48px;
+  color: #22216d;
+}
+
+.typo-h2 {
+  font-style: normal;
+  font-weight: 600;
+  font-size: 28px;
+  line-height: 39px;
+  letter-spacing: 0.1167px;
+  color: #171725;
+}
+
+.typo-normal {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 19px;
+  color: #44444f;
+}
+
+.typo-gray {
+  font-style: normal;
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 26px;
+  letter-spacing: 0.1px;
+  color: #44444f;
+}
+
+.typo-small-title-purple {
+  font-style: normal;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 24px;
+  letter-spacing: -0.005em;
+  color: #22216d;
+}
+
+.card {
+  @apply bg-white shadow-md rounded-[10px] px-[20px] py-[10px];
+}

@@ -1,0 +1,29 @@
+/* overide next-ui theme */
+:root {
+  --nextui-colors-success: #30ab7e;
+  --nextui-colors-primary-shadow: #403ecc;
+  --nextui-colors-primary: #403ecc;
+  --nextui-fonts-sans: 'Lexend Deca', sans-serif !important;
+  --nextui-fonts-mono: 'Lexend Deca', sans-serif !important;
+}
+
+.nextui-table-row {
+  background-color: white;
+  border-bottom: 1px solid rgb(105 104 104);
+}
+
+.nextui-table-hidden-row {
+  display: none;
+}
+
+.nextui-table-sort-icon {
+  left: 120px;
+}
+
+.nextui-table-row-group {
+  zoom: 1.15;
+}
+
+.nextui-user-name {
+  max-width: fit-content !important;
+}

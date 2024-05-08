@@ -1,0 +1,50 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .pause {
+    animation-play-state: paused;
+  }
+}
+@layer base {
+  :root {
+    --body-zoom-factor: 0.85;
+    --color-text-primary: #171725;
+    --color-text-secondary: #696974;
+    --color-text-active: #403ecc;
+    --color-text-placeholder: #b5b5be;
+    --color-checkbox-green: #30ab7e;
+    --color-button-primary: #403ecc;
+    --color-button-hover: ;
+    --color-button-disable: #f1f1f5;
+    --primary-color: #403ecc;
+    --background-color: #403ecc;
+    --border-color: #f1f1f5;
+    --line-height-title: 39px;
+    --line-placeholder-title: 20px;
+    --font-size-title: 28px;
+    --font-weight-title: 600;
+    --height-navbar: 80px;
+    --width-sidebar: 233px;
+    --main-content-padding-left: 20px;
+    --main-content-padding-top: 24px;
+    --main-content-padding-bottom: 5rem;
+    --main-content-padding-right: 24px;
+    --nav-bar-zindex: 999;
+    --side-bar-zindex: 999;
+    --tw-ring-color: #403ecc;
+  }
+
+  .wrapper-border {
+    @apply border-[#403ecc] border-solid rounded-[10px] px-[13px] py-5 gap-4;
+
+    border-width: 2px !important;
+  }
+
+  .wrapper-border-gray {
+    @apply border-[#E2E2EA] border-solid rounded-[10px] px-[13px] py-5 gap-4;
+
+    border-width: 2px !important;
+  }
+}

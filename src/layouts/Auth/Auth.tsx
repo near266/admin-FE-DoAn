@@ -33,7 +33,7 @@ const Auth = ({ children }) => {
     onLogin(email, password, remember_me);
   };
   const onLogin = async (
-    email: FORM_DATA_FIELD.emails,
+    email: FORM_DATA_FIELD.email,
     password: FORM_DATA_FIELD.password,
     remember_me: boolean
   ) => {
