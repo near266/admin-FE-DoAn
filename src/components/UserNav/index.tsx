@@ -42,12 +42,6 @@ const UserPop: React.FC = (props: IProps) => {
                   Cài đặt tài khoản
                 </Link>
               </li>
-              <li>
-                <Link href="#" className={styles.expandMenu__item}>
-                  <i className="fas fa-book" />
-                  Quản lý CV
-                </Link>
-              </li>
 
               <div className={styles.divider} />
               <li>
